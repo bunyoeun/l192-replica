@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.6; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; color: #fff; flex-shrink: 0; }
+  .logo-box { width: 38px; height: 38px; background: var(--gold); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .logo-text span { color: var(--gold); }
+  .header-actions { margin-left: auto; display: flex; gap: 4px; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  .page-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); color: #fff; padding: 64px 24px; text-align: center; }
+  .page-hero h1 { font-size: 38px; font-weight: 800; margin-bottom: 12px; }
+  .page-hero p { font-size: 16px; color: rgba(255,255,255,0.75); max-width: 540px; margin: 0 auto; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 48px 24px; }
+
+  .contact-layout { display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
+
+  .form-card { background: #fff; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm); }
+  .form-card h2 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .form-card p { color: var(--gray-500); margin-bottom: 24px; font-size: 13px; }
+
+  .form-group { margin-bottom: 18px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; }
+  input[type=text], input[type=email], input[type=tel], select, textarea {
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-300); border-radius: 9px;
+    font-size: 13px; font-family: inherit; color: var(--gray-900); outline: none; transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 120px; }
+  select { background: #fff; }
+
+  .topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .topic-btn { background: var(--gray-100); border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 12px; font-size: 12px; font-weight: 600; color: var(--gray-700); text-align: left; cursor: pointer; transition: all 0.15s; }
+  .topic-btn:hover, .topic-btn.active { border-color: var(--accent); background: #eef4ff; color: var(--accent); }
+
+  .submit-btn { width: 100%; background: var(--navy); color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: var(--navy-dark); }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: #fff; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); }
+  .info-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+  .info-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+  .info-item:last-child { margin-bottom: 0; }
+  .info-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .info-item h4 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .info-item p { font-size: 12px; color: var(--gray-500); line-height: 1.5; }
+  .info-item a { color: var(--accent); }
+
+  .hours-card { background: #fff; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); }
+  .hours-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+  .hour-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--gray-200); font-size: 12px; }
+  .hour-row:last-child { border-bottom: none; }
+  .hour-row .day { color: var(--gray-700); font-weight: 600; }
+  .hour-row .time { color: var(--accent); font-weight: 600; }
+
+  .social-card { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius); padding: 24px; }
+  .social-card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .social-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-link { background: rgba(255,255,255,0.12); border-radius: 9px; padding: 8px 14px; color: #fff; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+  .social-link:hover { background: rgba(255,255,255,0.22); }
+
+  .faq-section { margin-top: 48px; }
+  .faq-section h2 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 20px; }
+  .faq-item { background: #fff; border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow-sm); overflow: hidden; }
+  .faq-q { padding: 18px 20px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq-q:hover { background: var(--gray-100); }
+  .faq-q .arrow { font-size: 12px; color: var(--gray-500); transition: transform 0.2s; }
+  .faq-a { padding: 0 20px 18px; color: var(--gray-700); font-size: 13px; line-height: 1.7; display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .arrow { transform: rotate(180deg); }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy-dark); color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 13.5px; font-weight: 500; z-index: 9999; transform: translateX(120%); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow: var(--shadow-lg); display: flex; gap: 10px; align-items: center; max-width: 320px; }
+  .toast.show { transform: translateX(0); }
+
+  @media (max-width: 768px) {
+    .contact-layout { grid-template-columns: 1fr; }
+    .page-hero h1 { font-size: 28px; }
+  }
+  @media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .header-inner { padding: 0 12px; }
+    .hdr-btn span:last-child { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="header-actions">
+      <a href="profile.html" class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></a>
+      <a href="profile.html" class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></a>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="login.html" class="hdr-btn"><span class="icon">👤</span><span>Account</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <h1>Contact Us</h1>
+  <p>We're here to help. Reach out to our support team and we'll get back to you within a few hours.</p>
+</div>
+
+<div class="container">
+
+  <div class="contact-layout">
+
+    <div class="form-card">
+      <h2>Send Us a Message</h2>
+      <p>Fill in the form below and our team will respond within 2–4 hours on business days.</p>
+
+      <div style="margin-bottom: 18px;">
+        <label>What can we help you with?</label>
+        <div class="topic-grid">
+          <button class="topic-btn active" onclick="selectTopic(this)">📦 Order Issue</button>
+          <button class="topic-btn" onclick="selectTopic(this)">↩️ Return / Refund</button>
+          <button class="topic-btn" onclick="selectTopic(this)">💳 Payment Problem</button>
+          <button class="topic-btn" onclick="selectTopic(this)">🚚 Delivery Delay</button>
+          <button class="topic-btn" onclick="selectTopic(this)">🏪 Seller Issue</button>
+          <button class="topic-btn" onclick="selectTopic(this)">💡 General Question</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label>First Name</label>
+          <input type="text" placeholder="Sophea" id="firstName">
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input type="text" placeholder="Ros" id="lastName">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="sophea@email.com" id="email">
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number (optional)</label>
+        <input type="tel" placeholder="+855 12 345 678" id="phone">
+      </div>
+
+      <div class="form-group">
+        <label>Order ID (if applicable)</label>
+        <input type="text" placeholder="e.g. #L198-2025-04756" id="orderId">
+      </div>
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Describe your issue or question in as much detail as possible..." id="message"></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()">Send Message →</button>
+    </div>
+
+    <div class="sidebar">
+
+      <div class="info-card">
+        <h3>Get in Touch</h3>
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div>
+            <h4>Phone Support</h4>
+            <p><a href="tel:+85516955598">016 955 598</a><br>Daily 8:00 AM – 11:00 PM</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p><a href="mailto:support@l198.com">support@l198.com</a><br>We reply within 4 hours</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">💬</div>
+          <div>
+            <h4>Live Chat</h4>
+            <p>Available in the app<br>Average wait: &lt; 3 minutes</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Head Office</h4>
+            <p>198A Street 63, The Rana Tower<br>Boeung Keng Kang I, Phnom Penh<br>Cambodia 12302</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hours-card">
+        <h3>Support Hours</h3>
+        <div class="hour-row"><span class="day">Monday – Friday</span><span class="time">8AM – 11PM</span></div>
+        <div class="hour-row"><span class="day">Saturday</span><span class="time">9AM – 10PM</span></div>
+        <div class="hour-row"><span class="day">Sunday</span><span class="time">9AM – 8PM</span></div>
+        <div class="hour-row"><span class="day">Public Holidays</span><span class="time">10AM – 6PM</span></div>
+      </div>
+
+      <div class="social-card">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <div class="social-link">📘 Facebook</div>
+          <div class="social-link">📸 Instagram</div>
+          <div class="social-link">🎵 TikTok</div>
+          <div class="social-link">▶️ YouTube</div>
+          <div class="social-link">✈️ Telegram</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I track my order? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Go to <strong>Profile → My Orders</strong> and click on your order to see real-time tracking. You'll also receive SMS and in-app notifications at each delivery milestone.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is L198's return policy? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Most items can be returned within 7 days of delivery if unused and in original packaging. Some categories (food, personal care, digital goods) are non-returnable. Initiate a return from <strong>Profile → My Orders → Return/Refund</strong>.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What payment methods does L198 accept? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">We accept ABA Pay, KHQR, Wing, Visa/Mastercard, and Cash on Delivery (COD). ABA Pay and KHQR offer instant confirmation. COD is available in most areas of Cambodia.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How long does delivery take? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Same-day delivery is available in Phnom Penh for orders placed before 2PM. Next-day delivery covers Siem Reap, Sihanoukville, and other major cities. Provincial areas typically take 2–4 days.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        My item arrived damaged — what do I do? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Take photos immediately and initiate a return within 24 hours through the app. Our Buyer Protection covers all damaged items — you'll receive a full refund or free replacement within 3 business days.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I become a seller on L198? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Click "Sell on L198" in the footer, create a seller account, and upload your business documents (or just your ID for individuals). Approval takes 24–48 hours. No monthly fees — we only charge a small commission per sale.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function selectTopic(btn) {
+    document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    item.classList.toggle('open');
+  }
+
+  function submitForm() {
+    const name = document.getElementById('firstName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const msg = document.getElementById('message').value.trim();
+    if (!name || !email || !msg) {
+      showToast('Please fill in all required fields', '⚠️');
+      return;
+    }
+    showToast('Message sent! We\'ll reply within 4 hours.', '✅');
+    document.getElementById('firstName').value = '';
+    document.getElementById('lastName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('orderId').value = '';
+    document.getElementById('message').value = '';
+  }
+
+  function showToast(msg, icon='✅') {
+    const t = document.getElementById('toast');
+    t.innerHTML = `<span>${icon}</span> ${msg}`;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
