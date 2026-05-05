@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Detail – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --accent-light: #4d9ef5; --gold: #f0b429; --gold-light: #ffd166;
+    --gray-100: #f5f7fa; --gray-200: #eaecf0; --gray-300: #d1d5db; --gray-500: #9ca3af;
+    --gray-700: #4b5563; --gray-900: #111827; --white: #ffffff;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px; --radius-sm: 7px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
+  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; color: var(--gray-900); }
+  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; transition: background .2s; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  .catbar { background: #fff; border-bottom: 1px solid var(--gray-200); position: sticky; top: 66px; z-index: 900; }
+  .catbar-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; overflow-x: auto; scrollbar-width: none; }
+  .catbar-inner::-webkit-scrollbar { display: none; }
+  .cat-item { display: flex; align-items: center; gap: 6px; padding: 12px 14px; font-size: 13px; font-weight: 500; color: var(--gray-700); white-space: nowrap; border-bottom: 2px solid transparent; transition: all .2s; cursor: pointer; }
+  .cat-item:hover, .cat-item.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 20px 24px 48px; }
+
+  .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-500); margin-bottom: 20px; }
+  .breadcrumb a { color: var(--accent); }
+  .breadcrumb span { color: var(--gray-300); }
+
+  /* Product Detail Layout */
+  .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; background: #fff; border-radius: 16px; padding: 28px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+
+  /* Gallery */
+  .gallery { display: flex; gap: 12px; }
+  .gallery-thumbs { display: flex; flex-direction: column; gap: 8px; }
+  .thumb { width: 68px; height: 68px; border-radius: 9px; border: 2px solid transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 28px; transition: border-color .2s; }
+  .thumb.active, .thumb:hover { border-color: var(--navy); }
+  .gallery-main { flex: 1; aspect-ratio: 1; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 120px; position: relative; overflow: hidden; }
+  .gallery-main::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+  .gallery-main .main-emoji { position: relative; z-index: 1; }
+  .gallery-badge { position: absolute; top: 14px; left: 14px; background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; z-index: 2; }
+  .gallery-wish { position: absolute; top: 14px; right: 14px; background: #fff; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: var(--shadow-md); cursor: pointer; z-index: 2; transition: transform .2s; }
+  .gallery-wish:hover { transform: scale(1.15); }
+
+  /* Product Info */
+  .product-info-panel { display: flex; flex-direction: column; gap: 16px; }
+  .prod-store-link { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); font-weight: 600; }
+  .prod-store-link .store-dot { width: 28px; height: 28px; background: linear-gradient(135deg, #0a1f44, #1a73e8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+  .prod-title { font-size: 20px; font-weight: 700; line-height: 1.35; color: var(--gray-900); }
+  .prod-rating { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .stars { color: var(--gold); font-size: 15px; }
+  .rating-count { color: var(--gray-500); }
+  .sold-count { color: var(--gray-700); font-weight: 600; padding-left: 10px; border-left: 1px solid var(--gray-200); }
+  .price-block { background: var(--gray-100); border-radius: 12px; padding: 16px; }
+  .price-main { font-size: 32px; font-weight: 800; color: var(--navy); }
+  .price-orig { font-size: 16px; color: var(--gray-500); text-decoration: line-through; margin-left: 12px; }
+  .price-save { font-size: 13px; font-weight: 700; color: #16a34a; margin-top: 4px; }
+  .shipping-info { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--gray-700); }
+  .ship-row { display: flex; gap: 10px; align-items: flex-start; }
+  .ship-label { color: var(--gray-500); min-width: 90px; }
+  .ship-val { font-weight: 500; }
+  .ship-free { color: #16a34a; font-weight: 700; }
+
+  /* Variants */
+  .variant-section { display: flex; flex-direction: column; gap: 10px; }
+  .variant-label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+  .variant-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .variant-opt { padding: 6px 14px; border: 2px solid var(--gray-200); border-radius: 8px; font-size: 13px; cursor: pointer; transition: all .2s; }
+  .variant-opt:hover, .variant-opt.selected { border-color: var(--navy); color: var(--navy); font-weight: 600; }
+
+  /* Quantity */
+  .qty-row { display: flex; align-items: center; gap: 12px; }
+  .qty-label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+  .qty-ctrl { display: flex; align-items: center; border: 2px solid var(--gray-200); border-radius: 9px; overflow: hidden; }
+  .qty-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; background: var(--gray-100); font-weight: 700; transition: background .2s; }
+  .qty-btn:hover { background: var(--gray-200); }
+  .qty-num { width: 46px; text-align: center; font-weight: 700; font-size: 15px; border: none; outline: none; font-family: inherit; }
+  .qty-stock { font-size: 12px; color: var(--gray-500); }
+
+  /* Action buttons */
+  .action-btns { display: flex; gap: 12px; }
+  .btn-add-cart { flex: 1; background: var(--gray-100); border: 2px solid var(--navy); color: var(--navy); font-weight: 700; font-size: 14px; padding: 14px; border-radius: 11px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
+  .btn-add-cart:hover { background: var(--navy); color: #fff; }
+  .btn-buy-now { flex: 1; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; padding: 14px; border-radius: 11px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
+  .btn-buy-now:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  /* Guarantees */
+  .guarantees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .guarantee-item { display: flex; align-items: center; gap: 8px; background: var(--gray-100); border-radius: 9px; padding: 10px 12px; font-size: 12px; }
+  .guarantee-item .gi-icon { font-size: 20px; flex-shrink: 0; }
+  .guarantee-item strong { display: block; font-weight: 700; color: var(--gray-900); }
+  .guarantee-item span { color: var(--gray-500); }
+
+  /* Description + Reviews Tabs */
+  .detail-tabs { background: #fff; border-radius: 16px; padding: 0; box-shadow: var(--shadow-sm); margin-bottom: 28px; overflow: hidden; }
+  .tab-nav { display: flex; border-bottom: 2px solid var(--gray-200); }
+  .tab-btn { padding: 16px 24px; font-size: 14px; font-weight: 600; color: var(--gray-500); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+  .tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
+  .tab-content { padding: 24px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .spec-table { width: 100%; border-collapse: collapse; }
+  .spec-table tr { border-bottom: 1px solid var(--gray-200); }
+  .spec-table tr:last-child { border: none; }
+  .spec-table td { padding: 10px 8px; font-size: 13px; }
+  .spec-table td:first-child { width: 180px; color: var(--gray-500); font-weight: 500; }
+  .spec-table td:last-child { color: var(--gray-900); }
+
+  /* Reviews */
+  .rating-summary { display: flex; gap: 32px; align-items: center; margin-bottom: 24px; padding: 20px; background: var(--gray-100); border-radius: 12px; }
+  .rating-big { text-align: center; }
+  .rating-big .score { font-size: 52px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .rating-big .stars { font-size: 18px; }
+  .rating-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .rating-bar-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--gray-700); }
+  .rating-bar-track { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+  .rating-bar-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+  .review-card { border-bottom: 1px solid var(--gray-200); padding: 16px 0; }
+  .review-card:last-child { border: none; }
+  .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .reviewer-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .reviewer-name { font-weight: 600; font-size: 13px; }
+  .review-date { font-size: 11px; color: var(--gray-500); }
+  .review-stars { color: var(--gold); font-size: 13px; }
+  .review-text { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+  .review-helpful { font-size: 12px; color: var(--gray-500); margin-top: 8px; }
+  .review-helpful button { color: var(--accent); font-size: 12px; background: none; margin-left: 6px; }
+
+  /* Recommended */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: var(--gray-900); }
+  .see-all { font-size: 13px; color: var(--accent); font-weight: 600; }
+  .product-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 13px; }
+  .product-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); transition: all .25s; cursor: pointer; position: relative; border: 1.5px solid transparent; }
+  .product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: var(--gray-200); }
+  .product-img { width: 100%; aspect-ratio: 1; background: var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; overflow: hidden; }
+  .product-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1, #e8f0fe), var(--c2, #c2d4fb)); }
+  .product-img span { position: relative; z-index: 1; }
+  .prod-discount { position: absolute; top: 9px; left: 9px; background: var(--navy); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 5px; z-index: 2; }
+  .prod-fav { position: absolute; top: 9px; right: 9px; background: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: var(--shadow-sm); z-index: 2; opacity: 0; transition: opacity .2s; }
+  .product-card:hover .prod-fav { opacity: 1; }
+  .product-info { padding: 11px; }
+  .product-name { font-size: 13px; font-weight: 500; line-height: 1.4; margin-bottom: 7px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .product-price-row { display: flex; align-items: baseline; gap: 7px; }
+  .price-current { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .price-original { font-size: 11px; color: var(--gray-500); text-decoration: line-through; }
+  .product-sold { font-size: 10px; color: var(--gray-500); margin-top: 5px; }
+
+  /* Footer */
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 40px 0 20px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+
+  .float-btns { position: fixed; bottom: 26px; right: 26px; display: flex; flex-direction: column; gap: 11px; z-index: 9999; }
+  .float-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: var(--shadow-lg); cursor: pointer; transition: transform .2s; }
+  .float-btn:hover { transform: scale(1.12); }
+  .float-btn-cart { background: var(--navy); color: #fff; }
+  .float-btn-chat { background: #25D366; color: #fff; }
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products, stores, brands...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
+      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="login.html" class="hdr-btn"><span class="icon">👤</span><span>Account</span></a>
+    </div>
+  </div>
+</header>
+
+<nav class="catbar">
+  <div class="catbar-inner">
+    <a href="index.html" class="cat-item">☰ All Categories</a>
+    <a href="category.html" class="cat-item"><span>👗</span> Fashion</a>
+    <a href="category.html" class="cat-item active"><span>📱</span> Electronics</a>
+    <a href="category.html" class="cat-item"><span>🏠</span> Home & Living</a>
+    <a href="category.html" class="cat-item"><span>💄</span> Beauty</a>
+    <a href="category.html" class="cat-item"><span>👟</span> Footwear</a>
+    <a href="category.html" class="cat-item"><span>👜</span> Bags</a>
+    <a href="category.html" class="cat-item"><span>⌚</span> Accessories</a>
+    <a href="category.html" class="cat-item"><span>🍼</span> Baby & Kids</a>
+    <a href="category.html" class="cat-item"><span>🏋️</span> Sports</a>
+  </div>
+</nav>
+
+<div class="main-wrap">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="category.html">Electronics</a><span>›</span>
+    <a href="category.html">Audio</a><span>›</span>
+    <span style="color:var(--gray-700);">Wireless Earbuds Pro TWS</span>
+  </div>
+
+  <!-- PRODUCT DETAIL -->
+  <div class="product-detail">
+    <!-- Gallery -->
+    <div class="gallery">
+      <div class="gallery-thumbs">
+        <div class="thumb active" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">🎧</div>
+        <div class="thumb" style="background:linear-gradient(135deg,#e8f0fe,#c2d4fb);">📦</div>
+        <div class="thumb" style="background:linear-gradient(135deg,#ede7f6,#d1c4e9);">🔋</div>
+        <div class="thumb" style="background:linear-gradient(135deg,#e0f7fa,#b2ebf2);">🎵</div>
+      </div>
+      <div class="gallery-main">
+        <div class="gallery-badge">-35% OFF</div>
+        <div class="gallery-wish" onclick="toggleWish(this)">❤️</div>
+        <span class="main-emoji">🎧</span>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="product-info-panel">
+      <div class="prod-store-link">
+        <div class="store-dot">TK</div>
+        TechKhmer Store <span style="color:var(--gray-300);margin:0 4px;">·</span> <span style="color:#16a34a;">✓ Verified Seller</span>
+      </div>
+
+      <div class="prod-title">Wireless Earbuds Pro TWS Bluetooth 5.3 – Noise Cancelling, 30H Battery, IPX5 Water Resistant</div>
+
+      <div class="prod-rating">
+        <span class="stars">★★★★★</span>
+        <span style="color:var(--navy);font-weight:700;">4.8</span>
+        <span class="rating-count">(1,248 reviews)</span>
+        <span class="sold-count">🔥 5,340 sold</span>
+      </div>
+
+      <div class="price-block">
+        <div>
+          <span class="price-main">$12.50</span>
+          <span class="price-orig">$19.00</span>
+        </div>
+        <div class="price-save">You save: $6.50 (34%) · Flash Sale ends in 04:23:11</div>
+      </div>
+
+      <div class="shipping-info">
+        <div class="ship-row">
+          <span class="ship-label">Delivery</span>
+          <span class="ship-val">📍 Phnom Penh — <span class="ship-free">FREE, arrives today</span></span>
+        </div>
+        <div class="ship-row">
+          <span class="ship-label">Ships From</span>
+          <span class="ship-val">🇰🇭 Cambodia (local stock)</span>
+        </div>
+        <div class="ship-row">
+          <span class="ship-label">Return</span>
+          <span class="ship-val">✅ 7-day easy returns</span>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="variant-section">
+        <div class="variant-label">Color</div>
+        <div class="variant-options">
+          <div class="variant-opt selected" onclick="selectVariant(this)">⬛ Black</div>
+          <div class="variant-opt" onclick="selectVariant(this)">⬜ White</div>
+          <div class="variant-opt" onclick="selectVariant(this)">🔵 Navy Blue</div>
+          <div class="variant-opt" onclick="selectVariant(this)">🩷 Rose Pink</div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div class="qty-row">
+        <span class="qty-label">Quantity</span>
+        <div class="qty-ctrl">
+          <div class="qty-btn" onclick="changeQty(-1)">−</div>
+          <input class="qty-num" id="qtyInput" value="1" min="1" max="50" type="number" readonly>
+          <div class="qty-btn" onclick="changeQty(1)">+</div>
+        </div>
+        <span class="qty-stock">128 units left</span>
+      </div>
+
+      <!-- Buttons -->
+      <div class="action-btns">
+        <button class="btn-add-cart" onclick="showToast('Added to cart!','🛒')">🛒 Add to Cart</button>
+        <button class="btn-buy-now" onclick="window.location.href='cart.html'">⚡ Buy Now</button>
+      </div>
+
+      <!-- Guarantees -->
+      <div class="guarantees">
+        <div class="guarantee-item">
+          <span class="gi-icon">🔒</span>
+          <div><strong>Secure Payment</strong><span>ABA · KHQR · COD</span></div>
+        </div>
+        <div class="guarantee-item">
+          <span class="gi-icon">↩️</span>
+          <div><strong>7-Day Return</strong><span>No questions asked</span></div>
+        </div>
+        <div class="guarantee-item">
+          <span class="gi-icon">🏅</span>
+          <div><strong>Genuine Product</strong><span>L198 Guaranteed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS: Description / Specs / Reviews -->
+  <div class="detail-tabs">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab(this,'desc')">Description</button>
+      <button class="tab-btn" onclick="switchTab(this,'specs')">Specifications</button>
+      <button class="tab-btn" onclick="switchTab(this,'reviews')">Reviews (1,248)</button>
+    </div>
+    <div class="tab-content">
+      <!-- Description -->
+      <div class="tab-panel active" id="desc">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">About This Product</h3>
+        <p style="color:var(--gray-700);line-height:1.8;margin-bottom:12px;">Experience premium wireless audio with the Earbuds Pro TWS. Featuring the latest Bluetooth 5.3 chipset for ultra-low latency connection, these earbuds deliver crystal-clear sound with deep bass and crisp highs. Ideal for music, calls, gaming, and commuting in Cambodia's busy cities.</p>
+        <ul style="color:var(--gray-700);line-height:2;padding-left:18px;">
+          <li>Active Noise Cancellation (ANC) – block out street noise and market sounds</li>
+          <li>30-hour total battery life (6h earbuds + 24h charging case)</li>
+          <li>IPX5 water resistance – safe during rain and exercise</li>
+          <li>Touch controls – play, pause, skip, and answer calls</li>
+          <li>8mm dynamic driver for powerful, balanced sound</li>
+          <li>Compatible with iOS, Android, and all Bluetooth devices</li>
+          <li>Includes 3 ear tip sizes for a perfect fit</li>
+        </ul>
+      </div>
+      <!-- Specs -->
+      <div class="tab-panel" id="specs">
+        <table class="spec-table">
+          <tr><td>Brand</td><td>EarbudsKH Pro</td></tr>
+          <tr><td>Model</td><td>TWS-X500 Pro</td></tr>
+          <tr><td>Bluetooth Version</td><td>5.3</td></tr>
+          <tr><td>Driver Size</td><td>8mm Dynamic</td></tr>
+          <tr><td>Frequency Response</td><td>20Hz – 20kHz</td></tr>
+          <tr><td>Battery (Earbuds)</td><td>60mAh each (6 hours)</td></tr>
+          <tr><td>Battery (Case)</td><td>400mAh (24 hours extra)</td></tr>
+          <tr><td>Charging</td><td>USB-C, 1.5h full charge</td></tr>
+          <tr><td>Water Resistance</td><td>IPX5</td></tr>
+          <tr><td>Weight</td><td>5g per earbud</td></tr>
+          <tr><td>Colors Available</td><td>Black, White, Navy Blue, Rose Pink</td></tr>
+          <tr><td>Warranty</td><td>12 months (L198 Seller Warranty)</td></tr>
+        </table>
+      </div>
+      <!-- Reviews -->
+      <div class="tab-panel" id="reviews">
+        <div class="rating-summary">
+          <div class="rating-big">
+            <div class="score">4.8</div>
+            <div class="stars">★★★★★</div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">1,248 reviews</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rating-bar-row"><span>5★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:78%"></div></div><span>78%</span></div>
+            <div class="rating-bar-row"><span>4★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:14%"></div></div><span>14%</span></div>
+            <div class="rating-bar-row"><span>3★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:5%"></div></div><span>5%</span></div>
+            <div class="rating-bar-row"><span>2★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div><span>2%</span></div>
+            <div class="rating-bar-row"><span>1★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div><span>1%</span></div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar">SR</div>
+            <div>
+              <div class="reviewer-name">Sophea R.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date" style="margin-left:auto;">2 days ago</div>
+          </div>
+          <div class="review-text">Amazing earbuds for the price! Sound quality is great and the ANC actually works well even in Phnom Penh traffic. Battery lasts me the whole day easily. Fast delivery too — arrived same day!</div>
+          <div class="review-helpful">Helpful? <button onclick="showToast('Thanks for your feedback!','👍')">👍 Yes (24)</button></div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar" style="background:#4a148c;">DV</div>
+            <div>
+              <div class="reviewer-name">Dara V.</div>
+              <div class="review-stars">★★★★☆</div>
+            </div>
+            <div class="review-date" style="margin-left:auto;">1 week ago</div>
+          </div>
+          <div class="review-text">Good product overall. The connection is stable and sound quality is clear. Only small issue is the case feels slightly cheap in hand, but the earbuds themselves are solid. Would buy again.</div>
+          <div class="review-helpful">Helpful? <button onclick="showToast('Thanks for your feedback!','👍')">👍 Yes (11)</button></div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar" style="background:#0d47a1;">MK</div>
+            <div>
+              <div class="reviewer-name">Maly K.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date" style="margin-left:auto;">2 weeks ago</div>
+          </div>
+          <div class="review-text">I bought 2 pairs — one for me and one as a gift. Both work perfectly. The pink color is so cute! Packaging was also very nice, great as a gift.</div>
+          <div class="review-helpful">Helpful? <button onclick="showToast('Thanks for your feedback!','👍')">👍 Yes (8)</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECOMMENDED -->
+  <div class="section-block" style="margin-bottom:30px;">
+    <div class="section-header">
+      <div class="section-title"><span>⭐</span> You May Also Like</div>
+      <a href="category.html" class="see-all">See All →</a>
+    </div>
+    <div class="product-row">
+      <div class="product-card" onclick="showToast('Smart Watch added!','🛒')">
+        <div class="product-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span><div class="prod-discount">-25%</div><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">Smart Watch Fitness Tracker Heart Rate GPS</div>
+          <div class="product-price-row"><span class="price-current">$22.00</span><span class="price-original">$29.50</span></div>
+          <div class="product-sold">🔥 189 sold</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="showToast('Phone Case added!','🛒')">
+        <div class="product-img" style="--c1:#e8f0fe;--c2:#c2d4fb;"><span>📱</span><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">Premium Leather Phone Case iPhone 15</div>
+          <div class="product-price-row"><span class="price-current">$5.50</span><span class="price-original">$9.00</span></div>
+          <div class="product-sold">218 sold</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="showToast('Bluetooth Speaker added!','🛒')">
+        <div class="product-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🔊</span><div class="prod-discount">-20%</div><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">Portable Bluetooth Speaker 360° Surround Sound</div>
+          <div class="product-price-row"><span class="price-current">$14.90</span><span class="price-original">$18.50</span></div>
+          <div class="product-sold">🔥 312 sold</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="showToast('Power Bank added!','🛒')">
+        <div class="product-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🔋</span><div class="prod-discount">-15%</div><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">20000mAh Power Bank Fast Charge USB-C</div>
+          <div class="product-price-row"><span class="price-current">$19.00</span><span class="price-original">$22.50</span></div>
+          <div class="product-sold">🔥 445 sold</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="showToast('USB-C Cable added!','🛒')">
+        <div class="product-img" style="--c1:#f1f8e9;--c2:#dcedc8;"><span>🔌</span><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">Braided USB-C to USB-C Cable 100W 1.5m</div>
+          <div class="product-price-row"><span class="price-current">$3.50</span><span class="price-original">$5.00</span></div>
+          <div class="product-sold">887 sold</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="showToast('Webcam added!','🛒')">
+        <div class="product-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>📷</span><div class="prod-discount">-30%</div><div class="prod-fav">❤️</div></div>
+        <div class="product-info">
+          <div class="product-name">1080P HD Webcam with Built-in Mic Autofocus</div>
+          <div class="product-price-row"><span class="price-current">$16.00</span><span class="price-original">$23.00</span></div>
+          <div class="product-sold">🔥 201 sold</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div>
+        <div class="pay-icon">Mastercard</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="float-btns">
+  <div class="float-btn float-btn-chat" title="Chat">💬</div>
+  <div class="float-btn float-btn-cart" title="Cart" onclick="window.location.href='cart.html'">🛒</div>
+</div>
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+  let toastTimer;
+  function showToast(msg, icon = '✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function changeQty(delta) {
+    const input = document.getElementById('qtyInput');
+    const val = Math.max(1, Math.min(50, parseInt(input.value) + delta));
+    input.value = val;
+  }
+
+  function selectVariant(el) {
+    document.querySelectorAll('.variant-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function switchTab(btn, id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function toggleWish(el) {
+    el.classList.toggle('wished');
+    if (el.classList.contains('wished')) {
+      el.textContent = '❤️';
+      el.style.color = 'red';
+      showToast('Added to wishlist!', '❤️');
+    } else {
+      el.textContent = '♡';
+      showToast('Removed from wishlist', '➖');
+    }
+  }
+
+  document.querySelectorAll('.thumb').forEach(t => {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
