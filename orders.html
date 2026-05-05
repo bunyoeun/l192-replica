@@ -154,6 +154,28 @@
 
   .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
   .toast.show { transform: translateX(0); }
+
+  @media (max-width: 900px) {
+    .main-wrap { padding: 14px 16px 36px; }
+  }
+  @media (max-width: 768px) {
+    .tracking-layout { grid-template-columns: 1fr; }
+    .summary-card { position: static; }
+    .oh-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .map-box { height: 160px; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 12px; gap: 8px; height: 56px; }
+    .hdr-btn span:last-child { display: none; }
+    .hdr-btn { min-width: 38px; padding: 5px 7px; }
+    .main-wrap { padding: 12px 12px 32px; }
+    .oh-grid { grid-template-columns: 1fr; }
+    .map-box { height: 140px; }
+    .courier-card { flex-wrap: wrap; gap: 10px; }
+    .action-btns { gap: 8px; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .payment-icons { flex-wrap: wrap; justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -171,8 +193,8 @@
       <span class="logo-text">L<span>198</span></span>
     </a>
     <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
+      <input type="text" id="searchInput" placeholder="Search products, stores, brands...">
+      <button class="search-btn" onclick="triggerSearch()">🔍</button>
     </div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
@@ -452,6 +474,15 @@
     });
     showToast('Rated ' + rating + ' star' + (rating > 1 ? 's' : '') + '!', '⭐');
   }
+
+  function triggerSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+    else showToast('Please enter a search term', '⚠️');
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerSearch();
+  });
 </script>
 </body>
 </html>

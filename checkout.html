@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  /* ── TOP BAR & HEADER ── */
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .header-actions { margin-left: auto; display: flex; gap: 4px; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+  .secure-badge { margin-left: auto; display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7); font-size: 12px; }
+  .secure-badge .lock { font-size: 16px; color: var(--gold); }
+
+  /* ── MAIN ── */
+  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 60px; }
+
+  /* ── CHECKOUT STEPS ── */
+  .checkout-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 28px; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
+  .step.active { color: var(--navy); }
+  .step.done { color: #16a34a; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step.active .step-num { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .step.done .step-num { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .step-line { flex: 1; height: 2px; background: var(--gray-200); max-width: 60px; }
+  .step-line.done { background: #16a34a; }
+
+  /* ── LAYOUT ── */
+  .checkout-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+  /* ── STEP PANELS ── */
+  .step-panel { display: none; }
+  .step-panel.active { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── CARDS ── */
+  .card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+
+  /* ── ADDRESS SECTION ── */
+  .address-saved { border: 2px solid var(--navy); border-radius: 12px; padding: 16px; background: #f0f4ff; position: relative; margin-bottom: 14px; }
+  .addr-default-tag { display: inline-block; background: var(--navy); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .addr-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .addr-phone { font-size: 12px; color: var(--gray-500); margin-bottom: 5px; }
+  .addr-text { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+  .addr-change { position: absolute; top: 14px; right: 14px; font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; }
+  .addr-change:hover { text-decoration: underline; }
+
+  /* New address form */
+  .add-addr-toggle { display: flex; align-items: center; gap: 8px; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; padding: 10px 0; }
+  .add-addr-form { display: none; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 16px; margin-top: 10px; }
+  .add-addr-form.open { display: block; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+  .form-input { border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; color: var(--gray-900); outline: none; transition: border-color .2s; }
+  .form-input:focus { border-color: var(--navy); }
+  .form-select { border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; color: var(--gray-900); outline: none; background: #fff; }
+
+  /* Time slots */
+  .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .time-slot { border: 2px solid var(--gray-200); border-radius: 10px; padding: 13px 10px; text-align: center; cursor: pointer; transition: all .2s; }
+  .time-slot:hover { border-color: var(--navy); }
+  .time-slot.selected { border-color: var(--navy); background: #f0f4ff; }
+  .time-slot .slot-icon { font-size: 22px; margin-bottom: 5px; }
+  .time-slot .slot-time { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+  .time-slot .slot-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+  .time-slot.selected .slot-time { color: var(--navy); }
+  .time-slot .slot-badge { font-size: 10px; font-weight: 700; background: var(--gold); color: var(--navy-dark); padding: 2px 7px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+
+  /* Delivery note */
+  .delivery-note { width: 100%; border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; color: var(--gray-900); outline: none; resize: none; transition: border-color .2s; }
+  .delivery-note:focus { border-color: var(--navy); }
+
+  /* ── PAYMENT SECTION ── */
+  .payment-methods { display: flex; flex-direction: column; gap: 10px; }
+  .pay-method { border: 2px solid var(--gray-200); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+  .pay-method:hover { border-color: var(--navy); }
+  .pay-method.selected { border-color: var(--navy); background: #f0f4ff; }
+  .pay-method .pm-icon { font-size: 28px; flex-shrink: 0; }
+  .pay-method .pm-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+  .pay-method .pm-sub { font-size: 12px; color: var(--gray-500); }
+  .pay-method .pm-check { margin-left: auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gray-300); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all .2s; }
+  .pay-method.selected .pm-check { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .pay-method .pm-tag { position: absolute; top: 0; right: 0; background: var(--gold); color: var(--navy-dark); font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 0 12px 0 8px; }
+
+  /* Dynamic payment sub-panels */
+  .pay-detail { display: none; background: var(--gray-100); border-radius: 10px; padding: 14px; margin-top: 10px; }
+  .pay-detail.show { display: block; }
+  .qr-placeholder { width: 140px; height: 140px; background: #fff; border-radius: 10px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 80px; box-shadow: var(--shadow-sm); border: 2px dashed var(--gray-300); }
+  .qr-instruction { text-align: center; font-size: 12px; color: var(--gray-700); line-height: 1.6; }
+  .cod-info { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--gray-700); }
+  .cod-info .ci { font-size: 22px; flex-shrink: 0; }
+
+  /* Promo code */
+  .promo-row { display: flex; gap: 8px; margin-top: 14px; }
+  .promo-input { flex: 1; border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; outline: none; }
+  .promo-input:focus { border-color: var(--navy); }
+  .promo-btn { background: var(--navy); color: #fff; border-radius: 9px; padding: 10px 18px; font-size: 13px; font-weight: 600; transition: background .2s; }
+  .promo-btn:hover { background: var(--navy-light); }
+  .promo-applied { display: none; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; margin-top: 8px; font-size: 13px; }
+  .promo-applied.show { display: flex; }
+  .promo-applied .pa-code { color: #16a34a; font-weight: 700; }
+  .promo-applied .pa-remove { margin-left: auto; color: #dc2626; cursor: pointer; font-size: 16px; }
+
+  /* ── CONFIRM SECTION ── */
+  .confirm-section { display: flex; flex-direction: column; gap: 14px; }
+  .confirm-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--gray-200); }
+  .confirm-row:last-child { border: none; }
+  .confirm-label { font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .confirm-val { font-size: 14px; color: var(--gray-900); font-weight: 500; line-height: 1.6; }
+  .confirm-edit { font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+  .confirm-edit:hover { text-decoration: underline; }
+
+  .confirm-items { display: flex; flex-direction: column; gap: 10px; }
+  .ci-row { display: flex; align-items: center; gap: 12px; }
+  .ci-img { width: 52px; height: 52px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; flex-shrink: 0; }
+  .ci-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1, #e8f0fe), var(--c2, #c2d4fb)); }
+  .ci-img span { position: relative; z-index: 1; }
+  .ci-name { flex: 1; font-size: 13px; font-weight: 500; }
+  .ci-qty { font-size: 12px; color: var(--gray-500); }
+  .ci-price { font-size: 14px; font-weight: 700; color: var(--navy); }
+
+  /* ── ACTION BUTTON ── */
+  .next-btn { width: 100%; background: var(--navy); color: #fff; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .2s; margin-top: 4px; }
+  .next-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .back-link { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--accent); font-weight: 600; cursor: pointer; padding: 10px; }
+  .back-link:hover { text-decoration: underline; }
+
+  /* ── ORDER SUMMARY SIDEBAR ── */
+  .summary-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
+  .summary-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+  .summary-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .si-row { display: flex; align-items: center; gap: 10px; }
+  .si-img { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; overflow: hidden; flex-shrink: 0; }
+  .si-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1, #e8f0fe), var(--c2, #c2d4fb)); }
+  .si-img span { position: relative; z-index: 1; }
+  .si-name { flex: 1; font-size: 12px; line-height: 1.3; }
+  .si-price { font-size: 13px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+  .summary-divider { height: 1px; background: var(--gray-200); margin: 12px 0; }
+  .sum-rows { display: flex; flex-direction: column; gap: 8px; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
+  .sum-row .val { font-weight: 600; color: var(--gray-900); }
+  .sum-row .val.green { color: #16a34a; }
+  .sum-row .val.strike { text-decoration: line-through; color: var(--gray-500); }
+  .total-block { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1.5px solid var(--gray-200); }
+  .total-block .label { font-size: 15px; font-weight: 700; }
+  .total-block .amount { font-size: 24px; font-weight: 800; color: var(--navy); }
+  .guarantee-row { display: flex; flex-direction: column; gap: 7px; margin-top: 16px; }
+  .g-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray-500); }
+  .g-item .g-icon { font-size: 16px; }
+
+  /* ── SUCCESS SCREEN ── */
+  #successScreen { display: none; }
+  #successScreen.show { display: block; }
+  .success-card { background: #fff; border-radius: 20px; padding: 48px 36px; box-shadow: var(--shadow-lg); text-align: center; max-width: 600px; margin: 0 auto; position: relative; overflow: hidden; }
+  .success-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(240,180,41,0.12), transparent); border-radius: 50%; }
+
+  .check-circle { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, #16a34a, #4ade80); display: flex; align-items: center; justify-content: center; font-size: 44px; margin: 0 auto 22px; box-shadow: 0 6px 24px rgba(22,163,74,0.3); animation: popIn .5s cubic-bezier(.68,-0.55,.265,1.55) forwards; }
+  @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .success-title { font-size: 26px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+  .success-sub { font-size: 15px; color: var(--gray-500); margin-bottom: 28px; }
+  .order-badge { display: inline-block; background: var(--gray-100); border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 28px; }
+  .order-badge span { color: var(--navy); }
+
+  .delivery-eta { background: linear-gradient(120deg, var(--navy-dark), var(--navy)); border-radius: 14px; padding: 18px 22px; margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
+  .eta-icon { font-size: 36px; }
+  .eta-info { text-align: left; }
+  .eta-info .eta-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; text-transform: uppercase; margin-bottom: 3px; }
+  .eta-info .eta-time { font-size: 18px; font-weight: 800; color: #fff; }
+  .eta-info .eta-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  .success-actions { display: flex; gap: 12px; justify-content: center; }
+  .success-btn { padding: 13px 24px; border-radius: 11px; font-size: 14px; font-weight: 700; transition: all .2s; display: flex; align-items: center; gap: 8px; }
+  .success-btn-primary { background: var(--navy); color: #fff; }
+  .success-btn-primary:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .success-btn-secondary { background: none; border: 2px solid var(--gray-200); color: var(--gray-700); }
+  .success-btn-secondary:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* Confetti */
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9998; overflow: hidden; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .checkout-layout { grid-template-columns: 1fr; }
+    .summary-card { position: static; }
+  }
+  @media (max-width: 600px) {
+    .main-wrap { padding: 16px 14px 40px; }
+    .step { padding: 8px 10px; font-size: 12px; }
+    .slot-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .success-actions { flex-direction: column; }
+    .success-card { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="secure-badge">
+      <span class="lock">🔒</span> Secure Checkout
+    </div>
+    <div class="header-actions">
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="profile.html" class="hdr-btn"><span class="icon">👤</span><span>Sophea</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="main-wrap">
+
+  <!-- Steps -->
+  <div class="checkout-steps">
+    <div class="step done" id="stepCart"><div class="step-num">✓</div> Cart</div>
+    <div class="step-line done" id="line1"></div>
+    <div class="step active" id="stepAddress"><div class="step-num">2</div> Address</div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="stepPayment"><div class="step-num">3</div> Payment</div>
+    <div class="step-line" id="line3"></div>
+    <div class="step" id="stepConfirm"><div class="step-num">4</div> Confirm</div>
+  </div>
+
+  <!-- Main checkout layout -->
+  <div id="checkoutMain">
+    <div class="checkout-layout">
+      <!-- LEFT: Step panels -->
+      <div>
+
+        <!-- ── STEP 2: ADDRESS ── -->
+        <div class="step-panel active" id="panelAddress">
+          <div class="card">
+            <div class="card-title">📍 Delivery Address</div>
+            <div class="address-saved">
+              <div class="addr-default-tag">✓ Default Address</div>
+              <div class="addr-name">Sophea Ros</div>
+              <div class="addr-phone">+855 10 123 456</div>
+              <div class="addr-text">Street 63, Boeung Keng Kang I, Khan Chamkarmon, Phnom Penh, Cambodia 12302</div>
+              <span class="addr-change" onclick="toggleAddressForm()">Change</span>
+            </div>
+
+            <div class="add-addr-toggle" onclick="toggleAddressForm()">
+              <span>➕</span> Add or change address
+            </div>
+            <div class="add-addr-form" id="addAddrForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input class="form-input" type="text" placeholder="Sophea">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input class="form-input" type="text" placeholder="Ros">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input class="form-input" type="tel" placeholder="+855 10 123 456">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Province / City</label>
+                  <select class="form-select">
+                    <option>Phnom Penh</option>
+                    <option>Siem Reap</option>
+                    <option>Battambang</option>
+                    <option>Kampong Cham</option>
+                    <option>Sihanoukville</option>
+                    <option>Kampot</option>
+                    <option>Other Province</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group full">
+                  <label class="form-label">Street Address</label>
+                  <input class="form-input" type="text" placeholder="Street number, building, floor...">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Sangkat / District</label>
+                  <input class="form-input" type="text" placeholder="e.g. BKK1">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Postal Code (optional)</label>
+                  <input class="form-input" type="text" placeholder="12302">
+                </div>
+              </div>
+              <button style="background:var(--navy);color:#fff;border-radius:9px;padding:10px 20px;font-size:13px;font-weight:600;transition:background .2s;" onmouseover="this.style.background='var(--navy-light)'" onmouseout="this.style.background='var(--navy)'" onclick="showToast('Address saved!','✅')">Save Address</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🕐 Delivery Time Slot</div>
+            <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px;">Choose your preferred delivery window for <strong>today, May 5, 2025</strong>.</p>
+            <div class="slot-grid">
+              <div class="time-slot selected" id="slot1" onclick="selectSlot('slot1')">
+                <div class="slot-badge">Express</div>
+                <div class="slot-icon">⚡</div>
+                <div class="slot-time">1:00 – 3:00 PM</div>
+                <div class="slot-sub">FREE · ~2 hrs</div>
+              </div>
+              <div class="time-slot" id="slot2" onclick="selectSlot('slot2')">
+                <div class="slot-icon">🕒</div>
+                <div class="slot-time">3:00 – 5:00 PM</div>
+                <div class="slot-sub">FREE · Afternoon</div>
+              </div>
+              <div class="time-slot" id="slot3" onclick="selectSlot('slot3')">
+                <div class="slot-icon">🌆</div>
+                <div class="slot-time">5:00 – 8:00 PM</div>
+                <div class="slot-sub">FREE · Evening</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📝 Delivery Note <span style="font-size:12px;font-weight:400;color:var(--gray-500);">(Optional)</span></div>
+            <textarea class="delivery-note" rows="3" placeholder="e.g. Leave at the gate, ring bell, call before arriving, landmark..."></textarea>
+          </div>
+
+          <button class="next-btn" onclick="goToStep(3)">Continue to Payment →</button>
+          <a href="cart.html"><div class="back-link">← Back to Cart</div></a>
+        </div>
+
+        <!-- ── STEP 3: PAYMENT ── -->
+        <div class="step-panel" id="panelPayment">
+          <div class="card">
+            <div class="card-title">💳 Payment Method</div>
+            <div class="payment-methods">
+
+              <div class="pay-method selected" id="pm-aba" onclick="selectPayment('aba')">
+                <span class="pm-icon">💳</span>
+                <div>
+                  <div class="pm-name">ABA Pay</div>
+                  <div class="pm-sub">Scan QR code in your ABA Mobile app</div>
+                </div>
+                <span class="pm-tag">Most Popular</span>
+                <div class="pm-check">✓</div>
+              </div>
+
+              <div class="pay-method" id="pm-khqr" onclick="selectPayment('khqr')">
+                <span class="pm-icon">📲</span>
+                <div>
+                  <div class="pm-name">KHQR</div>
+                  <div class="pm-sub">Pay with any KHQR-enabled bank app</div>
+                </div>
+                <div class="pm-check"></div>
+              </div>
+
+              <div class="pay-method" id="pm-wing" onclick="selectPayment('wing')">
+                <span class="pm-icon">🏦</span>
+                <div>
+                  <div class="pm-name">Wing Money</div>
+                  <div class="pm-sub">Pay via Wing mobile wallet</div>
+                </div>
+                <div class="pm-check"></div>
+              </div>
+
+              <div class="pay-method" id="pm-card" onclick="selectPayment('card')">
+                <span class="pm-icon">💵</span>
+                <div>
+                  <div class="pm-name">Visa / Mastercard</div>
+                  <div class="pm-sub">Credit or debit card (secure 3D)</div>
+                </div>
+                <div class="pm-check"></div>
+              </div>
+
+              <div class="pay-method" id="pm-cod" onclick="selectPayment('cod')">
+                <span class="pm-icon">🤝</span>
+                <div>
+                  <div class="pm-name">Cash on Delivery</div>
+                  <div class="pm-sub">Pay in cash when your order arrives</div>
+                </div>
+                <div class="pm-check"></div>
+              </div>
+            </div>
+
+            <!-- ABA QR detail -->
+            <div class="pay-detail show" id="detail-aba">
+              <div class="qr-placeholder">📱</div>
+              <div class="qr-instruction">Open your <strong>ABA Mobile</strong> app → tap <strong>Pay</strong> → scan the QR code above.<br>Payment will be confirmed automatically.</div>
+            </div>
+            <!-- KHQR detail -->
+            <div class="pay-detail" id="detail-khqr">
+              <div class="qr-placeholder">🏦</div>
+              <div class="qr-instruction">Open any <strong>KHQR-supported app</strong> and scan this code.<br>Supported banks: ABA, ACLEDA, Canadia, Wing and 30+ more.</div>
+            </div>
+            <!-- Wing detail -->
+            <div class="pay-detail" id="detail-wing">
+              <div class="qr-placeholder">🏦</div>
+              <div class="qr-instruction">Open <strong>Wing Money</strong> app → scan QR or enter account number <strong>016-955-598</strong>.</div>
+            </div>
+            <!-- Card detail -->
+            <div class="pay-detail" id="detail-card">
+              <div class="form-row">
+                <div class="form-group full">
+                  <label class="form-label">Card Number</label>
+                  <input class="form-input" type="text" placeholder="1234  5678  9012  3456" maxlength="19">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Expiry Date</label>
+                  <input class="form-input" type="text" placeholder="MM / YY" maxlength="7">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CVV</label>
+                  <input class="form-input" type="text" placeholder="•••" maxlength="4">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cardholder Name</label>
+                <input class="form-input" type="text" placeholder="As shown on card">
+              </div>
+            </div>
+            <!-- COD detail -->
+            <div class="pay-detail" id="detail-cod">
+              <div class="cod-info">
+                <span class="ci">💵</span>
+                <div>Please prepare <strong>$50.00 in cash</strong> for the rider. Our rider will not carry change, so exact amount is appreciated.<br><br>You can also pay by any QR method to the rider using their personal QR code.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎟️ Promo Code</div>
+            <div class="promo-row">
+              <input class="promo-input" type="text" id="promoInput" placeholder="Enter voucher code (try SAVE10)">
+              <button class="promo-btn" onclick="applyPromo()">Apply</button>
+            </div>
+            <div class="promo-applied" id="promoApplied">
+              <span>🎟️</span> <span class="pa-code">SAVE10</span> — 10% off applied!
+              <span class="pa-remove" onclick="removePromo()">✕</span>
+            </div>
+          </div>
+
+          <button class="next-btn" onclick="goToStep(4)">Review Order →</button>
+          <div class="back-link" onclick="goToStep(2)">← Back to Address</div>
+        </div>
+
+        <!-- ── STEP 4: CONFIRM ── -->
+        <div class="step-panel" id="panelConfirm">
+          <div class="card">
+            <div class="card-title">🛍️ Order Review</div>
+            <div class="confirm-section">
+              <div class="confirm-row">
+                <div style="flex:1;">
+                  <div class="confirm-label">Items (3)</div>
+                  <div class="confirm-items">
+                    <div class="ci-row">
+                      <div class="ci-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
+                      <span class="ci-name">Wireless Earbuds Pro TWS</span>
+                      <span class="ci-qty">×1</span>
+                      <span class="ci-price">$12.50</span>
+                    </div>
+                    <div class="ci-row">
+                      <div class="ci-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
+                      <span class="ci-name">Smart Watch Fitness Tracker</span>
+                      <span class="ci-qty">×1</span>
+                      <span class="ci-price">$22.00</span>
+                    </div>
+                    <div class="ci-row">
+                      <div class="ci-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
+                      <span class="ci-name">Korean Skincare Gift Set 6pc</span>
+                      <span class="ci-qty">×1</span>
+                      <span class="ci-price">$15.50</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="confirm-edit" onclick="window.location.href='cart.html'">Edit</span>
+              </div>
+              <div class="confirm-row">
+                <div style="flex:1;">
+                  <div class="confirm-label">Delivery Address</div>
+                  <div class="confirm-val">Sophea Ros · +855 10 123 456<br>Street 63, BKK1, Chamkarmon, Phnom Penh</div>
+                  <div style="font-size:12px;color:#16a34a;font-weight:600;margin-top:4px;">🕐 Estimated: Today 1:00 – 3:00 PM</div>
+                </div>
+                <span class="confirm-edit" onclick="goToStep(2)">Edit</span>
+              </div>
+              <div class="confirm-row">
+                <div style="flex:1;">
+                  <div class="confirm-label">Payment Method</div>
+                  <div class="confirm-val" id="confirmPayMethod">💳 ABA Pay</div>
+                </div>
+                <span class="confirm-edit" onclick="goToStep(3)">Edit</span>
+              </div>
+              <div class="confirm-row">
+                <div style="flex:1;">
+                  <div class="confirm-label">Order Total</div>
+                  <div style="font-size:22px;font-weight:800;color:var(--navy);" id="confirmTotal">$50.00</div>
+                  <div style="font-size:12px;color:#16a34a;font-weight:600;margin-top:3px;">You saved $24.49 · Free delivery 🎉</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:14px 16px;font-size:13px;color:#92400e;display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:18px;flex-shrink:0;">ℹ️</span>
+            <span>By placing this order you agree to L198's <a href="#" style="color:var(--accent);">Terms & Conditions</a> and <a href="#" style="color:var(--accent);">Return Policy</a>.</span>
+          </div>
+
+          <button class="next-btn" id="placeOrderBtn" onclick="placeOrder()" style="background:linear-gradient(120deg,#16a34a,#4ade80);box-shadow:0 4px 18px rgba(22,163,74,0.35);">
+            ✅ Place Order — $50.00
+          </button>
+          <div class="back-link" onclick="goToStep(3)">← Back to Payment</div>
+        </div>
+
+      </div><!-- /left -->
+
+      <!-- RIGHT: Summary sidebar -->
+      <div>
+        <div class="summary-card">
+          <div class="summary-title">Order Summary</div>
+          <div class="summary-items">
+            <div class="si-row">
+              <div class="si-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
+              <span class="si-name">Wireless Earbuds Pro TWS ×1</span>
+              <span class="si-price">$12.50</span>
+            </div>
+            <div class="si-row">
+              <div class="si-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
+              <span class="si-name">Smart Watch Fitness ×1</span>
+              <span class="si-price">$22.00</span>
+            </div>
+            <div class="si-row">
+              <div class="si-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
+              <span class="si-name">Korean Skincare Set 6pc ×1</span>
+              <span class="si-price">$15.50</span>
+            </div>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="sum-rows">
+            <div class="sum-row"><span>Subtotal</span><span class="val">$50.00</span></div>
+            <div class="sum-row"><span>Original price</span><span class="val strike">$74.49</span></div>
+            <div class="sum-row"><span>Item savings</span><span class="val green">-$24.49</span></div>
+            <div class="sum-row" id="promoRow" style="display:none;"><span>Promo (SAVE10)</span><span class="val green">-$5.00</span></div>
+            <div class="sum-row"><span>Delivery</span><span class="val green">FREE 🎉</span></div>
+          </div>
+          <div class="total-block">
+            <span class="label">Total</span>
+            <span class="amount" id="sidebarTotal">$50.00</span>
+          </div>
+          <div class="guarantee-row">
+            <div class="g-item"><span class="g-icon">🔒</span> SSL Encrypted · 100% Secure</div>
+            <div class="g-item"><span class="g-icon">↩️</span> 7-Day Easy Returns</div>
+            <div class="g-item"><span class="g-icon">🏅</span> Genuine Products Guaranteed</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /checkout-layout -->
+  </div><!-- /checkoutMain -->
+
+  <!-- ── SUCCESS SCREEN ── -->
+  <div id="successScreen">
+    <div id="confettiWrap" class="confetti-wrap"></div>
+    <div class="success-card">
+      <div class="check-circle">✅</div>
+      <div class="success-title">Order Placed Successfully!</div>
+      <div class="success-sub">Thank you, Sophea! Your order is confirmed and the rider is on the way.</div>
+      <div class="order-badge">Order: <span>#L198-2025-05001</span></div>
+      <div class="delivery-eta">
+        <div class="eta-icon">🛵</div>
+        <div class="eta-info">
+          <div class="eta-label">Estimated Delivery</div>
+          <div class="eta-time">Today, 1:00 – 3:00 PM</div>
+          <div class="eta-sub">Rider Dara Khun · L198 Express</div>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="success-btn success-btn-primary" onclick="window.location.href='orders.html'">📍 Track My Order</button>
+        <button class="success-btn success-btn-secondary" onclick="window.location.href='index.html'">🛍️ Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div>
+        <div class="pay-icon">Mastercard</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+  // ── Toast ──
+  let toastTimer;
+  function showToast(msg, icon = '✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ── Step navigation ──
+  let currentStep = 2;
+  const payMethodNames = { aba: '💳 ABA Pay', khqr: '📲 KHQR', wing: '🏦 Wing Money', card: '💵 Visa / Mastercard', cod: '🤝 Cash on Delivery' };
+  let selectedPayMethod = 'aba';
+  let promoActive = false;
+
+  function goToStep(step) {
+    // Panels
+    ['Address','Payment','Confirm'].forEach((n, i) => {
+      const panel = document.getElementById('panel' + n);
+      panel.classList.toggle('active', i + 2 === step);
+    });
+    // Step indicators
+    const steps = [
+      document.getElementById('stepCart'),
+      document.getElementById('stepAddress'),
+      document.getElementById('stepPayment'),
+      document.getElementById('stepConfirm'),
+    ];
+    const lines = [
+      document.getElementById('line1'),
+      document.getElementById('line2'),
+      document.getElementById('line3'),
+    ];
+    steps.forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i + 1 < step) s.classList.add('done');
+      else if (i + 1 === step) s.classList.add('active');
+      // Update step-num for done steps
+      const num = s.querySelector('.step-num');
+      num.textContent = (i + 1 < step) ? '✓' : (i + 1);
+    });
+    lines.forEach((l, i) => {
+      l.classList.toggle('done', i + 2 < step);
+    });
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (step === 4) {
+      document.getElementById('confirmPayMethod').textContent = payMethodNames[selectedPayMethod];
+      document.getElementById('confirmTotal').textContent = promoActive ? '$45.00' : '$50.00';
+    }
+  }
+
+  // ── Address form toggle ──
+  function toggleAddressForm() {
+    const form = document.getElementById('addAddrForm');
+    form.classList.toggle('open');
+  }
+
+  // ── Time slot selection ──
+  function selectSlot(id) {
+    ['slot1','slot2','slot3'].forEach(s => document.getElementById(s).classList.remove('selected'));
+    document.getElementById(id).classList.add('selected');
+  }
+
+  // ── Payment method selection ──
+  function selectPayment(method) {
+    ['aba','khqr','wing','card','cod'].forEach(m => {
+      document.getElementById('pm-' + m).classList.remove('selected');
+      document.getElementById('pm-' + m).querySelector('.pm-check').textContent = '';
+      const detail = document.getElementById('detail-' + m);
+      if (detail) detail.classList.remove('show');
+    });
+    document.getElementById('pm-' + method).classList.add('selected');
+    document.getElementById('pm-' + method).querySelector('.pm-check').textContent = '✓';
+    const detail = document.getElementById('detail-' + method);
+    if (detail) detail.classList.add('show');
+    selectedPayMethod = method;
+  }
+
+  // ── Promo code ──
+  function applyPromo() {
+    const code = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (code === 'SAVE10' || code === 'L198') {
+      promoActive = true;
+      document.getElementById('promoApplied').classList.add('show');
+      document.getElementById('promoRow').style.display = 'flex';
+      document.getElementById('sidebarTotal').textContent = '$45.00';
+      showToast('Promo applied! -$5.00', '🎟️');
+    } else if (!code) {
+      showToast('Enter a promo code first', '⚠️');
+    } else {
+      showToast('Invalid promo code', '❌');
+    }
+  }
+
+  function removePromo() {
+    promoActive = false;
+    document.getElementById('promoApplied').classList.remove('show');
+    document.getElementById('promoRow').style.display = 'none';
+    document.getElementById('promoInput').value = '';
+    document.getElementById('sidebarTotal').textContent = '$50.00';
+    showToast('Promo removed', '➖');
+  }
+
+  // ── Place order ──
+  function placeOrder() {
+    const btn = document.getElementById('placeOrderBtn');
+    btn.textContent = '⏳ Processing...';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('checkoutMain').style.display = 'none';
+      document.querySelector('.checkout-steps').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      launchConfetti();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1600);
+  }
+
+  // ── Confetti ──
+  function launchConfetti() {
+    const wrap = document.getElementById('confettiWrap');
+    const colors = ['#f0b429','#1a73e8','#16a34a','#e53e3e','#9b59b6','#fff'];
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (2 + Math.random() * 3) + 's';
+      piece.style.animationDelay = (Math.random() * 1.5) + 's';
+      wrap.appendChild(piece);
+    }
+    setTimeout(() => wrap.innerHTML = '', 5000);
+  }
+</script>
+</body>
+</html>

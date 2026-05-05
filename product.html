@@ -183,6 +183,38 @@
   .float-btn-chat { background: #25D366; color: #fff; }
   .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
   .toast.show { transform: translateX(0); }
+
+  @media (max-width: 900px) {
+    .main-wrap { padding: 14px 16px 36px; }
+    .product-row { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .product-detail { grid-template-columns: 1fr; gap: 20px; padding: 18px; }
+    .gallery { flex-direction: column-reverse; }
+    .gallery-thumbs { flex-direction: row; }
+    .gallery-main { max-height: 300px; }
+    .guarantees { grid-template-columns: 1fr; }
+    .product-row { grid-template-columns: repeat(2, 1fr); }
+    .tab-btn { padding: 12px 16px; font-size: 13px; }
+    .rating-summary { flex-direction: column; gap: 16px; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 12px; gap: 8px; height: 56px; }
+    .hdr-btn span:last-child { display: none; }
+    .hdr-btn { min-width: 38px; padding: 5px 7px; }
+    .catbar { top: 56px; }
+    .main-wrap { padding: 12px 12px 32px; }
+    .product-detail { padding: 14px; }
+    .prod-title { font-size: 16px; }
+    .price-main { font-size: 26px; }
+    .action-btns { flex-direction: column; }
+    .tab-nav { overflow-x: auto; scrollbar-width: none; }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-btn { white-space: nowrap; }
+    .product-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .payment-icons { flex-wrap: wrap; justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -200,8 +232,8 @@
       <span class="logo-text">L<span>198</span></span>
     </a>
     <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
+      <input type="text" id="searchInput" placeholder="Search products, stores, brands...">
+      <button class="search-btn" onclick="triggerSearch()">🔍</button>
     </div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
@@ -559,6 +591,15 @@
       document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
       this.classList.add('active');
     });
+  });
+
+  function triggerSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+    else showToast('Please enter a search term', '⚠️');
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerSearch();
   });
 </script>
 </body>

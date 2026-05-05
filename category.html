@@ -139,6 +139,36 @@
   .product-card:nth-child(3){animation-delay:.12s} .product-card:nth-child(4){animation-delay:.16s}
   .product-card:nth-child(5){animation-delay:.20s} .product-card:nth-child(6){animation-delay:.24s}
   .product-card:nth-child(7){animation-delay:.28s} .product-card:nth-child(8){animation-delay:.32s}
+
+  @media (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .main-wrap { padding: 14px 16px 36px; }
+  }
+  @media (max-width: 768px) {
+    .content-layout { grid-template-columns: 1fr; }
+    .filter-sidebar { display: none; }
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+    .results-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .sort-btns { flex-wrap: wrap; }
+    .cat-hero { padding: 18px 20px; }
+    .cat-hero-emoji { font-size: 48px; }
+    .cat-hero-title { font-size: 20px; }
+    .filter-show-btn { display: flex; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 12px; gap: 8px; height: 56px; }
+    .hdr-btn span:last-child { display: none; }
+    .hdr-btn { min-width: 38px; padding: 5px 7px; }
+    .catbar { top: 56px; }
+    .main-wrap { padding: 12px 12px 32px; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .subcat-row { gap: 6px; }
+    .subcat-chip { padding: 6px 12px; font-size: 12px; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .payment-icons { flex-wrap: wrap; justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -157,7 +187,7 @@
     </a>
     <div class="search-bar">
       <input type="text" placeholder="Search in Electronics..." id="searchInput" value="Wireless Earbuds">
-      <button class="search-btn">🔍</button>
+      <button class="search-btn" onclick="triggerSearch()">🔍</button>
     </div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
@@ -423,6 +453,15 @@
     document.querySelectorAll('.filter-check input[type=checkbox]').forEach(c => c.checked = false);
     showToast('Filters cleared', '🗑️');
   }
+
+  function triggerSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+    else showToast('Please enter a search term', '⚠️');
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerSearch();
+  });
 </script>
 </body>
 </html>

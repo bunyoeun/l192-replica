@@ -174,6 +174,34 @@
 
   .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
   .toast.show { transform: translateX(0); }
+
+  @media (max-width: 900px) {
+    .main-wrap { padding: 14px 16px 36px; }
+  }
+  @media (max-width: 768px) {
+    .profile-layout { grid-template-columns: 1fr; }
+    .profile-sidebar { display: flex; flex-direction: column; }
+    .sidebar-nav { display: flex; overflow-x: auto; gap: 4px; padding: 8px; scrollbar-width: none; }
+    .sidebar-nav::-webkit-scrollbar { display: none; }
+    .nav-item { white-space: nowrap; flex-shrink: 0; padding: 9px 14px; }
+    .nav-divider { display: none; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+    .address-grid { grid-template-columns: 1fr; }
+    .vouchers-row { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 12px; gap: 8px; height: 56px; }
+    .hdr-btn span:last-child { display: none; }
+    .hdr-btn { min-width: 38px; padding: 5px 7px; }
+    .main-wrap { padding: 12px 12px 32px; }
+    .avatar { width: 72px; height: 72px; font-size: 28px; }
+    .loyalty-banner { flex-direction: column; gap: 14px; text-align: center; }
+    .loyalty-progress { margin: 0; max-width: 100%; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .payment-icons { flex-wrap: wrap; justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -191,8 +219,8 @@
       <span class="logo-text">L<span>198</span></span>
     </a>
     <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
+      <input type="text" id="searchInput" placeholder="Search products, stores, brands...">
+      <button class="search-btn" onclick="triggerSearch()">🔍</button>
     </div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
@@ -639,6 +667,15 @@
     btn.classList.add('active');
     showToast('Filter: ' + btn.textContent, '📦');
   }
+
+  function triggerSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+    else showToast('Please enter a search term', '⚠️');
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerSearch();
+  });
 </script>
 </body>
 </html>
