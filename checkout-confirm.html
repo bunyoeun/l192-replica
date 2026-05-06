@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
+  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; }
+  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  /* Steps */
+  .checkout-steps { display: flex; align-items: center; justify-content: center; margin-bottom: 32px; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
+  .step.done { color: #16a34a; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step.done .step-num { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .step-line { flex: 1; height: 2px; background: var(--gray-200); max-width: 60px; }
+  .step-line.done { background: #16a34a; }
+
+  .main-wrap { max-width: 900px; margin: 0 auto; padding: 28px 24px 56px; }
+
+  /* Success hero */
+  .success-hero { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid #bbf7d0; border-radius: 20px; padding: 44px 40px; text-align: center; margin-bottom: 22px; position: relative; overflow: hidden; }
+  .success-hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(22,163,74,0.08); }
+  .success-hero::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(22,163,74,0.06); }
+  .success-icon { font-size: 72px; margin-bottom: 16px; display: block; animation: popIn .5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .success-title { font-size: 30px; font-weight: 800; color: #14532d; margin-bottom: 8px; }
+  .success-sub { font-size: 15px; color: #166534; margin-bottom: 18px; }
+  .order-id-badge { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #bbf7d0; border-radius: 10px; padding: 10px 20px; font-size: 15px; font-weight: 800; color: var(--navy); box-shadow: var(--shadow-sm); }
+  .copy-btn { font-size: 11px; color: var(--accent); font-weight: 600; cursor: pointer; background: #e8f0fe; padding: 3px 8px; border-radius: 5px; transition: background .2s; }
+  .copy-btn:hover { background: var(--accent); color: #fff; }
+
+  /* Estimated delivery */
+  .delivery-eta { background: var(--navy); border-radius: 14px; padding: 20px 24px; color: #fff; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; }
+  .eta-left .eta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+  .eta-left .eta-time { font-size: 26px; font-weight: 800; color: var(--gold); }
+  .eta-left .eta-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .eta-right { text-align: right; }
+  .eta-right .rider-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .eta-right .rider-sub { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .eta-track-btn { background: var(--gold); color: var(--navy-dark); font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 9px; cursor: pointer; border: none; margin-top: 10px; transition: all .2s; }
+  .eta-track-btn:hover { background: #fff; }
+
+  /* Two column layout */
+  .confirm-layout { display: grid; grid-template-columns: 1fr 320px; gap: 18px; }
+
+  .card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+  /* Order items */
+  .order-items { display: flex; flex-direction: column; gap: 12px; }
+  .order-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+  .order-item:last-child { border: none; }
+  .item-img { width: 58px; height: 58px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 26px; position: relative; overflow: hidden; flex-shrink: 0; }
+  .item-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
+  .item-img span { position: relative; z-index: 1; }
+  .item-info { flex: 1; }
+  .item-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+  .item-variant { font-size: 11px; color: var(--gray-500); }
+  .item-qty-price { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+  .item-qty { font-size: 12px; color: var(--gray-500); }
+  .item-price { font-size: 14px; font-weight: 700; color: var(--navy); }
+
+  /* Info rows */
+  .info-rows { display: flex; flex-direction: column; gap: 12px; }
+  .info-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
+  .info-row:last-child { border: none; }
+  .ir-icon { font-size: 20px; flex-shrink: 0; width: 28px; text-align: center; }
+  .ir-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+  .ir-value { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+  .ir-sub { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+
+  /* Summary sidebar */
+  .summary-block { background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); }
+  .sum-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .sum-rows { display: flex; flex-direction: column; gap: 9px; margin-bottom: 12px; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
+  .sum-row .val { font-weight: 600; color: var(--gray-900); }
+  .sum-row .val.green { color: #16a34a; }
+  .sum-divider { height: 1px; background: var(--gray-200); margin: 10px 0; }
+  .sum-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .sum-total .label { font-size: 14px; font-weight: 700; }
+  .sum-total .amount { font-size: 22px; font-weight: 800; color: var(--navy); }
+  .paid-badge { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 9px; padding: 9px 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 14px; }
+
+  /* Action buttons */
+  .action-row { display: flex; flex-direction: column; gap: 10px; }
+  .action-btn { width: 100%; padding: 13px; border-radius: 11px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
+  .btn-track { background: var(--navy); color: #fff; }
+  .btn-track:hover { background: var(--navy-light); transform: translateY(-2px); }
+  .btn-receipt { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
+  .btn-receipt:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-shop { background: var(--gold); color: var(--navy-dark); }
+  .btn-shop:hover { background: #e0a820; transform: translateY(-2px); }
+
+  /* Points earned */
+  .points-banner { background: linear-gradient(120deg, #fff8e1, #fef3c7); border: 1.5px solid #fde68a; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .pb-icon { font-size: 28px; }
+  .pb-text .pb-title { font-size: 13px; font-weight: 700; color: #92400e; }
+  .pb-text .pb-sub { font-size: 12px; color: #b45309; }
+
+  /* Recommended */
+  .rec-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .rec-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .rec-card { background: #fff; border-radius: 11px; overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer; transition: all .2s; border: 1.5px solid transparent; }
+  .rec-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--gray-200); }
+  .rec-img { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 36px; position: relative; overflow: hidden; }
+  .rec-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
+  .rec-img span { position: relative; z-index: 1; }
+  .rec-info { padding: 10px; }
+  .rec-name { font-size: 12px; margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .rec-price { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .rec-add { width: 100%; background: var(--navy); color: #fff; font-size: 11px; font-weight: 600; padding: 7px; border-radius: 7px; margin-top: 6px; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .card { animation: fadeUp .4s ease forwards; }
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.10s} .card:nth-child(3){animation-delay:.15s}
+
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products, stores, brands...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
+      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="profile.html" class="hdr-btn" style="color:var(--gold);"><span class="icon">👤</span><span>Sophea</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="main-wrap">
+
+  <!-- Steps (all done) -->
+  <div class="checkout-steps">
+    <div class="step done"><div class="step-num">✓</div> Cart</div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div> Address</div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div> Payment</div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div> Confirmed!</div>
+  </div>
+
+  <!-- Success hero -->
+  <div class="success-hero">
+    <span class="success-icon">🎉</span>
+    <div class="success-title">Order Placed Successfully!</div>
+    <div class="success-sub">Thank you, Sophea! Your payment has been received and your order is confirmed.</div>
+    <div class="order-id-badge">
+      📦 Order #L198-2025-05103
+      <span class="copy-btn" onclick="copyOrderId()">Copy</span>
+    </div>
+  </div>
+
+  <!-- ETA banner -->
+  <div class="delivery-eta">
+    <div class="eta-left">
+      <div class="eta-label">Estimated Delivery</div>
+      <div class="eta-time">Today · 12PM – 3PM</div>
+      <div class="eta-sub">📍 Street 63, BKK1, Phnom Penh · Rider assigned</div>
+    </div>
+    <div class="eta-right">
+      <div class="rider-name">🛵 Dara Khun</div>
+      <div class="rider-sub">L198 Express Rider · ★ 4.9</div>
+      <button class="eta-track-btn" onclick="window.location.href='orders.html'">📍 Track Live →</button>
+    </div>
+  </div>
+
+  <div class="confirm-layout">
+    <!-- LEFT -->
+    <div>
+      <!-- Items confirmed -->
+      <div class="card">
+        <div class="card-title">🛍️ Items Ordered (3)</div>
+        <div class="order-items">
+          <div class="order-item">
+            <div class="item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
+            <div class="item-info">
+              <div class="item-name">Wireless Earbuds Pro TWS Bluetooth 5.3 ANC</div>
+              <div class="item-variant">Color: Black · TechKhmer Store</div>
+              <div class="item-qty-price"><span class="item-qty">Qty: 1</span><span class="item-price">$12.50</span></div>
+            </div>
+          </div>
+          <div class="order-item">
+            <div class="item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
+            <div class="item-info">
+              <div class="item-name">Smart Watch Fitness Tracker Heart Rate GPS Monitor</div>
+              <div class="item-variant">Size: 44mm · Color: Black · TechKhmer Store</div>
+              <div class="item-qty-price"><span class="item-qty">Qty: 1</span><span class="item-price">$22.00</span></div>
+            </div>
+          </div>
+          <div class="order-item">
+            <div class="item-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
+            <div class="item-info">
+              <div class="item-name">Korean Skincare Gift Set 6-piece Glow & Moisture</div>
+              <div class="item-variant">Set: Complete · Beauty Glow PNH</div>
+              <div class="item-qty-price"><span class="item-qty">Qty: 1</span><span class="item-price">$15.50</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order details -->
+      <div class="card">
+        <div class="card-title">📋 Order Details</div>
+        <div class="info-rows">
+          <div class="info-row">
+            <div class="ir-icon">📦</div>
+            <div><div class="ir-label">Order ID</div><div class="ir-value">#L198-2025-05103</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ir-icon">📅</div>
+            <div><div class="ir-label">Placed On</div><div class="ir-value">May 6, 2025 · 10:42 AM</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ir-icon">💳</div>
+            <div><div class="ir-label">Payment</div><div class="ir-value">ABA Pay</div><div class="ir-sub">Ref: ABA2025-059103 · ✅ Paid</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ir-icon">📍</div>
+            <div><div class="ir-label">Delivery Address</div><div class="ir-value">Sophea Ros · +855 10 123 456</div><div class="ir-sub">Street 63, Boeung Keng Kang I, Chamkarmon, Phnom Penh</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ir-icon">🕐</div>
+            <div><div class="ir-label">Delivery Slot</div><div class="ir-value">Today · 12:00 PM – 3:00 PM</div></div>
+          </div>
+          <div class="info-row">
+            <div class="ir-icon">🛵</div>
+            <div><div class="ir-label">Assigned Rider</div><div class="ir-value">Dara Khun</div><div class="ir-sub">Honda PCX · PNH 8821 B · ★ 4.9</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+      <div class="summary-block">
+        <div class="sum-title">Payment Summary</div>
+        <div class="sum-rows">
+          <div class="sum-row"><span>Subtotal (3 items)</span><span class="val">$50.00</span></div>
+          <div class="sum-row"><span>Delivery fee</span><span class="val green">FREE 🎉</span></div>
+          <div class="sum-row"><span>Item discounts</span><span class="val green">-$24.49</span></div>
+        </div>
+        <div class="sum-divider"></div>
+        <div class="sum-total">
+          <span class="label">Total Paid</span>
+          <span class="amount">$50.00</span>
+        </div>
+
+        <div class="paid-badge">
+          ✅ Payment Confirmed via ABA Pay
+        </div>
+
+        <div class="action-row">
+          <button class="action-btn btn-track" onclick="window.location.href='orders.html'">📍 Track My Order Live</button>
+          <button class="action-btn btn-receipt" onclick="showToast('Receipt downloaded!','📄')">📄 Download Receipt</button>
+          <button class="action-btn btn-shop" onclick="window.location.href='index.html'">🛒 Continue Shopping</button>
+        </div>
+
+        <div class="points-banner">
+          <div class="pb-icon">🏅</div>
+          <div class="pb-text">
+            <div class="pb-title">+500 L198 Points Earned!</div>
+            <div class="pb-sub">Your balance is now 2,950 points · Gold Member</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended -->
+  <div style="margin-top: 28px;">
+    <div class="rec-title">⭐ You Might Also Like</div>
+    <div class="rec-grid">
+      <div class="rec-card" onclick="showToast('Power Bank added!','🛒')">
+        <div class="rec-img" style="--c1:#f1f8e9;--c2:#dcedc8;"><span>🔋</span></div>
+        <div class="rec-info"><div class="rec-name">Power Bank 20000mAh Fast Charge</div><div class="rec-price">$19.00</div><button class="rec-add">+ Add</button></div>
+      </div>
+      <div class="rec-card" onclick="showToast('Speaker added!','🛒')">
+        <div class="rec-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🔊</span></div>
+        <div class="rec-info"><div class="rec-name">Bluetooth Speaker 360° Surround</div><div class="rec-price">$14.90</div><button class="rec-add">+ Add</button></div>
+      </div>
+      <div class="rec-card" onclick="showToast('Serum added!','🛒')">
+        <div class="rec-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>✨</span></div>
+        <div class="rec-info"><div class="rec-name">Vitamin C Brightening Serum 30ml</div><div class="rec-price">$8.90</div><button class="rec-add">+ Add</button></div>
+      </div>
+      <div class="rec-card" onclick="showToast('Mouse added!','🛒')">
+        <div class="rec-img" style="--c1:#fce4ec;--c2:#f8bbd0;"><span>🖱️</span></div>
+        <div class="rec-info"><div class="rec-name">Wireless Silent Mouse Ergonomic</div><div class="rec-price">$9.80</div><button class="rec-add">+ Add</button></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
+
+<script>
+  let toastTimer;
+  function showToast(msg, icon='✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+  function copyOrderId() {
+    navigator.clipboard?.writeText('#L198-2025-05103').catch(()=>{});
+    showToast('Order ID copied!', '📋');
+  }
+  // Trigger confetti-style toast on load
+  setTimeout(() => showToast('Your order is confirmed! 🎉', '✅'), 400);
+</script>
+</body>
+</html>

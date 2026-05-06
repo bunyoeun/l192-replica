@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechKhmer Store – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
+  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; }
+  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  /* Store cover */
+  .store-cover { background: linear-gradient(135deg, var(--navy-dark) 0%, #0d47a1 50%, var(--navy-light) 100%); height: 200px; position: relative; overflow: hidden; }
+  .store-cover::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='200'%3E%3Ccircle cx='500' cy='40' r='150' fill='rgba(255,255,255,0.03)'/%3E%3Ccircle cx='560' cy='180' r='100' fill='rgba(26,115,232,0.1)'/%3E%3Ccircle cx='80' cy='160' r='80' fill='rgba(240,180,41,0.06)'/%3E%3C/svg%3E") right center no-repeat; }
+  .store-cover-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; height: 100%; display: flex; align-items: flex-end; padding-bottom: 0; }
+  .store-cover-edit { position: absolute; top: 14px; right: 24px; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+
+  /* Store header */
+  .store-header { background: #fff; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+  .store-header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: flex-end; gap: 20px; padding-bottom: 18px; padding-top: 0; margin-top: -40px; position: relative; }
+  .store-avatar-lg { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, #0d47a1, #1a73e8); display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 800; color: #fff; border: 4px solid #fff; box-shadow: var(--shadow-md); flex-shrink: 0; }
+  .store-header-info { flex: 1; padding-bottom: 2px; }
+  .store-name-lg { font-size: 22px; font-weight: 800; color: var(--gray-900); display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .verified-badge { background: #eff6ff; color: #1d4ed8; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
+  .store-meta-row { display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--gray-500); flex-wrap: wrap; }
+  .store-meta-item { display: flex; align-items: center; gap: 5px; }
+  .store-meta-item strong { color: var(--gray-900); }
+  .store-header-actions { display: flex; gap: 10px; align-items: center; padding-bottom: 4px; }
+  .btn-follow { background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; padding: 10px 22px; border-radius: 10px; transition: all .2s; }
+  .btn-follow:hover { background: var(--navy-light); }
+  .btn-follow.following { background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; }
+  .btn-chat-store { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 10px; transition: all .2s; }
+  .btn-chat-store:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* Store stats bar */
+  .store-stats { background: #fff; border-bottom: 1px solid var(--gray-200); }
+  .store-stats-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; gap: 0; }
+  .stat-item { flex: 1; text-align: center; padding: 14px 12px; border-right: 1px solid var(--gray-200); }
+  .stat-item:last-child { border: none; }
+  .stat-num { font-size: 18px; font-weight: 800; color: var(--navy); }
+  .stat-label { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+  /* Tab nav */
+  .store-nav { background: #fff; border-bottom: 1px solid var(--gray-200); position: sticky; top: 66px; z-index: 900; margin-bottom: 20px; }
+  .store-nav-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .store-nav-inner::-webkit-scrollbar { display: none; }
+  .snav-item { padding: 14px 18px; font-size: 13px; font-weight: 600; color: var(--gray-500); cursor: pointer; border-bottom: 2.5px solid transparent; white-space: nowrap; transition: all .2s; }
+  .snav-item:hover, .snav-item.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 0 24px 48px; }
+
+  /* Layout */
+  .store-layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+
+  /* Sidebar */
+  .store-sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .sidebar-card { background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm); }
+  .sc-title { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+  .sc-rows { display: flex; flex-direction: column; gap: 9px; }
+  .sc-row { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; color: var(--gray-700); }
+  .sc-row .sci { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .sc-row strong { display: block; font-weight: 600; color: var(--gray-900); font-size: 12px; }
+
+  /* Category chips */
+  .cat-chips { display: flex; flex-direction: column; gap: 6px; }
+  .cat-chip { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s; color: var(--gray-700); display: flex; align-items: center; justify-content: space-between; }
+  .cat-chip:hover, .cat-chip.active { background: var(--gray-100); color: var(--navy); font-weight: 600; }
+  .cat-chip-count { font-size: 11px; color: var(--gray-500); }
+
+  /* Vouchers */
+  .voucher-mini { border: 1.5px dashed var(--gray-300); border-radius: 9px; padding: 11px 12px; cursor: pointer; transition: border-color .2s; margin-bottom: 8px; }
+  .voucher-mini:last-child { margin-bottom: 0; }
+  .voucher-mini:hover { border-color: var(--navy); }
+  .vm-code { font-size: 13px; font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+  .vm-desc { font-size: 11px; color: var(--gray-500); }
+  .vm-exp { font-size: 10px; color: #dc2626; margin-top: 2px; }
+
+  /* Products area */
+  .products-area {}
+
+  /* Sort/filter bar */
+  .prod-bar { display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: var(--radius); padding: 12px 16px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .prod-count { font-size: 13px; color: var(--gray-700); }
+  .prod-count strong { color: var(--gray-900); }
+  .sort-btns { display: flex; gap: 6px; }
+  .sort-btn { padding: 6px 13px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--gray-200); background: none; color: var(--gray-700); transition: all .2s; }
+  .sort-btn:hover, .sort-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  /* Product grid */
+  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+  .product-card { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); transition: all .25s; cursor: pointer; border: 1.5px solid transparent; }
+  .product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--gray-200); }
+  .product-img { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 52px; position: relative; overflow: hidden; }
+  .product-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1, #e8f0fe), var(--c2, #c2d4fb)); }
+  .product-img span { position: relative; z-index: 1; }
+  .prod-discount { position: absolute; top: 9px; left: 9px; background: var(--navy); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 5px; z-index: 2; }
+  .prod-fav { position: absolute; top: 9px; right: 9px; background: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: var(--shadow-sm); z-index: 2; opacity: 0; transition: opacity .2s; }
+  .product-card:hover .prod-fav { opacity: 1; }
+  .product-info { padding: 12px; }
+  .product-name { font-size: 13px; font-weight: 500; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .product-price-row { display: flex; align-items: baseline; gap: 7px; margin-bottom: 5px; }
+  .price-current { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .price-original { font-size: 11px; color: var(--gray-500); text-decoration: line-through; }
+  .prod-rating-sm { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-500); margin-bottom: 8px; }
+  .prod-rating-sm .stars { color: var(--gold); }
+  .add-cart-sm { width: 100%; background: var(--navy); color: #fff; border-radius: 8px; padding: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background .2s; }
+  .add-cart-sm:hover { background: var(--navy-light); }
+
+  /* Featured banner */
+  .featured-banner { background: linear-gradient(120deg, var(--navy-dark), #0d47a1); border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; cursor: pointer; }
+  .fb-left .fb-tag { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+  .fb-left .fb-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .fb-left .fb-sub { font-size: 12px; color: rgba(255,255,255,0.65); }
+  .fb-emoji { font-size: 60px; opacity: 0.8; }
+
+  /* About tab */
+  .about-section { display: none; }
+  .about-section.active { display: block; }
+  .products-section { display: block; }
+  .products-section.hidden { display: none; }
+
+  /* Rating summary */
+  .ratings-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); margin-bottom: 16px; display: grid; grid-template-columns: 120px 1fr; gap: 24px; }
+  .rating-score { text-align: center; }
+  .rating-score .score { font-size: 48px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .rating-score .stars { color: var(--gold); font-size: 16px; }
+  .rating-score .sub { font-size: 11px; color: var(--gray-500); margin-top: 4px; }
+  .rating-bars { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .rb-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--gray-700); }
+  .rb-track { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+  .rb-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .product-card { animation: fadeUp .35s ease forwards; opacity: 0; }
+  .product-card:nth-child(1){animation-delay:.04s} .product-card:nth-child(2){animation-delay:.08s}
+  .product-card:nth-child(3){animation-delay:.12s} .product-card:nth-child(4){animation-delay:.16s}
+  .product-card:nth-child(5){animation-delay:.20s} .product-card:nth-child(6){animation-delay:.24s}
+
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search in TechKhmer Store...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
+      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="profile.html" class="hdr-btn"><span class="icon">👤</span><span>Account</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- Store Cover -->
+<div class="store-cover">
+  <button class="store-cover-edit" onclick="showToast('Store management area','🏪')">🏪 Store Dashboard</button>
+</div>
+
+<!-- Store Header -->
+<div class="store-header">
+  <div class="store-header-inner">
+    <div class="store-avatar-lg">TK</div>
+    <div class="store-header-info">
+      <div class="store-name-lg">
+        TechKhmer Store
+        <span class="verified-badge">✓ Verified Seller</span>
+      </div>
+      <div class="store-meta-row">
+        <div class="store-meta-item">⭐ <strong>4.8</strong> Rating</div>
+        <div class="store-meta-item">📦 <strong>892</strong> Products</div>
+        <div class="store-meta-item">👥 <strong>12.4K</strong> Followers</div>
+        <div class="store-meta-item">✅ <strong>98.7%</strong> Positive Reviews</div>
+        <div class="store-meta-item">🕐 Responds within <strong>1 hour</strong></div>
+        <div class="store-meta-item">📅 Since <strong>2019</strong></div>
+      </div>
+    </div>
+    <div class="store-header-actions">
+      <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
+      <button class="btn-chat-store" onclick="showToast('Chat with TechKhmer Store','💬')">💬 Chat</button>
+    </div>
+  </div>
+</div>
+
+<!-- Store Stats -->
+<div class="store-stats">
+  <div class="store-stats-inner">
+    <div class="stat-item"><div class="stat-num">5,340</div><div class="stat-label">Total Sales</div></div>
+    <div class="stat-item"><div class="stat-num">98.7%</div><div class="stat-label">Satisfaction Rate</div></div>
+    <div class="stat-item"><div class="stat-num">4.8★</div><div class="stat-label">Average Rating</div></div>
+    <div class="stat-item"><div class="stat-num">< 1hr</div><div class="stat-label">Response Time</div></div>
+    <div class="stat-item"><div class="stat-num">99.1%</div><div class="stat-label">Ship On Time</div></div>
+    <div class="stat-item"><div class="stat-num">12.4K</div><div class="stat-label">Followers</div></div>
+  </div>
+</div>
+
+<!-- Store Nav -->
+<div class="store-nav">
+  <div class="store-nav-inner">
+    <div class="snav-item active" onclick="switchTab(this,'products')">🏪 Products</div>
+    <div class="snav-item" onclick="switchTab(this,'about')">ℹ️ About Store</div>
+    <div class="snav-item" onclick="switchTab(this,'reviews')">⭐ Reviews (1,248)</div>
+    <div class="snav-item" onclick="switchTab(this,'vouchers')">🎟️ Vouchers</div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="store-layout">
+    <!-- Sidebar -->
+    <aside class="store-sidebar">
+      <div class="sidebar-card">
+        <div class="sc-title">📂 Categories</div>
+        <div class="cat-chips">
+          <div class="cat-chip active" onclick="filterCat(this)">All Products <span class="cat-chip-count">892</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">🎧 Audio <span class="cat-chip-count">156</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">📱 Phone Cases <span class="cat-chip-count">284</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">⌚ Wearables <span class="cat-chip-count">98</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">🔋 Power Banks <span class="cat-chip-count">67</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">🖥️ PC & Laptop <span class="cat-chip-count">143</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">📷 Cameras <span class="cat-chip-count">44</span></div>
+          <div class="cat-chip" onclick="filterCat(this)">🔌 Accessories <span class="cat-chip-count">200</span></div>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sc-title">ℹ️ Store Info</div>
+        <div class="sc-rows">
+          <div class="sc-row"><span class="sci">📍</span><div><strong>Location</strong>Toul Tom Poung, Phnom Penh</div></div>
+          <div class="sc-row"><span class="sci">🕐</span><div><strong>Open Hours</strong>Mon–Sat · 8AM – 8PM</div></div>
+          <div class="sc-row"><span class="sci">🚚</span><div><strong>Ships to</strong>All provinces in Cambodia</div></div>
+          <div class="sc-row"><span class="sci">↩️</span><div><strong>Return Policy</strong>7 days, no questions</div></div>
+          <div class="sc-row"><span class="sci">🏅</span><div><strong>L198 Badge</strong>Gold Trusted Seller</div></div>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sc-title">🎟️ Store Vouchers</div>
+        <div class="voucher-mini" onclick="showToast('Voucher TK15 claimed!','🎟️')">
+          <div class="vm-code">TK15 · 15% Off</div>
+          <div class="vm-desc">All Audio products</div>
+          <div class="vm-exp">Expires: May 31, 2025</div>
+        </div>
+        <div class="voucher-mini" onclick="showToast('Voucher FREESHIP claimed!','🚀')">
+          <div class="vm-code">FREESHIP</div>
+          <div class="vm-desc">Free nationwide delivery</div>
+          <div class="vm-exp">Expires: June 10, 2025</div>
+        </div>
+        <div class="voucher-mini" onclick="showToast('Voucher TECH5 claimed!','📱')">
+          <div class="vm-code">TECH5 · $5 Off</div>
+          <div class="vm-desc">Orders above $30</div>
+          <div class="vm-exp">Expires: May 20, 2025</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div>
+      <!-- PRODUCTS TAB -->
+      <div id="tab-products" class="products-section">
+        <!-- Featured banner -->
+        <div class="featured-banner" onclick="showToast('Flash sale started!','⚡')">
+          <div class="fb-left">
+            <div class="fb-tag">⚡ Flash Sale — Today Only</div>
+            <div class="fb-title">Up to 35% Off All Audio</div>
+            <div class="fb-sub">Earbuds, speakers, and headphones on sale until midnight</div>
+          </div>
+          <div class="fb-emoji">🎧</div>
+        </div>
+
+        <!-- Sort bar -->
+        <div class="prod-bar">
+          <div class="prod-count">Showing <strong>1–9</strong> of <strong>892</strong> products</div>
+          <div class="sort-btns">
+            <button class="sort-btn" onclick="setSort(this)">Best Match</button>
+            <button class="sort-btn active" onclick="setSort(this)">🔥 Popular</button>
+            <button class="sort-btn" onclick="setSort(this)">Price ↑</button>
+            <button class="sort-btn" onclick="setSort(this)">Price ↓</button>
+            <button class="sort-btn" onclick="setSort(this)">⭐ Rating</button>
+            <button class="sort-btn" onclick="setSort(this)">Newest</button>
+          </div>
+        </div>
+
+        <div class="product-grid">
+          <a href="product.html" class="product-card">
+            <div class="product-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span><div class="prod-discount">-35%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Wireless Earbuds Pro TWS Bluetooth 5.3 ANC 30H</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.8 (1,248)</div>
+              <div class="product-price-row"><span class="price-current">$12.50</span><span class="price-original">$19.00</span></div>
+              <button class="add-cart-sm" onclick="event.preventDefault();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </a>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span><div class="prod-discount">-25%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Smart Watch Fitness Tracker Heart Rate GPS Monitor</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.7 (892)</div>
+              <div class="product-price-row"><span class="price-current">$22.00</span><span class="price-original">$29.50</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#e8f0fe;--c2:#c2d4fb;"><span>📱</span><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Premium Leather Phone Case iPhone 15 Pro Max</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.9 (2,103)</div>
+              <div class="product-price-row"><span class="price-current">$5.50</span><span class="price-original">$9.00</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#f1f8e9;--c2:#dcedc8;"><span>🔋</span><div class="prod-discount">-15%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">20000mAh Power Bank Fast Charge 65W USB-C</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.8 (678)</div>
+              <div class="product-price-row"><span class="price-current">$19.00</span><span class="price-original">$22.50</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🔊</span><div class="prod-discount">-20%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Portable Bluetooth Speaker 360° Surround Sound</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★☆</span> 4.5 (456)</div>
+              <div class="product-price-row"><span class="price-current">$14.90</span><span class="price-original">$18.50</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>📷</span><div class="prod-discount">-30%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">1080P HD Webcam Built-in Mic Autofocus Ring Light</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★☆</span> 4.4 (341)</div>
+              <div class="product-price-row"><span class="price-current">$16.00</span><span class="price-original">$23.00</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#fce4ec;--c2:#f8bbd0;"><span>🖱️</span><div class="prod-discount">-18%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Wireless Silent Mouse Ergonomic 2.4GHz Rechargeable</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.6 (523)</div>
+              <div class="product-price-row"><span class="price-current">$9.80</span><span class="price-original">$12.00</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#e8f5e9;--c2:#c8e6c9;"><span>⌨️</span><div class="prod-discount">-22%</div><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">Mechanical Keyboard RGB Backlit Blue Switch Compact</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★☆</span> 4.3 (287)</div>
+              <div class="product-price-row"><span class="price-current">$27.50</span><span class="price-original">$35.00</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card" onclick="window.location.href='product.html'">
+            <div class="product-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🔌</span><div class="prod-fav">❤️</div></div>
+            <div class="product-info">
+              <div class="product-name">USB-C Cable 100W Braided 2m Fast Charge</div>
+              <div class="prod-rating-sm"><span class="stars">★★★★★</span> 4.7 (1,890)</div>
+              <div class="product-price-row"><span class="price-current">$3.50</span><span class="price-original">$5.00</span></div>
+              <button class="add-cart-sm" onclick="event.stopPropagation();showToast('Added!','🛒')">🛒 Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT TAB -->
+      <div id="tab-about" class="about-section">
+        <div style="background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:16px;">
+          <div style="font-size:16px;font-weight:700;margin-bottom:14px;">📖 About TechKhmer Store</div>
+          <p style="color:var(--gray-700);line-height:1.8;margin-bottom:12px;">TechKhmer Store is one of Cambodia's most trusted electronics retailers, operating since 2019. We specialize in quality tech accessories, audio equipment, and gadgets at honest prices — making great technology accessible to every Cambodian.</p>
+          <p style="color:var(--gray-700);line-height:1.8;margin-bottom:12px;">All products are 100% genuine, sourced directly from manufacturers and authorized distributors. We carry stock locally in Phnom Penh for same-day delivery, and ship to all provinces within 1–3 business days.</p>
+          <p style="color:var(--gray-700);line-height:1.8;">Our team is available 7 days a week via chat and phone to help you find the right product and resolve any issues quickly.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;">
+            <div style="background:var(--gray-100);border-radius:10px;padding:16px;text-align:center;">
+              <div style="font-size:28px;margin-bottom:6px;">📦</div>
+              <div style="font-weight:700;color:var(--navy);">5,340+</div>
+              <div style="font-size:12px;color:var(--gray-500);">Successful Orders</div>
+            </div>
+            <div style="background:var(--gray-100);border-radius:10px;padding:16px;text-align:center;">
+              <div style="font-size:28px;margin-bottom:6px;">⭐</div>
+              <div style="font-weight:700;color:var(--navy);">4.8 / 5.0</div>
+              <div style="font-size:12px;color:var(--gray-500);">Average Rating</div>
+            </div>
+            <div style="background:var(--gray-100);border-radius:10px;padding:16px;text-align:center;">
+              <div style="font-size:28px;margin-bottom:6px;">🏅</div>
+              <div style="font-weight:700;color:var(--navy);">Gold Seller</div>
+              <div style="font-size:12px;color:var(--gray-500);">L198 Trusted Badge</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEWS TAB -->
+      <div id="tab-reviews" class="about-section">
+        <div class="ratings-card">
+          <div class="rating-score">
+            <div class="score">4.8</div>
+            <div class="stars">★★★★★</div>
+            <div class="sub">1,248 reviews</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rb-row"><span>5★</span><div class="rb-track"><div class="rb-fill" style="width:76%"></div></div><span>76%</span></div>
+            <div class="rb-row"><span>4★</span><div class="rb-track"><div class="rb-fill" style="width:16%"></div></div><span>16%</span></div>
+            <div class="rb-row"><span>3★</span><div class="rb-track"><div class="rb-fill" style="width:5%"></div></div><span>5%</span></div>
+            <div class="rb-row"><span>2★</span><div class="rb-track"><div class="rb-fill" style="width:2%"></div></div><span>2%</span></div>
+            <div class="rb-row"><span>1★</span><div class="rb-track"><div class="rb-fill" style="width:1%"></div></div><span>1%</span></div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="padding-bottom:16px;border-bottom:1px solid var(--gray-200);">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;">SR</div>
+                <div><div style="font-weight:600;font-size:13px;">Sophea R.</div><div style="color:var(--gold);font-size:12px;">★★★★★</div></div>
+                <div style="margin-left:auto;font-size:11px;color:var(--gray-500);">3 days ago</div>
+              </div>
+              <div style="font-size:13px;color:var(--gray-700);">Really great store! Fast delivery and products are exactly as described. I've bought 3 times already and never been disappointed. Highly recommended!</div>
+            </div>
+            <div style="padding-bottom:16px;border-bottom:1px solid var(--gray-200);">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#4a148c;color:#fff;display:flex;align-items:center;justify-content:font-weight:700;align-items:center;justify-content:center;">KV</div>
+                <div><div style="font-weight:600;font-size:13px;">Kosal V.</div><div style="color:var(--gold);font-size:12px;">★★★★☆</div></div>
+                <div style="margin-left:auto;font-size:11px;color:var(--gray-500);">1 week ago</div>
+              </div>
+              <div style="font-size:13px;color:var(--gray-700);">Good products, honest prices. Packaging was secure and earbuds work perfectly. Would have given 5 stars but delivery was slightly delayed. Still happy overall.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOUCHERS TAB -->
+      <div id="tab-vouchers" class="about-section">
+        <div style="background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);">
+          <div style="font-size:15px;font-weight:700;margin-bottom:16px;">🎟️ Available Vouchers</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+            <div style="border:2px dashed var(--gray-300);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-300)'" onclick="showToast('TK15 voucher claimed!','🎟️')">
+              <div style="font-size:24px;margin-bottom:8px;">🎟️</div>
+              <div style="font-size:16px;font-weight:800;color:var(--navy);">TK15 · 15% Off</div>
+              <div style="font-size:12px;color:var(--gray-500);margin:4px 0;">All Audio products in this store</div>
+              <div style="font-size:11px;color:#dc2626;">Expires: May 31, 2025</div>
+            </div>
+            <div style="border:2px dashed var(--gray-300);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-300)'" onclick="showToast('FREESHIP claimed!','🚀')">
+              <div style="font-size:24px;margin-bottom:8px;">🚀</div>
+              <div style="font-size:16px;font-weight:800;color:var(--navy);">FREESHIP</div>
+              <div style="font-size:12px;color:var(--gray-500);margin:4px 0;">Free delivery anywhere in Cambodia</div>
+              <div style="font-size:11px;color:#dc2626;">Expires: June 10, 2025</div>
+            </div>
+            <div style="border:2px dashed var(--gray-300);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-300)'" onclick="showToast('TECH5 claimed!','📱')">
+              <div style="font-size:24px;margin-bottom:8px;">📱</div>
+              <div style="font-size:16px;font-weight:800;color:var(--navy);">TECH5 · $5 Off</div>
+              <div style="font-size:12px;color:var(--gray-500);margin:4px 0;">Orders above $30</div>
+              <div style="font-size:11px;color:#dc2626;">Expires: May 20, 2025</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
+
+<script>
+  let toastTimer;
+  function showToast(msg, icon='✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function toggleFollow() {
+    const btn = document.getElementById('followBtn');
+    if (btn.classList.contains('following')) {
+      btn.textContent = '+ Follow';
+      btn.classList.remove('following');
+      showToast('Unfollowed TechKhmer Store', '➖');
+    } else {
+      btn.textContent = '✓ Following';
+      btn.classList.add('following');
+      showToast('Now following TechKhmer Store!', '✅');
+    }
+  }
+
+  function switchTab(el, tabId) {
+    document.querySelectorAll('.snav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-products').classList.add('hidden');
+    document.getElementById('tab-products').classList.remove('products-section');
+    ['about','reviews','vouchers'].forEach(t => {
+      const el2 = document.getElementById('tab-' + t);
+      if (el2) el2.classList.remove('active');
+    });
+    if (tabId === 'products') {
+      document.getElementById('tab-products').classList.remove('hidden');
+      document.getElementById('tab-products').classList.add('products-section');
+    } else {
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+    }
+  }
+
+  function setSort(btn) {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    showToast('Sorted: ' + btn.textContent.trim(), '🔃');
+  }
+
+  function filterCat(el) {
+    document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    showToast('Browsing: ' + el.textContent.trim().split('\n')[0], '📂');
+  }
+</script>
+</body>
+</html>

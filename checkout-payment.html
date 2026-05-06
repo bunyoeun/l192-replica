@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
+  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; }
+  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* Steps */
+  .checkout-steps { display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
+  .step.active { color: var(--navy); }
+  .step.done { color: #16a34a; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step.active .step-num { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .step.done .step-num { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .step-line { flex: 1; height: 2px; background: var(--gray-200); max-width: 60px; }
+  .step-line.done { background: #16a34a; }
+
+  /* Layout */
+  .checkout-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+  .section-card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 9px; }
+
+  /* Payment method selector */
+  .payment-methods { display: flex; flex-direction: column; gap: 10px; }
+  .pay-method { border: 2px solid var(--gray-200); border-radius: 12px; cursor: pointer; transition: all .2s; overflow: hidden; }
+  .pay-method:hover { border-color: var(--navy-light); }
+  .pay-method.selected { border-color: var(--navy); }
+  .pay-method-header { display: flex; align-items: center; gap: 14px; padding: 15px 16px; }
+  .pay-method-header input[type=radio] { accent-color: var(--navy); width: 16px; height: 16px; flex-shrink: 0; }
+  .pay-method-icon { width: 44px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .pay-method-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+  .pay-method-sub { font-size: 12px; color: var(--gray-500); }
+  .pay-method-badge { margin-left: auto; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 5px; }
+  .badge-popular { background: #fff8e1; color: #d97706; }
+  .badge-instant { background: #f0fdf4; color: #16a34a; }
+  .badge-secure { background: #eff6ff; color: #1d4ed8; }
+
+  /* Payment detail panels */
+  .pay-detail { display: none; padding: 0 16px 16px; border-top: 1px solid var(--gray-100); }
+  .pay-detail.open { display: block; }
+
+  /* ABA Pay QR */
+  .aba-pay-panel { text-align: center; padding: 8px 0; }
+  .qr-container { display: inline-block; background: #fff; border: 3px solid var(--navy); border-radius: 16px; padding: 20px; margin: 14px auto; position: relative; }
+  .qr-code { width: 180px; height: 180px; background: linear-gradient(135deg, #f0f4ff, #e8eeff); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; overflow: hidden; }
+  .qr-code::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(10,31,68,0.06) 0px, rgba(10,31,68,0.06) 2px, transparent 2px, transparent 8px), repeating-linear-gradient(90deg, rgba(10,31,68,0.06) 0px, rgba(10,31,68,0.06) 2px, transparent 2px, transparent 8px); }
+  .qr-code span { position: relative; z-index: 1; }
+  .qr-amount { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .qr-sub { font-size: 12px; color: var(--gray-500); margin-bottom: 12px; }
+  .qr-timer { display: inline-flex; align-items: center; gap: 6px; background: #fff8e1; border: 1px solid #fde68a; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700; color: #d97706; }
+  .qr-steps { display: flex; flex-direction: column; gap: 8px; text-align: left; margin-top: 14px; }
+  .qr-step { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--gray-700); }
+  .qr-step-num { width: 20px; height: 20px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+
+  /* KHQR panel */
+  .khqr-panel { text-align: center; padding: 8px 0; }
+  .khqr-display { background: linear-gradient(135deg, #fff8e1, #fef3c7); border: 2px solid #fde68a; border-radius: 14px; padding: 20px; margin: 12px 0; }
+  .khqr-logo { font-size: 32px; margin-bottom: 6px; }
+  .khqr-code-text { font-size: 11px; color: var(--gray-500); font-family: monospace; background: #fff; padding: 8px 12px; border-radius: 7px; margin-top: 8px; word-break: break-all; }
+
+  /* Card form */
+  .card-form { padding: 8px 0; }
+  .card-preview { background: linear-gradient(135deg, var(--navy-dark), var(--navy-light)); border-radius: 14px; padding: 22px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; height: 140px; }
+  .card-preview::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+  .card-chip { width: 36px; height: 28px; background: var(--gold); border-radius: 5px; margin-bottom: 16px; }
+  .card-number-display { font-size: 17px; font-weight: 700; letter-spacing: 3px; margin-bottom: 14px; font-family: monospace; }
+  .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+  .card-label { font-size: 9px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+  .card-value { font-size: 13px; font-weight: 600; margin-top: 2px; }
+  .card-brand { font-size: 28px; position: absolute; bottom: 16px; right: 18px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+  .form-input { border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; outline: none; color: var(--gray-900); transition: border-color .2s; }
+  .form-input:focus { border-color: var(--navy); }
+
+  /* COD panel */
+  .cod-panel { padding: 8px 0; }
+  .cod-info { background: var(--gray-100); border-radius: 11px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cod-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray-700); }
+  .cod-row .ci { font-size: 18px; flex-shrink: 0; }
+
+  /* Wing panel */
+  .wing-panel { padding: 8px 0; }
+  .wing-form { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 11px; padding: 16px; }
+  .wing-logo { font-size: 28px; margin-bottom: 8px; }
+
+  /* Delivery address recap */
+  .addr-recap { background: var(--gray-100); border-radius: 10px; padding: 13px 15px; display: flex; align-items: flex-start; gap: 12px; }
+  .addr-recap .ar-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .addr-recap .ar-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .addr-recap .ar-text { font-size: 12px; color: var(--gray-500); line-height: 1.5; }
+  .addr-recap .ar-change { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 4px; cursor: pointer; }
+
+  /* Summary sidebar */
+  .summary-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
+  .summary-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+  .summary-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .sum-item { display: flex; align-items: center; gap: 10px; }
+  .sum-item-img { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; overflow: hidden; flex-shrink: 0; }
+  .sum-item-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
+  .sum-item-img span { position: relative; z-index: 1; }
+  .sum-item-name { flex: 1; font-size: 11px; font-weight: 500; line-height: 1.4; }
+  .sum-item-price { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .summary-divider { height: 1px; background: var(--gray-200); margin: 12px 0; }
+  .summary-rows { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
+  .summary-row .val { font-weight: 600; color: var(--gray-900); }
+  .summary-row .val.green { color: #16a34a; }
+  .summary-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .summary-total .label { font-size: 15px; font-weight: 700; }
+  .summary-total .amount { font-size: 24px; font-weight: 800; color: var(--navy); }
+  .pay-btn { width: 100%; background: var(--navy); color: #fff; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .2s; margin-bottom: 10px; }
+  .pay-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .back-btn { width: 100%; background: none; color: var(--accent); font-size: 13px; font-weight: 600; padding: 10px; border-radius: 10px; border: 1.5px solid var(--accent); transition: all .2s; }
+  .back-btn:hover { background: var(--accent); color: #fff; }
+
+  /* Processing overlay */
+  .processing-overlay { position: fixed; inset: 0; background: rgba(6,21,48,0.85); z-index: 9998; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  .processing-overlay.show { display: flex; }
+  .processing-spinner { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-text { color: #fff; font-size: 16px; font-weight: 700; text-align: center; }
+  .processing-sub { color: rgba(255,255,255,0.6); font-size: 13px; text-align: center; }
+
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products, stores, brands...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
+      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
+      <a href="profile.html" class="hdr-btn" style="color:var(--gold);"><span class="icon">👤</span><span>Sophea</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="main-wrap">
+  <!-- Steps -->
+  <div class="checkout-steps">
+    <div class="step done"><div class="step-num">✓</div> Cart</div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div> Address</div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-num">3</div> Payment</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">4</div> Confirm</div>
+  </div>
+
+  <div class="checkout-layout">
+    <!-- LEFT -->
+    <div>
+      <!-- Delivery address recap -->
+      <div class="section-card">
+        <div class="section-title">📍 Delivering To</div>
+        <div class="addr-recap">
+          <div class="ar-icon">🏠</div>
+          <div>
+            <div class="ar-name">Sophea Ros · +855 10 123 456</div>
+            <div class="ar-text">Street 63, Boeung Keng Kang I, Chamkarmon, Phnom Penh 12302<br>📅 Today · 12PM – 3PM</div>
+            <div class="ar-change" onclick="window.location.href='checkout-address.html'">✏️ Change address or time slot</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment methods -->
+      <div class="section-card">
+        <div class="section-title">💳 Select Payment Method</div>
+        <div class="payment-methods">
+
+          <!-- ABA Pay -->
+          <div class="pay-method selected" id="pm-aba" onclick="selectPayment('aba')">
+            <div class="pay-method-header">
+              <input type="radio" name="payment" checked>
+              <div class="pay-method-icon" style="background:#e3f2fd;">🏦</div>
+              <div>
+                <div class="pay-method-name">ABA Pay</div>
+                <div class="pay-method-sub">Scan QR with your ABA Mobile app</div>
+              </div>
+              <span class="pay-method-badge badge-popular">🔥 Most Popular</span>
+            </div>
+            <div class="pay-detail open" id="detail-aba">
+              <div class="aba-pay-panel">
+                <div style="font-size:13px;color:var(--gray-700);margin-bottom:4px;">Scan this QR code with your <strong>ABA Mobile</strong> app</div>
+                <div class="qr-container">
+                  <div class="qr-code"><span>📱</span></div>
+                </div>
+                <div class="qr-amount">$50.00</div>
+                <div class="qr-sub">L198 · Order Payment · Ref: L198-TMP-2025</div>
+                <div class="qr-timer">⏱️ QR expires in <span id="qrTimer">04:59</span></div>
+                <div class="qr-steps">
+                  <div class="qr-step"><div class="qr-step-num">1</div><span>Open ABA Mobile app on your phone</span></div>
+                  <div class="qr-step"><div class="qr-step-num">2</div><span>Tap <strong>Pay</strong> or <strong>Scan QR</strong></span></div>
+                  <div class="qr-step"><div class="qr-step-num">3</div><span>Scan the code above and confirm $50.00</span></div>
+                  <div class="qr-step"><div class="qr-step-num">4</div><span>Your order is confirmed automatically once paid</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KHQR -->
+          <div class="pay-method" id="pm-khqr" onclick="selectPayment('khqr')">
+            <div class="pay-method-header">
+              <input type="radio" name="payment">
+              <div class="pay-method-icon" style="background:#fff8e1;">🇰🇭</div>
+              <div>
+                <div class="pay-method-name">KHQR</div>
+                <div class="pay-method-sub">Pay with any Cambodian bank app</div>
+              </div>
+              <span class="pay-method-badge badge-instant">⚡ Instant</span>
+            </div>
+            <div class="pay-detail" id="detail-khqr">
+              <div class="khqr-panel">
+                <div class="khqr-display">
+                  <div class="khqr-logo">🇰🇭</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--navy);">KHQR Payment</div>
+                  <div style="font-size:13px;color:var(--gray-500);margin:4px 0;">$50.00 · L198 Online Store</div>
+                  <div class="khqr-code-text">00020101021229390012kh.gov.nbc.bakong010600000015170215L198PAYMENT00030410520480005303840540550.005802KH5910L198 Shop6010Phnom Penh63041234</div>
+                </div>
+                <div style="font-size:12px;color:var(--gray-500);">Compatible with: ABA, Wing, Acleda, Canadia, Chip Mong Bank, and all KHQR-enabled apps.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wing -->
+          <div class="pay-method" id="pm-wing" onclick="selectPayment('wing')">
+            <div class="pay-method-header">
+              <input type="radio" name="payment">
+              <div class="pay-method-icon" style="background:#e8f5e9;">💚</div>
+              <div>
+                <div class="pay-method-name">Wing Money</div>
+                <div class="pay-method-sub">Transfer from your Wing wallet</div>
+              </div>
+            </div>
+            <div class="pay-detail" id="detail-wing">
+              <div class="wing-panel">
+                <div class="wing-form">
+                  <div class="wing-logo">💚</div>
+                  <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Pay with Wing Money</div>
+                  <div style="font-size:12px;color:var(--gray-500);margin-bottom:12px;">Enter your Wing registered phone number to receive a payment request.</div>
+                  <div style="display:flex;gap:8px;">
+                    <select style="border:1.5px solid var(--gray-200);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:13px;outline:none;">
+                      <option>🇰🇭 +855</option>
+                    </select>
+                    <input class="form-input" type="tel" placeholder="010 123 456" style="flex:1;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visa/Mastercard -->
+          <div class="pay-method" id="pm-card" onclick="selectPayment('card')">
+            <div class="pay-method-header">
+              <input type="radio" name="payment">
+              <div class="pay-method-icon" style="background:#f3f4f6;">💳</div>
+              <div>
+                <div class="pay-method-name">Credit / Debit Card</div>
+                <div class="pay-method-sub">Visa, Mastercard accepted</div>
+              </div>
+              <span class="pay-method-badge badge-secure">🔒 Secure</span>
+            </div>
+            <div class="pay-detail" id="detail-card">
+              <div class="card-form">
+                <!-- Card preview -->
+                <div class="card-preview">
+                  <div class="card-chip"></div>
+                  <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+                  <div class="card-bottom">
+                    <div>
+                      <div class="card-label">Card Holder</div>
+                      <div class="card-value" id="cardNameDisplay">FULL NAME</div>
+                    </div>
+                    <div>
+                      <div class="card-label">Expires</div>
+                      <div class="card-value" id="cardExpDisplay">MM/YY</div>
+                    </div>
+                  </div>
+                  <div class="card-brand" id="cardBrand">💳</div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group full">
+                    <label class="form-label">Card Number</label>
+                    <input class="form-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" id="cardNumInput">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group full">
+                    <label class="form-label">Card Holder Name</label>
+                    <input class="form-input" type="text" placeholder="As printed on card" oninput="document.getElementById('cardNameDisplay').textContent = this.value.toUpperCase() || 'FULL NAME'">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Expiry Date</label>
+                    <input class="form-input" type="text" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">CVV</label>
+                    <input class="form-input" type="password" placeholder="•••" maxlength="4">
+                  </div>
+                </div>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-700);"><input type="checkbox" style="accent-color:var(--navy);"> Save card for future payments</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash on Delivery -->
+          <div class="pay-method" id="pm-cod" onclick="selectPayment('cod')">
+            <div class="pay-method-header">
+              <input type="radio" name="payment">
+              <div class="pay-method-icon" style="background:#f0fdf4;">💵</div>
+              <div>
+                <div class="pay-method-name">Cash on Delivery (COD)</div>
+                <div class="pay-method-sub">Pay when your order arrives</div>
+              </div>
+            </div>
+            <div class="pay-detail" id="detail-cod">
+              <div class="cod-panel">
+                <div class="cod-info">
+                  <div class="cod-row"><span class="ci">💵</span><span>Please prepare exact change of <strong>$50.00</strong> for your rider.</span></div>
+                  <div class="cod-row"><span class="ci">🪙</span><span>USD and Riel (KHR) accepted. Exchange rate: ~4,100 KHR/USD.</span></div>
+                  <div class="cod-row"><span class="ci">🛵</span><span>Your rider will issue a printed receipt upon delivery.</span></div>
+                  <div class="cod-row"><span class="ci">⚠️</span><span>COD is not available for orders above $200.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Summary -->
+    <div>
+      <div class="summary-card">
+        <div class="summary-title">Order Summary</div>
+        <div class="summary-items">
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
+            <div class="sum-item-name">Wireless Earbuds Pro TWS Bluetooth 5.3</div>
+            <div class="sum-item-price">$12.50</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
+            <div class="sum-item-name">Smart Watch Fitness Tracker GPS</div>
+            <div class="sum-item-price">$22.00</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
+            <div class="sum-item-name">Korean Skincare Gift Set 6-piece</div>
+            <div class="sum-item-price">$15.50</div>
+          </div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-rows">
+          <div class="summary-row"><span>Subtotal</span><span class="val">$50.00</span></div>
+          <div class="summary-row"><span>Delivery</span><span class="val green">FREE</span></div>
+          <div class="summary-row"><span>Savings</span><span class="val green">-$24.49</span></div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span class="label">Total</span>
+          <span class="amount">$50.00</span>
+        </div>
+
+        <button class="pay-btn" onclick="processPayment()">
+          🔒 Place Order & Pay $50.00
+        </button>
+        <a href="checkout-address.html"><button class="back-btn">← Back to Address</button></a>
+
+        <div style="margin-top:16px;background:var(--gray-100);border-radius:9px;padding:12px;font-size:11px;color:var(--gray-500);line-height:1.6;">
+          By placing your order you agree to L198's <a href="#" style="color:var(--accent);">Terms of Service</a> and <a href="#" style="color:var(--accent);">Privacy Policy</a>. Your payment is secured with 256-bit encryption.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="processing-overlay" id="processingOverlay">
+  <div class="processing-spinner"></div>
+  <div class="processing-text">Processing your payment...</div>
+  <div class="processing-sub">Please do not close this window</div>
+</div>
+
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
+
+<script>
+  let toastTimer;
+  function showToast(msg, icon='✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function selectPayment(method) {
+    ['aba','khqr','wing','card','cod'].forEach(m => {
+      document.getElementById('pm-' + m).classList.remove('selected');
+      document.getElementById('detail-' + m).classList.remove('open');
+    });
+    document.getElementById('pm-' + method).classList.add('selected');
+    document.getElementById('detail-' + method).classList.add('open');
+    document.querySelector('#pm-' + method + ' input[type=radio]').checked = true;
+  }
+
+  // QR countdown timer
+  let qrSecs = 299;
+  function updateQrTimer() {
+    const m = String(Math.floor(qrSecs / 60)).padStart(2,'0');
+    const s = String(qrSecs % 60).padStart(2,'0');
+    const el = document.getElementById('qrTimer');
+    if (el) el.textContent = m + ':' + s;
+    if (qrSecs > 0) { qrSecs--; setTimeout(updateQrTimer, 1000); }
+    else { if (el) el.textContent = 'Expired'; }
+  }
+  updateQrTimer();
+
+  function formatCard(input) {
+    let v = input.value.replace(/\D/g,'').substring(0,16);
+    input.value = v.replace(/(.{4})/g,'$1 ').trim();
+    const disp = v.padEnd(16,'•').replace(/(.{4})/g,'$1 ').trim();
+    document.getElementById('cardNumDisplay').textContent = disp;
+    if (v.startsWith('4')) document.getElementById('cardBrand').textContent = '💳';
+    else if (v.startsWith('5')) document.getElementById('cardBrand').textContent = '💳';
+    else document.getElementById('cardBrand').textContent = '💳';
+  }
+
+  function formatExpiry(input) {
+    let v = input.value.replace(/\D/g,'');
+    if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+    input.value = v;
+    document.getElementById('cardExpDisplay').textContent = v || 'MM/YY';
+  }
+
+  function processPayment() {
+    const overlay = document.getElementById('processingOverlay');
+    overlay.classList.add('show');
+    setTimeout(() => {
+      overlay.classList.remove('show');
+      window.location.href = 'checkout-confirm.html';
+    }, 2200);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Address – L198</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
+    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
+    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
+    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
+  .topbar strong { color: var(--gold); margin: 0 6px; }
+  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
+  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
+  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
+  .logo-text span { color: var(--gold); }
+  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
+  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; }
+  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
+  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
+  .hdr-btn .icon { font-size: 20px; }
+
+  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 48px; }
+
+  /* Steps */
+  .checkout-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 28px; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
+  .step.active { color: var(--navy); }
+  .step.done { color: #16a34a; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .step.active .step-num { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .step.done .step-num { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .step-line { flex: 1; height: 2px; background: var(--gray-200); max-width: 60px; }
+  .step-line.done { background: #16a34a; }
+
+  /* Layout */
+  .checkout-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+  /* Address section */
+  .section-card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 9px; }
+
+  /* Saved addresses */
+  .saved-addresses { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+  .addr-option { border: 2px solid var(--gray-200); border-radius: 11px; padding: 15px 16px; cursor: pointer; transition: all .2s; display: flex; align-items: flex-start; gap: 12px; position: relative; }
+  .addr-option:hover { border-color: var(--navy-light); }
+  .addr-option.selected { border-color: var(--navy); background: #f0f4ff; }
+  .addr-option input[type=radio] { accent-color: var(--navy); width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; }
+  .addr-detail { flex: 1; }
+  .addr-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+  .addr-default-tag { font-size: 10px; font-weight: 700; background: var(--navy); color: #fff; padding: 2px 7px; border-radius: 4px; }
+  .addr-phone { font-size: 12px; color: var(--gray-500); margin-bottom: 4px; }
+  .addr-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+  .addr-edit { position: absolute; top: 12px; right: 14px; font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; }
+  .addr-edit:hover { text-decoration: underline; }
+
+  /* Add new address toggle */
+  .add-addr-toggle { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0; border-top: 1px solid var(--gray-200); margin-top: 4px; }
+  .add-addr-toggle:hover { color: var(--navy); }
+
+  /* New address form */
+  .new-addr-form { display: none; margin-top: 14px; padding-top: 18px; border-top: 1px solid var(--gray-200); }
+  .new-addr-form.open { display: block; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+  .form-input { border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; outline: none; color: var(--gray-900); transition: border-color .2s; }
+  .form-input:focus { border-color: var(--navy); }
+  .form-input::placeholder { color: var(--gray-300); }
+  .form-select { border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; outline: none; color: var(--gray-900); background: #fff; cursor: pointer; }
+  .form-select:focus { border-color: var(--navy); }
+  .save-addr-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-700); margin-top: 4px; }
+  .save-addr-check input { accent-color: var(--navy); width: 15px; height: 15px; }
+
+  /* Delivery time slots */
+  .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .time-slot { border: 2px solid var(--gray-200); border-radius: 10px; padding: 12px 10px; text-align: center; cursor: pointer; transition: all .2s; }
+  .time-slot:hover { border-color: var(--navy-light); }
+  .time-slot.selected { border-color: var(--navy); background: #f0f4ff; }
+  .time-slot.unavailable { opacity: 0.45; cursor: not-allowed; background: var(--gray-100); }
+  .slot-time { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+  .slot-label { font-size: 11px; color: var(--gray-500); }
+  .slot-badge { font-size: 10px; font-weight: 700; color: #16a34a; background: #f0fdf4; padding: 2px 7px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+  .slot-badge.full { color: #dc2626; background: #fef2f2; }
+
+  /* Special instructions */
+  .special-input { width: 100%; border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 10px 13px; font-size: 13px; font-family: inherit; resize: none; outline: none; color: var(--gray-900); transition: border-color .2s; }
+  .special-input:focus { border-color: var(--navy); }
+
+  /* Order summary sidebar */
+  .summary-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
+  .summary-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+  .summary-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+  .sum-item { display: flex; align-items: center; gap: 10px; }
+  .sum-item-img { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; position: relative; overflow: hidden; flex-shrink: 0; }
+  .sum-item-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
+  .sum-item-img span { position: relative; z-index: 1; }
+  .sum-item-name { flex: 1; font-size: 12px; font-weight: 500; line-height: 1.4; }
+  .sum-item-price { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .summary-divider { height: 1px; background: var(--gray-200); margin: 12px 0; }
+  .summary-rows { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
+  .summary-row .val { font-weight: 600; color: var(--gray-900); }
+  .summary-row .val.green { color: #16a34a; }
+  .summary-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .summary-total .label { font-size: 15px; font-weight: 700; }
+  .summary-total .amount { font-size: 24px; font-weight: 800; color: var(--navy); }
+  .continue-btn { width: 100%; background: var(--navy); color: #fff; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .2s; margin-bottom: 10px; }
+  .continue-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .back-btn { width: 100%; background: none; color: var(--accent); font-size: 13px; font-weight: 600; padding: 10px; border-radius: 10px; border: 1.5px solid var(--accent); transition: all .2s; }
+  .back-btn:hover { background: var(--accent); color: #fff; }
+
+  /* Delivery info banner */
+  .delivery-banner { background: linear-gradient(120deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; border-radius: 11px; padding: 13px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .delivery-banner .db-icon { font-size: 24px; }
+  .delivery-banner .db-text { font-size: 13px; color: #166534; }
+  .delivery-banner .db-text strong { font-weight: 700; }
+
+  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
+  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
+
+  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
+  .toast.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
+  <strong>|</strong>
+  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-box">L1</div>
+      <span class="logo-text">L<span>198</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products, stores, brands...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
+      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
+      <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart (3)</span></a>
+      <a href="profile.html" class="hdr-btn" style="color:var(--gold);"><span class="icon">👤</span><span>Sophea</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="main-wrap">
+  <!-- Steps -->
+  <div class="checkout-steps">
+    <div class="step done"><div class="step-num">✓</div> Cart</div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-num">2</div> Address</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">3</div> Payment</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">4</div> Confirm</div>
+  </div>
+
+  <div class="checkout-layout">
+    <!-- LEFT -->
+    <div>
+      <!-- Delivery banner -->
+      <div class="delivery-banner">
+        <div class="db-icon">🚀</div>
+        <div class="db-text"><strong>Same-day delivery available!</strong> Order now and receive by 5:00 PM today in Phnom Penh.</div>
+      </div>
+
+      <!-- Saved Addresses -->
+      <div class="section-card">
+        <div class="section-title">📍 Select Delivery Address</div>
+        <div class="saved-addresses">
+          <div class="addr-option selected" onclick="selectAddr(this)">
+            <input type="radio" name="addr" checked>
+            <div class="addr-detail">
+              <div class="addr-name">Sophea Ros <span class="addr-default-tag">Default</span></div>
+              <div class="addr-phone">+855 10 123 456</div>
+              <div class="addr-text">Street 63, Boeung Keng Kang I, Khan Chamkarmon, Phnom Penh 12302</div>
+            </div>
+            <span class="addr-edit" onclick="event.stopPropagation();showToast('Edit address','✏️')">Edit</span>
+          </div>
+          <div class="addr-option" onclick="selectAddr(this)">
+            <input type="radio" name="addr">
+            <div class="addr-detail">
+              <div class="addr-name">Office – The Rana Tower</div>
+              <div class="addr-phone">+855 10 123 456</div>
+              <div class="addr-text">The Rana Tower, Street 598, Toul Kork, Phnom Penh</div>
+            </div>
+            <span class="addr-edit" onclick="event.stopPropagation();showToast('Edit address','✏️')">Edit</span>
+          </div>
+        </div>
+
+        <div class="add-addr-toggle" onclick="toggleNewAddr()">
+          <span id="addAddrIcon">＋</span> Add New Address
+        </div>
+
+        <div class="new-addr-form" id="newAddrForm">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" placeholder="Your name"></div>
+            <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" type="tel" placeholder="+855 ..."></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Province / City</label>
+              <select class="form-select">
+                <option>Phnom Penh</option><option>Siem Reap</option><option>Battambang</option>
+                <option>Kampong Cham</option><option>Sihanoukville</option><option>Kampot</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">District / Khan</label>
+              <select class="form-select">
+                <option>Chamkarmon</option><option>Daun Penh</option><option>7 Makara</option>
+                <option>Toul Kork</option><option>Sen Sok</option><option>Meanchey</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label class="form-label">Street Address</label><input class="form-input" type="text" placeholder="Street number, building, house number..."></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Commune / Sangkat</label><input class="form-input" type="text" placeholder="Sangkat name"></div>
+            <div class="form-group"><label class="form-label">Postal Code</label><input class="form-input" type="text" placeholder="e.g. 12302"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label class="form-label">Address Label (optional)</label>
+              <select class="form-select">
+                <option>🏠 Home</option><option>🏢 Office</option><option>📍 Other</option>
+              </select>
+            </div>
+          </div>
+          <label class="save-addr-check"><input type="checkbox" checked> Save this address to my account</label>
+        </div>
+      </div>
+
+      <!-- Delivery time slot -->
+      <div class="section-card">
+        <div class="section-title">🕐 Select Delivery Time</div>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selectSlot(this)">
+            <div class="slot-time">9AM – 12PM</div>
+            <div class="slot-label">Today</div>
+            <div class="slot-badge full">Full</div>
+          </div>
+          <div class="time-slot selected" onclick="selectSlot(this)">
+            <div class="slot-time">12PM – 3PM</div>
+            <div class="slot-label">Today</div>
+            <div class="slot-badge">Free</div>
+          </div>
+          <div class="time-slot" onclick="selectSlot(this)">
+            <div class="slot-time">3PM – 6PM</div>
+            <div class="slot-label">Today</div>
+            <div class="slot-badge">Free</div>
+          </div>
+          <div class="time-slot" onclick="selectSlot(this)">
+            <div class="slot-time">6PM – 9PM</div>
+            <div class="slot-label">Today</div>
+            <div class="slot-badge">Free</div>
+          </div>
+          <div class="time-slot" onclick="selectSlot(this)">
+            <div class="slot-time">9AM – 12PM</div>
+            <div class="slot-label">Tomorrow</div>
+            <div class="slot-badge">Free</div>
+          </div>
+          <div class="time-slot" onclick="selectSlot(this)">
+            <div class="slot-time">12PM – 3PM</div>
+            <div class="slot-label">Tomorrow</div>
+            <div class="slot-badge">Free</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Special instructions -->
+      <div class="section-card">
+        <div class="section-title">📝 Delivery Notes (Optional)</div>
+        <textarea class="special-input" rows="3" placeholder="e.g. Leave at the gate, call before arriving, building access code..."></textarea>
+        <div style="font-size:11px;color:var(--gray-500);margin-top:6px;">These notes will be shared with your delivery rider.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Summary -->
+    <div>
+      <div class="summary-card">
+        <div class="summary-title">Order Summary</div>
+        <div class="summary-items">
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
+            <div class="sum-item-name">Wireless Earbuds Pro TWS Bluetooth 5.3 ANC</div>
+            <div class="sum-item-price">$12.50</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
+            <div class="sum-item-name">Smart Watch Fitness Tracker GPS · 44mm Black</div>
+            <div class="sum-item-price">$22.00</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-item-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
+            <div class="sum-item-name">Korean Skincare Gift Set 6-piece Glow</div>
+            <div class="sum-item-price">$15.50</div>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+        <div class="summary-rows">
+          <div class="summary-row"><span>Subtotal (3 items)</span><span class="val">$50.00</span></div>
+          <div class="summary-row"><span>Delivery fee</span><span class="val green">FREE 🎉</span></div>
+          <div class="summary-row"><span>Item discounts</span><span class="val green">-$24.49</span></div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span class="label">Total</span>
+          <span class="amount">$50.00</span>
+        </div>
+
+        <button class="continue-btn" onclick="window.location.href='checkout-payment.html'">
+          Continue to Payment →
+        </button>
+        <a href="cart.html"><button class="back-btn">← Back to Cart</button></a>
+
+        <div style="margin-top:16px;background:var(--gray-100);border-radius:9px;padding:12px;font-size:12px;color:var(--gray-500);display:flex;gap:8px;align-items:flex-start;">
+          <span style="font-size:16px;">🔒</span>
+          <span>Your address information is securely encrypted and never shared with third parties.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
+      <div class="payment-icons">
+        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
+        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div><div class="pay-icon">COD</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
+
+<script>
+  let toastTimer;
+  function showToast(msg, icon='✅') {
+    clearTimeout(toastTimer);
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function selectAddr(el) {
+    document.querySelectorAll('.addr-option').forEach(a => a.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked = true;
+  }
+
+  function selectSlot(el) {
+    if (el.classList.contains('unavailable')) return;
+    const slots = document.querySelectorAll('.time-slot:not(.unavailable)');
+    slots.forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    showToast('Delivery slot: ' + el.querySelector('.slot-time').textContent + ' ' + el.querySelector('.slot-label').textContent, '🕐');
+  }
+
+  // Mark first slot as unavailable (Full)
+  document.querySelectorAll('.time-slot')[0].classList.add('unavailable');
+
+  function toggleNewAddr() {
+    const form = document.getElementById('newAddrForm');
+    const icon = document.getElementById('addAddrIcon');
+    const isOpen = form.classList.contains('open');
+    form.classList.toggle('open');
+    icon.textContent = isOpen ? '＋' : '－';
+  }
+</script>
+</body>
+</html>
