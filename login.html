@@ -134,15 +134,13 @@
 
   .submit-btn { width: 100%; background: var(--navy); color: #fff; padding: 14px; border-radius: 11px; font-size: 15px; font-weight: 700; transition: all .2s; margin-bottom: 16px; }
   .submit-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
   .auth-switch { text-align: center; font-size: 13px; color: var(--gray-500); }
   .auth-switch a { color: var(--accent); font-weight: 600; cursor: pointer; }
 
   /* OTP box */
   .otp-sent { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 11px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: #166534; display: none; align-items: center; gap: 10px; }
-  .otp-boxes { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; }
-  .otp-box { width: 50px; height: 56px; border: 2px solid var(--gray-200); border-radius: 10px; text-align: center; font-size: 22px; font-weight: 700; font-family: inherit; outline: none; transition: border-color .2s; }
-  .otp-box:focus { border-color: var(--navy); }
 
   /* Error/success states */
   .form-error { font-size: 12px; color: #dc2626; margin-top: 5px; display: none; }
@@ -184,7 +182,7 @@
         </div>
         <div class="left-feat">
           <span class="feat-icon">🔒</span>
-          <div><strong>100% Secure Payments</strong><span>ABA Pay, KHQR, Wing, Visa & COD</span></div>
+          <div><strong>100% Secure Payments</strong><span>ABA Pay, KHQR, Wing, Visa &amp; COD</span></div>
         </div>
         <div class="left-feat">
           <span class="feat-icon">↩️</span>
@@ -217,10 +215,10 @@
       <!-- LOGIN PANEL -->
       <div class="auth-panel active" id="loginPanel">
         <div class="social-login">
-          <button class="social-btn" onclick="showToast('Connecting to Google...','🔵')">
+          <button class="social-btn" onclick="signInWithGoogle()">
             <span class="s-icon">🌐</span> Continue with Google
           </button>
-          <button class="social-btn" onclick="showToast('Connecting to Facebook...','📘')">
+          <button class="social-btn" onclick="showToast('Facebook login not configured','📘')">
             <span class="s-icon">📘</span> Continue with Facebook
           </button>
         </div>
@@ -254,7 +252,7 @@
       <!-- REGISTER PANEL -->
       <div class="auth-panel" id="registerPanel">
         <div class="social-login">
-          <button class="social-btn" onclick="showToast('Connecting to Google...','🌐')">
+          <button class="social-btn" onclick="signInWithGoogle()">
             <span class="s-icon">🌐</span> Sign up with Google
           </button>
         </div>
@@ -313,7 +311,7 @@
 
         <div class="terms-check">
           <input type="checkbox" id="termsCheck">
-          I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> of L198.
+          I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a> of L198.
         </div>
 
         <button class="submit-btn" onclick="doRegister()">Create Account →</button>
@@ -321,7 +319,7 @@
         <div class="auth-switch">Already have an account? <a onclick="switchAuth('login')">Sign in</a></div>
       </div>
 
-      <!-- FORGOT PASSWORD (hidden by default) -->
+      <!-- FORGOT PASSWORD -->
       <div class="auth-panel" id="forgotPanel">
         <h2 style="font-size:20px;font-weight:700;margin-bottom:8px;">Reset Password</h2>
         <p style="font-size:13px;color:var(--gray-500);margin-bottom:24px;">Enter your email and we'll send you a reset link.</p>
@@ -331,19 +329,7 @@
           <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com">
         </div>
 
-        <div class="otp-sent" id="otpSent">✅ OTP sent to your email! Check your inbox.</div>
-
-        <div id="otpSection" style="display:none;">
-          <label class="form-label" style="text-align:center;display:block;margin-bottom:12px;">Enter 6-digit OTP</label>
-          <div class="otp-boxes">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-          </div>
-        </div>
+        <div class="otp-sent" id="otpSent">✅ Reset link sent! Check your inbox.</div>
 
         <button class="submit-btn" id="forgotBtn" onclick="sendReset()">Send Reset Link</button>
         <div class="auth-switch"><a onclick="switchAuth('login')">← Back to Sign In</a></div>
@@ -357,6 +343,8 @@
   <span id="toastMsg">Done!</span>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script>
   let toastTimer;
   function showToast(msg, icon='✅') {
@@ -388,7 +376,7 @@
     else { input.type = 'password'; btn.textContent = '👁️'; }
   }
 
-  function doLogin() {
+  async function doLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const pw = document.getElementById('loginPassword').value;
     if (!email || !email.includes('@')) {
@@ -398,11 +386,15 @@
     document.getElementById('emailGroup').classList.remove('has-error');
     if (!pw) { showToast('Please enter your password', '⚠️'); return; }
     showToast('Signing in...', '⏳');
-    setTimeout(() => { window.location.href = 'profile.html'; }, 1200);
+    const { error } = await db.auth.signInWithPassword({ email, password: pw });
+    if (error) { showToast(error.message, '❌'); return; }
+    showToast('Welcome back!', '✅');
+    setTimeout(() => { window.location.href = 'profile.html'; }, 800);
   }
 
-  function doRegister() {
+  async function doRegister() {
     const first = document.getElementById('regFirst').value.trim();
+    const last = document.getElementById('regLast').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pw = document.getElementById('regPassword').value;
     const confirm = document.getElementById('regConfirm').value;
@@ -413,32 +405,30 @@
     if (pw !== confirm) { showToast('Passwords do not match', '❌'); return; }
     if (!terms) { showToast('Please accept the Terms & Conditions', '⚠️'); return; }
     showToast('Creating your account...', '⏳');
+    const { error } = await db.auth.signUp({
+      email,
+      password: pw,
+      options: { data: { first_name: first, last_name: last } }
+    });
+    if (error) { showToast(error.message, '❌'); return; }
+    showToast('Account created! Check your email to confirm.', '✅');
     setTimeout(() => { window.location.href = 'profile.html'; }, 1400);
   }
 
-  function sendReset() {
+  async function signInWithGoogle() {
+    const { error } = await db.auth.signInWithOAuth({ provider: 'google' });
+    if (error) showToast(error.message, '❌');
+  }
+
+  async function sendReset() {
     const email = document.getElementById('forgotEmail').value.trim();
     if (!email || !email.includes('@')) { showToast('Please enter your email', '⚠️'); return; }
+    const { error } = await db.auth.resetPasswordForEmail(email);
+    if (error) { showToast(error.message, '❌'); return; }
     document.getElementById('otpSent').style.display = 'flex';
-    document.getElementById('otpSection').style.display = 'block';
-    document.getElementById('forgotBtn').textContent = 'Verify OTP →';
-    document.getElementById('forgotBtn').onclick = verifyOtp;
-    showToast('OTP sent to ' + email, '📧');
-  }
-
-  function verifyOtp() {
-    const boxes = document.querySelectorAll('.otp-box');
-    const otp = Array.from(boxes).map(b => b.value).join('');
-    if (otp.length < 6) { showToast('Please enter the 6-digit OTP', '⚠️'); return; }
-    showToast('OTP verified! Redirecting...', '✅');
-    setTimeout(() => window.location.href = 'profile.html', 1200);
-  }
-
-  function focusNext(input) {
-    if (input.value.length === 1) {
-      const next = input.nextElementSibling;
-      if (next) next.focus();
-    }
+    document.getElementById('forgotBtn').textContent = 'Link Sent ✓';
+    document.getElementById('forgotBtn').disabled = true;
+    showToast('Reset link sent to ' + email, '📧');
   }
 
   function checkStrength(pw) {
