@@ -17,7 +17,6 @@
   body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; }
   a { text-decoration: none; color: inherit; }
   button { cursor: pointer; border: none; outline: none; font-family: inherit; }
-
   .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
   .topbar strong { color: var(--gold); margin: 0 6px; }
   header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
@@ -33,25 +32,17 @@
   .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
   .hdr-btn:hover { background: rgba(255,255,255,0.12); }
   .hdr-btn .icon { font-size: 20px; }
-
   .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 48px; }
-
-  /* Profile layout */
   .profile-layout { display: grid; grid-template-columns: 260px 1fr; gap: 20px; }
-
-  /* Sidebar */
   .profile-sidebar { display: flex; flex-direction: column; gap: 14px; }
-
   .profile-card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); text-align: center; }
   .avatar-wrap { position: relative; display: inline-block; margin-bottom: 14px; }
-  .avatar { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800; color: #fff; margin: 0 auto; }
+  .avatar { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800; color: #fff; margin: 0 auto; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .avatar-edit { position: absolute; bottom: 0; right: 0; background: var(--gold); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; box-shadow: var(--shadow-sm); }
-  .profile-name { font-size: 17px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+  .profile-name { font-size: 17px; font-weight: 700; margin-bottom: 3px; }
   .profile-email { font-size: 12px; color: var(--gray-500); margin-bottom: 12px; }
   .profile-level { display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(90deg, #f0b429, #f59e0b); color: var(--navy-dark); font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; }
-  .profile-points { font-size: 13px; color: var(--gray-500); margin-top: 10px; }
-  .profile-points strong { color: var(--navy); font-size: 16px; }
-
   .sidebar-nav { background: #fff; border-radius: var(--radius); padding: 8px; box-shadow: var(--shadow-sm); }
   .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 9px; font-size: 13px; font-weight: 500; color: var(--gray-700); cursor: pointer; transition: all .2s; }
   .nav-item:hover, .nav-item.active { background: var(--gray-100); color: var(--navy); font-weight: 600; }
@@ -60,36 +51,24 @@
   .nav-item.danger { color: #dc2626; }
   .nav-item.danger:hover { background: #fef2f2; }
   .nav-divider { height: 1px; background: var(--gray-200); margin: 6px 0; }
-
-  /* Main content area */
   .profile-main { display: flex; flex-direction: column; gap: 16px; }
-
   .content-card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); }
-  .content-card-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-  .edit-btn { font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; padding: 5px 12px; border: 1.5px solid var(--accent); border-radius: 7px; transition: all .2s; }
+  .content-card-title { font-size: 15px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+  .edit-btn { font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; padding: 5px 12px; border: 1.5px solid var(--accent); border-radius: 7px; transition: all .2s; background: none; }
   .edit-btn:hover { background: var(--accent); color: #fff; }
-
-  /* Stats row */
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .stat-card { background: #fff; border-radius: var(--radius); padding: 18px 14px; box-shadow: var(--shadow-sm); text-align: center; cursor: pointer; transition: transform .2s; border: 1.5px solid transparent; }
   .stat-card:hover { transform: translateY(-2px); border-color: var(--navy); }
   .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
   .stat-card .num { font-size: 22px; font-weight: 800; color: var(--navy); }
   .stat-card .label { font-size: 12px; color: var(--gray-500); margin-top: 3px; }
-
-  /* Info grid */
   .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .info-item { display: flex; flex-direction: column; gap: 4px; }
   .info-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; }
   .info-value { font-size: 14px; color: var(--gray-900); font-weight: 500; }
-
-  /* Orders */
-  .orders-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .order-filter-btn { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--gray-200); background: #fff; color: var(--gray-700); transition: all .2s; }
-  .order-filter-btn:hover, .order-filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
-
+  .info-input { border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 8px 12px; font-size: 14px; font-family: inherit; outline: none; color: var(--gray-900); width: 100%; }
+  .info-input:focus { border-color: var(--navy); }
   .order-card { border: 1.5px solid var(--gray-200); border-radius: 11px; overflow: hidden; margin-bottom: 14px; transition: border-color .2s; }
-  .order-card:last-child { margin-bottom: 0; }
   .order-card:hover { border-color: var(--navy); }
   .order-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
   .order-id { font-size: 12px; font-weight: 700; color: var(--gray-700); }
@@ -99,491 +78,175 @@
   .status-processing { background: #eff6ff; color: #1d4ed8; }
   .status-shipped { background: #fff8e1; color: #d97706; }
   .status-cancelled { background: #fef2f2; color: #dc2626; }
-
   .order-items { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
   .order-item-row { display: flex; align-items: center; gap: 12px; }
-  .order-item-img { width: 52px; height: 52px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; flex-shrink: 0; }
-  .order-item-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
-  .order-item-img span { position: relative; z-index: 1; }
   .order-item-name { flex: 1; font-size: 13px; font-weight: 500; }
-  .order-item-qty { font-size: 12px; color: var(--gray-500); }
   .order-item-price { font-size: 14px; font-weight: 700; color: var(--navy); }
   .order-footer { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border-top: 1px solid var(--gray-200); }
   .order-total { font-size: 13px; font-weight: 700; }
   .order-actions { display: flex; gap: 8px; }
   .order-action-btn { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; transition: all .2s; }
   .btn-reorder { background: var(--navy); color: #fff; }
-  .btn-reorder:hover { background: var(--navy-light); }
-  .btn-review { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
-  .btn-review:hover { border-color: var(--navy); color: var(--navy); }
   .btn-track { background: var(--accent); color: #fff; }
-  .btn-track:hover { background: #1558c0; }
-
-  /* Wishlist */
+  .btn-outline { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
   .wishlist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .wish-card { border: 1.5px solid var(--gray-200); border-radius: 11px; overflow: hidden; cursor: pointer; transition: all .2s; }
   .wish-card:hover { border-color: var(--navy); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .wish-img { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; overflow: hidden; }
-  .wish-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
-  .wish-img span { position: relative; z-index: 1; }
+  .wish-img { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 40px; background: linear-gradient(135deg,#e8f0fe,#c2d4fb); overflow: hidden; }
+  .wish-img img { width: 100%; height: 100%; object-fit: cover; }
   .wish-info { padding: 10px; }
   .wish-name { font-size: 12px; margin-bottom: 5px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .wish-price { font-size: 14px; font-weight: 700; color: var(--navy); }
   .wish-btn { width: 100%; background: var(--navy); color: #fff; font-size: 11px; font-weight: 600; padding: 7px; margin-top: 7px; border-radius: 7px; }
-
-  /* Address */
   .address-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .address-card { border: 1.5px solid var(--gray-200); border-radius: 11px; padding: 16px; position: relative; transition: border-color .2s; }
   .address-card:hover { border-color: var(--navy); }
   .address-card.default { border-color: var(--navy); }
   .address-default-tag { font-size: 10px; font-weight: 700; background: var(--navy); color: #fff; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
   .address-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .address-phone { font-size: 12px; color: var(--gray-500); margin-bottom: 6px; }
   .address-text { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
   .address-actions { display: flex; gap: 10px; margin-top: 12px; }
-  .addr-btn { font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; }
+  .addr-btn { font-size: 12px; color: var(--accent); font-weight: 600; cursor: pointer; background: none; }
   .addr-btn.del { color: #dc2626; }
-  .add-address { border: 2px dashed var(--gray-300); border-radius: 11px; padding: 28px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all .2s; color: var(--gray-500); font-size: 13px; }
-  .add-address:hover { border-color: var(--navy); color: var(--navy); }
-  .add-address .plus { font-size: 32px; }
-
-  /* Loyalty */
-  .loyalty-banner { background: linear-gradient(120deg, var(--navy-dark), var(--navy-light)); border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .loyalty-info .tier { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-  .loyalty-info .points { font-size: 28px; font-weight: 800; color: #fff; }
-  .loyalty-info .sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 3px; }
-  .loyalty-progress { flex: 1; max-width: 300px; margin: 0 32px; }
-  .lp-label { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
-  .lp-track { height: 8px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
-  .lp-fill { height: 100%; background: var(--gold); border-radius: 4px; width: 68%; }
-  .loyalty-icon { font-size: 56px; }
-  .vouchers-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .voucher-card { border: 1.5px dashed var(--gray-300); border-radius: 11px; padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: border-color .2s; }
-  .voucher-card:hover { border-color: var(--navy); }
-  .v-icon { font-size: 28px; }
-  .v-code { font-size: 13px; font-weight: 800; color: var(--navy); }
-  .v-desc { font-size: 11px; color: var(--gray-500); }
-  .v-exp { font-size: 10px; color: #dc2626; margin-top: 2px; }
-
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--gray-500); }
+  .loading-state { text-align: center; padding: 30px; color: var(--gray-500); }
   footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
   .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
   .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
   .footer-bottom p { font-size: 12px; color: #4a5f7a; }
-  .payment-icons { display: flex; gap: 8px; }
-  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
-
   .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
   .toast.show { transform: translateX(0); }
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
   <strong>|</strong>
   <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
 </div>
-
 <header>
   <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-box">L1</div>
-      <span class="logo-text">L<span>198</span></span>
-    </a>
-    <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
-    </div>
+    <a href="index.html" class="logo"><div class="logo-box">L1</div><span class="logo-text">L<span>198</span></span></a>
+    <div class="search-bar"><input type="text" placeholder="Search products, stores, brands..."><button class="search-btn">🔍</button></div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
       <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
       <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
-      <button class="hdr-btn" style="color:var(--gold);"><span class="icon">👤</span><span>Sophea</span></button>
+      <button class="hdr-btn" style="color:var(--gold);"><span class="icon">👤</span><span class="user-name">Account</span></button>
     </div>
   </div>
 </header>
 
 <div class="main-wrap">
   <div class="profile-layout">
-    <!-- SIDEBAR -->
     <div class="profile-sidebar">
       <div class="profile-card">
         <div class="avatar-wrap">
-          <div class="avatar">SR</div>
-          <div class="avatar-edit" onclick="showToast('Upload photo feature coming!','📸')">📷</div>
+          <div class="avatar" id="avatarEl">
+            <label for="avatarInput" style="cursor:pointer;display:flex;align-items:center;justify-content:center;width:100%;height:100%;" id="avatarInitials">SR</label>
+            <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)">
+          </div>
+          <div class="avatar-edit"><label for="avatarInput" style="cursor:pointer;">📷</label></div>
         </div>
-        <div class="profile-name">Sophea Ros</div>
-        <div class="profile-email">sophea.ros@gmail.com</div>
+        <div class="profile-name" id="profileName">Loading...</div>
+        <div class="profile-email" id="profileEmail"></div>
         <div class="profile-level">🏅 Gold Member</div>
-        <div class="profile-points"><strong>2,450</strong> L198 Points</div>
       </div>
-
       <div class="sidebar-nav">
         <div class="nav-item active" onclick="switchSection('overview')"><span class="nav-icon">🏠</span> Overview</div>
-        <div class="nav-item" onclick="switchSection('orders')"><span class="nav-icon">📦</span> My Orders <span class="nav-badge">3</span></div>
-        <div class="nav-item" onclick="switchSection('wishlist')"><span class="nav-icon">❤️</span> Wishlist <span class="nav-badge">6</span></div>
+        <div class="nav-item" onclick="switchSection('orders')"><span class="nav-icon">📦</span> My Orders <span class="nav-badge" id="ordersBadge">0</span></div>
+        <div class="nav-item" onclick="switchSection('wishlist')"><span class="nav-icon">❤️</span> Wishlist <span class="nav-badge" id="wishlistBadge">0</span></div>
         <div class="nav-item" onclick="switchSection('addresses')"><span class="nav-icon">📍</span> Addresses</div>
-        <div class="nav-item" onclick="switchSection('loyalty')"><span class="nav-icon">🏅</span> Rewards & Vouchers</div>
         <div class="nav-divider"></div>
         <div class="nav-item" onclick="switchSection('settings')"><span class="nav-icon">⚙️</span> Account Settings</div>
         <div class="nav-item" onclick="switchSection('notifications')"><span class="nav-icon">🔔</span> Notifications</div>
-        <div class="nav-item" onclick="switchSection('help')"><span class="nav-icon">💬</span> Help & Support</div>
         <div class="nav-divider"></div>
-        <div class="nav-item danger" onclick="if(confirm('Sign out?'))window.location.href='login.html'"><span class="nav-icon">🚪</span> Sign Out</div>
+        <div class="nav-item danger" onclick="handleSignOut()"><span class="nav-icon">🚪</span> Sign Out</div>
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="profile-main">
-
-      <!-- Stats -->
       <div class="stats-row">
-        <div class="stat-card" onclick="switchSection('orders')">
-          <div class="icon">📦</div>
-          <div class="num">12</div>
-          <div class="label">Total Orders</div>
-        </div>
-        <div class="stat-card" onclick="switchSection('orders')">
-          <div class="icon">🚚</div>
-          <div class="num">2</div>
-          <div class="label">In Delivery</div>
-        </div>
-        <div class="stat-card" onclick="switchSection('wishlist')">
-          <div class="icon">❤️</div>
-          <div class="num">6</div>
-          <div class="label">Wishlist</div>
-        </div>
-        <div class="stat-card" onclick="switchSection('loyalty')">
-          <div class="icon">🏅</div>
-          <div class="num">2,450</div>
-          <div class="label">Points</div>
-        </div>
+        <div class="stat-card" onclick="switchSection('orders')"><div class="icon">📦</div><div class="num" id="totalOrdersNum">0</div><div class="label">Total Orders</div></div>
+        <div class="stat-card" onclick="switchSection('orders')"><div class="icon">🚚</div><div class="num" id="activeOrdersNum">0</div><div class="label">Active Orders</div></div>
+        <div class="stat-card" onclick="switchSection('wishlist')"><div class="icon">❤️</div><div class="num" id="wishlistNum">0</div><div class="label">Wishlist</div></div>
+        <div class="stat-card"><div class="icon">🏅</div><div class="num">Gold</div><div class="label">Membership</div></div>
       </div>
 
-      <!-- OVERVIEW Section -->
+      <!-- OVERVIEW -->
       <div id="sec-overview">
         <div class="content-card">
-          <div class="content-card-title">
-            <span>👤 Personal Information</span>
-            <button class="edit-btn" onclick="showToast('Edit profile opened','✏️')">Edit</button>
+          <div class="content-card-title"><span>👤 Personal Information</span><button class="edit-btn" id="editProfileBtn" onclick="toggleEditProfile()">Edit</button></div>
+          <div id="profileView" class="info-grid">
+            <div class="info-item"><div class="info-label">Full Name</div><div class="info-value" id="displayName">—</div></div>
+            <div class="info-item"><div class="info-label">Email</div><div class="info-value" id="displayEmail">—</div></div>
+            <div class="info-item"><div class="info-label">Phone</div><div class="info-value" id="displayPhone">—</div></div>
+            <div class="info-item"><div class="info-label">Role</div><div class="info-value" id="displayRole">Buyer</div></div>
           </div>
-          <div class="info-grid">
-            <div class="info-item"><div class="info-label">Full Name</div><div class="info-value">Sophea Ros</div></div>
-            <div class="info-item"><div class="info-label">Email</div><div class="info-value">sophea.ros@gmail.com</div></div>
-            <div class="info-item"><div class="info-label">Phone</div><div class="info-value">+855 10 123 456</div></div>
-            <div class="info-item"><div class="info-label">Gender</div><div class="info-value">Female</div></div>
-            <div class="info-item"><div class="info-label">Date of Birth</div><div class="info-value">15 March 1995</div></div>
-            <div class="info-item"><div class="info-label">Member Since</div><div class="info-value">January 2022</div></div>
-            <div class="info-item"><div class="info-label">Preferred Language</div><div class="info-value">English / ខ្មែរ</div></div>
-            <div class="info-item"><div class="info-label">Location</div><div class="info-value">Phnom Penh, Cambodia</div></div>
+          <div id="profileEdit" style="display:none;">
+            <div class="info-grid" style="margin-bottom:16px;">
+              <div class="info-item"><div class="info-label">Full Name</div><input class="info-input" id="editName" type="text"></div>
+              <div class="info-item"><div class="info-label">Phone</div><input class="info-input" id="editPhone" type="tel"></div>
+            </div>
+            <button onclick="saveProfile()" style="background:var(--navy);color:#fff;padding:10px 24px;border-radius:9px;font-size:13px;font-weight:700;margin-right:10px;">Save Changes</button>
+            <button onclick="toggleEditProfile()" style="background:none;border:1.5px solid var(--gray-200);color:var(--gray-700);padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;">Cancel</button>
           </div>
         </div>
-
-        <div class="content-card">
-          <div class="content-card-title"><span>📦 Recent Orders</span><a href="orders.html" style="font-size:13px;color:var(--accent);font-weight:600;">View All →</a></div>
-          <div class="order-card">
-            <div class="order-header">
-              <div><div class="order-id">Order #L198-2025-04812</div><div class="order-date">May 1, 2025</div></div>
-              <span class="order-status status-delivered">✅ Delivered</span>
-            </div>
-            <div class="order-items">
-              <div class="order-item-row">
-                <div class="order-item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
-                <div class="order-item-name">Wireless Earbuds Pro TWS Bluetooth 5.3</div>
-                <div class="order-item-qty">×1</div>
-                <div class="order-item-price">$12.50</div>
-              </div>
-            </div>
-            <div class="order-footer">
-              <span class="order-total">Total: $12.50</span>
-              <div class="order-actions">
-                <button class="order-action-btn btn-review" onclick="showToast('Write a review!','⭐')">⭐ Review</button>
-                <button class="order-action-btn btn-reorder" onclick="showToast('Added to cart!','🛒')">🔄 Reorder</button>
-              </div>
-            </div>
-          </div>
+        <div class="content-card" id="recentOrdersCard">
+          <div class="content-card-title"><span>📦 Recent Orders</span><a href="#" onclick="switchSection('orders')" style="font-size:13px;color:var(--accent);font-weight:600;">View All →</a></div>
+          <div id="recentOrdersList"><div class="loading-state">⏳ Loading...</div></div>
         </div>
       </div>
 
-      <!-- ORDERS Section (hidden by default) -->
+      <!-- ORDERS -->
       <div id="sec-orders" style="display:none;">
         <div class="content-card">
           <div class="content-card-title"><span>📦 My Orders</span></div>
-          <div class="orders-filter">
-            <button class="order-filter-btn active" onclick="setOrderFilter(this)">All Orders</button>
-            <button class="order-filter-btn" onclick="setOrderFilter(this)">🚀 Processing</button>
-            <button class="order-filter-btn" onclick="setOrderFilter(this)">🚚 Shipped</button>
-            <button class="order-filter-btn" onclick="setOrderFilter(this)">✅ Delivered</button>
-            <button class="order-filter-btn" onclick="setOrderFilter(this)">❌ Cancelled</button>
-            <button class="order-filter-btn" onclick="setOrderFilter(this)">↩️ Returns</button>
-          </div>
-
-          <div class="order-card">
-            <div class="order-header">
-              <div><div class="order-id">Order #L198-2025-04812</div><div class="order-date">May 1, 2025 · TechKhmer Store</div></div>
-              <span class="order-status status-delivered">✅ Delivered</span>
-            </div>
-            <div class="order-items">
-              <div class="order-item-row">
-                <div class="order-item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
-                <div class="order-item-name">Wireless Earbuds Pro TWS Bluetooth 5.3 ANC</div>
-                <div class="order-item-qty">×1</div>
-                <div class="order-item-price">$12.50</div>
-              </div>
-            </div>
-            <div class="order-footer">
-              <span class="order-total">Total: <strong>$12.50</strong></span>
-              <div class="order-actions">
-                <button class="order-action-btn btn-review" onclick="showToast('Write a review!','⭐')">⭐ Review</button>
-                <button class="order-action-btn btn-reorder" onclick="showToast('Added to cart!','🛒')">🔄 Reorder</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="order-card">
-            <div class="order-header">
-              <div><div class="order-id">Order #L198-2025-04756</div><div class="order-date">April 28, 2025 · Beauty Glow PNH</div></div>
-              <span class="order-status status-shipped">🚚 Out for Delivery</span>
-            </div>
-            <div class="order-items">
-              <div class="order-item-row">
-                <div class="order-item-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
-                <div class="order-item-name">Korean Skincare Gift Set 6-piece Glow & Moisture</div>
-                <div class="order-item-qty">×1</div>
-                <div class="order-item-price">$15.50</div>
-              </div>
-              <div class="order-item-row">
-                <div class="order-item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
-                <div class="order-item-name">Smart Watch Fitness Tracker Heart Rate GPS</div>
-                <div class="order-item-qty">×1</div>
-                <div class="order-item-price">$22.00</div>
-              </div>
-            </div>
-            <div class="order-footer">
-              <span class="order-total">Total: <strong>$37.50</strong></span>
-              <div class="order-actions">
-                <button class="order-action-btn btn-track" onclick="window.location.href='orders.html'">📍 Track</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="order-card">
-            <div class="order-header">
-              <div><div class="order-id">Order #L198-2025-04601</div><div class="order-date">April 20, 2025 · Little Fashion KH</div></div>
-              <span class="order-status status-processing">⏳ Processing</span>
-            </div>
-            <div class="order-items">
-              <div class="order-item-row">
-                <div class="order-item-img" style="--c1:#fce4ec;--c2:#f8bbd0;"><span>👗</span></div>
-                <div class="order-item-name">Women Casual Summer Floral Dress</div>
-                <div class="order-item-qty">×2</div>
-                <div class="order-item-price">$17.98</div>
-              </div>
-            </div>
-            <div class="order-footer">
-              <span class="order-total">Total: <strong>$17.98</strong></span>
-              <div class="order-actions">
-                <button class="order-action-btn btn-review" onclick="showToast('Cancel requested','ℹ️')">✕ Cancel</button>
-              </div>
-            </div>
-          </div>
+          <div id="ordersList"><div class="loading-state">⏳ Loading orders...</div></div>
         </div>
       </div>
 
-      <!-- WISHLIST Section -->
+      <!-- WISHLIST -->
       <div id="sec-wishlist" style="display:none;">
         <div class="content-card">
-          <div class="content-card-title"><span>❤️ My Wishlist</span><span style="font-size:13px;color:var(--gray-500);font-weight:400;">6 items</span></div>
-          <div class="wishlist-grid">
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Wireless Earbuds Pro TWS Bluetooth 5.3</div>
-                <div class="wish-price">$12.50</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#e8f5e9;--c2:#c8e6c9;"><span>👟</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Men's Lightweight Running Shoes Sports</div>
-                <div class="wish-price">$18.00</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>☕</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Ceramic Coffee Mug 350ml with Lid</div>
-                <div class="wish-price">$3.99</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🎒</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Waterproof Travel Backpack 30L USB Port</div>
-                <div class="wish-price">$24.00</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#fce4ec;--c2:#f8bbd0;"><span>💨</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Professional Hair Dryer 2200W Ionic</div>
-                <div class="wish-price">$17.00</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-            <div class="wish-card" onclick="showToast('Added to cart!','🛒')">
-              <div class="wish-img" style="--c1:#f1f8e9;--c2:#dcedc8;"><span>🪴</span></div>
-              <div class="wish-info">
-                <div class="wish-name">Ceramic Plant Pot Set of 3 with Saucers</div>
-                <div class="wish-price">$9.50</div>
-                <button class="wish-btn">Add to Cart</button>
-              </div>
-            </div>
-          </div>
+          <div class="content-card-title"><span>❤️ My Wishlist</span></div>
+          <div id="wishlistContent" class="wishlist-grid"><div class="loading-state" style="grid-column:1/-1;">⏳ Loading...</div></div>
         </div>
       </div>
 
-      <!-- ADDRESSES Section -->
+      <!-- ADDRESSES -->
       <div id="sec-addresses" style="display:none;">
         <div class="content-card">
           <div class="content-card-title"><span>📍 My Addresses</span></div>
-          <div class="address-grid">
-            <div class="address-card default">
-              <span class="address-default-tag">✓ Default</span>
-              <div class="address-name">Sophea Ros</div>
-              <div class="address-phone">+855 10 123 456</div>
-              <div class="address-text">Street 63, Boeung Keng Kang I, Khan Chamkarmon, Phnom Penh, Cambodia 12302</div>
-              <div class="address-actions">
-                <span class="addr-btn" onclick="showToast('Edit address','✏️')">Edit</span>
-                <span class="addr-btn del" onclick="showToast('Cannot delete default address','⚠️')">Delete</span>
-              </div>
-            </div>
-            <div class="address-card">
-              <div class="address-name">Office Address</div>
-              <div class="address-phone">+855 10 123 456</div>
-              <div class="address-text">The Rana Tower, Street 598, Phnom Penh, Cambodia</div>
-              <div class="address-actions">
-                <span class="addr-btn" onclick="showToast('Set as default!','✅')">Set Default</span>
-                <span class="addr-btn" onclick="showToast('Edit address','✏️')">Edit</span>
-                <span class="addr-btn del" onclick="showToast('Address deleted','🗑️')">Delete</span>
-              </div>
-            </div>
-            <div class="add-address" onclick="showToast('Add new address form','📍')">
-              <div class="plus">+</div>
-              <span>Add New Address</span>
-            </div>
-          </div>
+          <div id="addressesList" class="address-grid"><div class="loading-state" style="grid-column:1/-1;">⏳ Loading...</div></div>
         </div>
       </div>
 
-      <!-- LOYALTY Section -->
-      <div id="sec-loyalty" style="display:none;">
-        <div class="content-card">
-          <div class="content-card-title"><span>🏅 Rewards & Loyalty</span></div>
-          <div class="loyalty-banner">
-            <div class="loyalty-info">
-              <div class="tier">🥇 Gold Member</div>
-              <div class="points">2,450 pts</div>
-              <div class="sub">550 pts to reach Platinum</div>
-            </div>
-            <div class="loyalty-progress">
-              <div class="lp-label"><span>Gold</span><span>Platinum (3,000 pts)</span></div>
-              <div class="lp-track"><div class="lp-fill"></div></div>
-            </div>
-            <div class="loyalty-icon">🏅</div>
-          </div>
-
-          <h4 style="font-size:14px;font-weight:700;margin-bottom:14px;">My Vouchers</h4>
-          <div class="vouchers-row">
-            <div class="voucher-card" onclick="showToast('Voucher SAVE10 copied!','🎟️')">
-              <div class="v-icon">🎟️</div>
-              <div><div class="v-code">SAVE10</div><div class="v-desc">10% off any order</div><div class="v-exp">Expires: May 31, 2025</div></div>
-            </div>
-            <div class="voucher-card" onclick="showToast('Voucher FREE shipped!','🚀')">
-              <div class="v-icon">🚀</div>
-              <div><div class="v-code">FREESHIP</div><div class="v-desc">Free shipping (any city)</div><div class="v-exp">Expires: June 15, 2025</div></div>
-            </div>
-            <div class="voucher-card" onclick="showToast('Voucher TECH5 copied!','📱')">
-              <div class="v-icon">📱</div>
-              <div><div class="v-code">TECH5</div><div class="v-desc">$5 off Electronics</div><div class="v-exp">Expires: May 20, 2025</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SETTINGS Section -->
+      <!-- SETTINGS -->
       <div id="sec-settings" style="display:none;">
         <div class="content-card">
           <div class="content-card-title"><span>⚙️ Account Settings</span></div>
           <div style="display:flex;flex-direction:column;gap:14px;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-200);">
-              <div><div style="font-weight:600;margin-bottom:3px;">Change Password</div><div style="font-size:12px;color:var(--gray-500);">Last changed 3 months ago</div></div>
-              <button class="edit-btn" onclick="showToast('Change password dialog','🔒')">Change</button>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-200);">
-              <div><div style="font-weight:600;margin-bottom:3px;">Two-Factor Authentication</div><div style="font-size:12px;color:var(--gray-500);">Extra security for your account</div></div>
-              <label style="position:relative;display:inline-block;width:44px;height:24px;"><input type="checkbox" style="opacity:0;width:0;height:0;" onchange="showToast(this.checked?'2FA Enabled':'2FA Disabled',this.checked?'✅':'🔓')"><span style="position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:.3s;" id="toggle2fa"></span></label>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-200);">
-              <div><div style="font-weight:600;margin-bottom:3px;">Language Preference</div><div style="font-size:12px;color:var(--gray-500);">English / ខ្មែរ</div></div>
-              <button class="edit-btn" onclick="showToast('Language settings','🌐')">Change</button>
+              <div><div style="font-weight:600;margin-bottom:3px;">Change Password</div><div style="font-size:12px;color:var(--gray-500);">Send a reset link to your email</div></div>
+              <button class="edit-btn" onclick="handlePasswordReset()">Reset</button>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;">
-              <div><div style="font-weight:600;color:#dc2626;margin-bottom:3px;">Delete Account</div><div style="font-size:12px;color:var(--gray-500);">This action cannot be undone</div></div>
-              <button style="background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;" onclick="showToast('Please contact support to delete account','⚠️')">Delete</button>
+              <div><div style="font-weight:600;color:#dc2626;margin-bottom:3px;">Sign Out</div><div style="font-size:12px;color:var(--gray-500);">Sign out of your account</div></div>
+              <button onclick="handleSignOut()" style="background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;">Sign Out</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- NOTIFICATIONS Section -->
+      <!-- NOTIFICATIONS -->
       <div id="sec-notifications" style="display:none;">
         <div class="content-card">
-          <div class="content-card-title"><span>🔔 Notification Preferences</span></div>
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:600;">Order Updates</div><div style="font-size:12px;color:var(--gray-500);">Shipping, delivery, and status changes</div></div><input type="checkbox" checked style="accent-color:var(--navy);width:18px;height:18px;" onchange="showToast(this.checked?'Order updates ON':'Order updates OFF','📦')"></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:600;">Flash Sale Alerts</div><div style="font-size:12px;color:var(--gray-500);">Get notified before sales start</div></div><input type="checkbox" checked style="accent-color:var(--navy);width:18px;height:18px;" onchange="showToast(this.checked?'Flash sale alerts ON':'Flash sale alerts OFF','⚡')"></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:600;">New Vouchers</div><div style="font-size:12px;color:var(--gray-500);">Exclusive offers and coupons</div></div><input type="checkbox" checked style="accent-color:var(--navy);width:18px;height:18px;"></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:600;">Wishlist Price Drops</div><div style="font-size:12px;color:var(--gray-500);">When items in your wishlist go on sale</div></div><input type="checkbox" checked style="accent-color:var(--navy);width:18px;height:18px;"></div>
-            <div style="display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:600;">Newsletter & Tips</div><div style="font-size:12px;color:var(--gray-500);">Weekly picks and shopping tips</div></div><input type="checkbox" style="accent-color:var(--navy);width:18px;height:18px;"></div>
-          </div>
+          <div class="content-card-title"><span>🔔 Notifications</span></div>
+          <div id="notifList"><div class="loading-state">⏳ Loading notifications...</div></div>
         </div>
       </div>
-
-      <!-- HELP Section -->
-      <div id="sec-help" style="display:none;">
-        <div class="content-card">
-          <div class="content-card-title"><span>💬 Help & Support</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-            <div style="border:1.5px solid var(--gray-200);border-radius:11px;padding:18px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-200)'" onclick="showToast('Live chat starting...','💬')">
-              <div style="font-size:28px;margin-bottom:8px;">💬</div>
-              <div style="font-weight:700;margin-bottom:4px;">Live Chat</div>
-              <div style="font-size:12px;color:var(--gray-500);">Available 8AM–11PM daily</div>
-            </div>
-            <div style="border:1.5px solid var(--gray-200);border-radius:11px;padding:18px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-200)'" onclick="showToast('Calling 016 955 598','📞')">
-              <div style="font-size:28px;margin-bottom:8px;">📞</div>
-              <div style="font-weight:700;margin-bottom:4px;">Call Us</div>
-              <div style="font-size:12px;color:var(--gray-500);">016 955 598</div>
-            </div>
-            <div style="border:1.5px solid var(--gray-200);border-radius:11px;padding:18px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-200)'" onclick="showToast('Opening FAQ...','❓')">
-              <div style="font-size:28px;margin-bottom:8px;">❓</div>
-              <div style="font-weight:700;margin-bottom:4px;">FAQs</div>
-              <div style="font-size:12px;color:var(--gray-500);">Common questions answered</div>
-            </div>
-            <div style="border:1.5px solid var(--gray-200);border-radius:11px;padding:18px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--gray-200)'" onclick="showToast('Email: info@l198.com','📧')">
-              <div style="font-size:28px;margin-bottom:8px;">📧</div>
-              <div style="font-weight:700;margin-bottom:4px;">Email Support</div>
-              <div style="font-size:12px;color:var(--gray-500);">info@l198.com</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /profile-main -->
+    </div>
   </div>
 </div>
 
@@ -591,54 +254,278 @@
   <div class="footer-inner">
     <div class="footer-bottom">
       <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
-      <div class="payment-icons">
-        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
-        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div>
-        <div class="pay-icon">COD</div>
-      </div>
     </div>
   </div>
 </footer>
 
-<div class="toast" id="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Done!</span>
-</div>
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script>
-  let toastTimer;
-  function showToast(msg, icon='✅') {
-    clearTimeout(toastTimer);
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    document.getElementById('toastIcon').textContent = icon;
-    t.classList.add('show');
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-  }
+let profileData = null;
+let ordersData = [];
+let wishlistData = [];
+let addressesData = [];
+let editing = false;
 
-  const sections = ['overview','orders','wishlist','addresses','loyalty','settings','notifications','help'];
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async () => {
+  await requireAuth('login.html');
+  await Promise.all([loadProfile(), loadOrders(), loadWishlist(), loadAddresses()]);
+})();
 
-  function switchSection(name) {
-    sections.forEach(s => {
-      const el = document.getElementById('sec-' + s);
-      if (el) el.style.display = s === name ? 'block' : 'none';
-    });
-    document.querySelectorAll('.nav-item:not(.danger)').forEach((item, i) => {
-      item.classList.remove('active');
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-      const map = { overview:'Overview', orders:'My Orders', wishlist:'Wishlist', addresses:'Addresses', loyalty:'Rewards', settings:'Account Settings', notifications:'Notifications', help:'Help' };
-      if (item.textContent.trim().includes(map[name] || name)) item.classList.add('active');
-    });
-    // Also hide stats for non-overview
-    document.querySelector('.stats-row').style.display = name === 'overview' ? 'grid' : 'none';
-  }
+// ── Load data ─────────────────────────────────────────────────────────────────
+async function loadProfile() {
+  try {
+    profileData = await getProfile();
+    const user = await getCurrentUser();
+    const name = profileData?.full_name || user?.email?.split('@')[0] || 'User';
+    const email = user?.email || '';
+    const phone = profileData?.phone || '';
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
 
-  function setOrderFilter(btn) {
-    document.querySelectorAll('.order-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    showToast('Filter: ' + btn.textContent, '📦');
-  }
+    document.getElementById('profileName').textContent = name;
+    document.getElementById('profileEmail').textContent = email;
+    document.getElementById('avatarInitials').textContent = initials;
+    document.getElementById('displayName').textContent = name;
+    document.getElementById('displayEmail').textContent = email;
+    document.getElementById('displayPhone').textContent = phone || '—';
+    document.getElementById('displayRole').textContent = profileData?.role || 'buyer';
+    document.getElementById('editName').value = name;
+    document.getElementById('editPhone').value = phone;
+
+    if (profileData?.avatar_url) {
+      document.getElementById('avatarEl').innerHTML = `<img src="${profileData.avatar_url}" alt="avatar"><input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)">`;
+    }
+  } catch (e) { console.error(e); }
+}
+
+async function loadOrders() {
+  try {
+    ordersData = await getOrders();
+    const active = ordersData.filter(o => ['pending','confirmed','processing','shipped'].includes(o.status));
+    document.getElementById('totalOrdersNum').textContent = ordersData.length;
+    document.getElementById('activeOrdersNum').textContent = active.length;
+    document.getElementById('ordersBadge').textContent = ordersData.length;
+    renderRecentOrders();
+    renderOrders();
+  } catch (e) { console.error(e); }
+}
+
+async function loadWishlist() {
+  try {
+    wishlistData = await getWishlist();
+    document.getElementById('wishlistNum').textContent = wishlistData.length;
+    document.getElementById('wishlistBadge').textContent = wishlistData.length;
+    renderWishlist();
+  } catch (e) { console.error(e); }
+}
+
+async function loadAddresses() {
+  try {
+    addressesData = await getAddresses();
+    renderAddresses();
+  } catch (e) { console.error(e); }
+}
+
+// ── Render helpers ────────────────────────────────────────────────────────────
+function statusBadge(status) {
+  const map = {
+    pending: ['status-processing','⏳ Pending'],
+    confirmed: ['status-processing','✅ Confirmed'],
+    processing: ['status-processing','⚙️ Processing'],
+    shipped: ['status-shipped','🚚 Shipped'],
+    delivered: ['status-delivered','✅ Delivered'],
+    cancelled: ['status-cancelled','❌ Cancelled'],
+    refunded: ['status-cancelled','↩️ Refunded'],
+  };
+  const [cls, label] = map[status] || ['status-processing', status];
+  return `<span class="order-status ${cls}">${label}</span>`;
+}
+
+function renderRecentOrders() {
+  const el = document.getElementById('recentOrdersList');
+  const recent = ordersData.slice(0, 3);
+  if (!recent.length) { el.innerHTML = '<div class="empty-state">No orders yet. <a href="index.html" style="color:var(--accent);">Start shopping!</a></div>'; return; }
+  el.innerHTML = recent.map(order => `
+    <div class="order-card">
+      <div class="order-header">
+        <div><div class="order-id">Order #${order.id.slice(0,8).toUpperCase()}</div><div class="order-date">${new Date(order.created_at).toLocaleDateString()}</div></div>
+        ${statusBadge(order.status)}
+      </div>
+      <div class="order-footer">
+        <span class="order-total">Total: <strong>$${Number(order.total).toFixed(2)}</strong></span>
+        <div class="order-actions">
+          <a href="orders.html"><button class="order-action-btn btn-track">📍 Track</button></a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderOrders() {
+  const el = document.getElementById('ordersList');
+  if (!ordersData.length) { el.innerHTML = '<div class="empty-state">No orders yet. <a href="index.html" style="color:var(--accent);">Start shopping!</a></div>'; return; }
+  el.innerHTML = ordersData.map(order => `
+    <div class="order-card">
+      <div class="order-header">
+        <div><div class="order-id">Order #${order.id.slice(0,8).toUpperCase()}</div><div class="order-date">${new Date(order.created_at).toLocaleDateString()}</div></div>
+        ${statusBadge(order.status)}
+      </div>
+      <div class="order-footer">
+        <span class="order-total">Total: <strong>$${Number(order.total).toFixed(2)}</strong> · ${order.items?.length || 0} item(s)</span>
+        <div class="order-actions">
+          <a href="orders.html"><button class="order-action-btn btn-track">📍 Track</button></a>
+          <button class="order-action-btn btn-outline" onclick="reorder('${order.id}')">🔄 Reorder</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderWishlist() {
+  const el = document.getElementById('wishlistContent');
+  if (!wishlistData.length) { el.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Your wishlist is empty. <a href="index.html" style="color:var(--accent);">Browse products!</a></div>'; return; }
+  el.innerHTML = wishlistData.map(item => {
+    const p = item.product;
+    const imgUrl = p.images?.[0]?.url;
+    const imgHtml = imgUrl ? `<img src="${imgUrl}" alt="${p.name}">` : `<span>🛍️</span>`;
+    return `
+      <div class="wish-card">
+        <div class="wish-img">${imgHtml}</div>
+        <div class="wish-info">
+          <div class="wish-name">${p.name}</div>
+          <div class="wish-price">$${Number(p.price).toFixed(2)}</div>
+          <button class="wish-btn" onclick="addItemToCart('${p.id}')">Add to Cart</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderAddresses() {
+  const el = document.getElementById('addressesList');
+  const defaultFirst = [...addressesData].sort((a,b) => b.is_default - a.is_default);
+  let html = defaultFirst.map(addr => `
+    <div class="address-card ${addr.is_default ? 'default' : ''}">
+      ${addr.is_default ? '<span class="address-default-tag">✓ Default</span>' : ''}
+      <div class="address-name">${addr.label || 'Home'}</div>
+      <div class="address-text">${addr.line1}${addr.line2 ? ', ' + addr.line2 : ''}, ${addr.city}, ${addr.country} ${addr.postal_code}</div>
+      <div class="address-actions">
+        ${!addr.is_default ? `<button class="addr-btn" onclick="setDefaultAddress('${addr.id}')">Set Default</button>` : ''}
+        <button class="addr-btn del" onclick="deleteAddress('${addr.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+  html += `<div style="border:2px dashed var(--gray-300);border-radius:11px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;color:var(--gray-500);" onclick="showAddAddressForm()">
+    <div style="font-size:32px;">+</div><span>Add New Address</span></div>`;
+  el.innerHTML = html;
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+function toggleEditProfile() {
+  editing = !editing;
+  document.getElementById('profileView').style.display = editing ? 'none' : 'grid';
+  document.getElementById('profileEdit').style.display = editing ? 'block' : 'none';
+  document.getElementById('editProfileBtn').textContent = editing ? 'Cancel' : 'Edit';
+}
+
+async function saveProfile() {
+  const name = document.getElementById('editName').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+  try {
+    await updateProfile({ full_name: name, phone });
+    showToast('Profile updated!', '✅');
+    toggleEditProfile();
+    await loadProfile();
+  } catch (e) { showToast('Failed to save: ' + e.message, '❌'); }
+}
+
+async function handleAvatarUpload(input) {
+  if (!input.files[0]) return;
+  showToast('Uploading...', '⏳');
+  try {
+    const url = await uploadAvatar(input.files[0]);
+    document.getElementById('avatarEl').innerHTML = `<img src="${url}" alt="avatar">`;
+    showToast('Avatar updated!', '✅');
+  } catch (e) { showToast('Upload failed: ' + e.message, '❌'); }
+}
+
+async function handlePasswordReset() {
+  const user = await getCurrentUser();
+  if (!user) return;
+  try {
+    await sendPasswordReset(user.email);
+    showToast('Reset link sent to ' + user.email, '📧');
+  } catch (e) { showToast('Failed: ' + e.message, '❌'); }
+}
+
+async function handleSignOut() {
+  if (!confirm('Sign out of your account?')) return;
+  await signOut();
+}
+
+async function addItemToCart(productId) {
+  try {
+    await addToCart(productId, 1);
+    showToast('Added to cart!', '🛒');
+  } catch (e) { showToast('Failed to add', '❌'); }
+}
+
+async function reorder(orderId) {
+  showToast('Reorder coming soon!', '🔄');
+}
+
+async function setDefaultAddress(id) {
+  try {
+    await db.from('addresses').update({ is_default: false }).eq('user_id', (await getCurrentUser()).id);
+    await db.from('addresses').update({ is_default: true }).eq('id', id);
+    await loadAddresses();
+    showToast('Default address updated!', '✅');
+  } catch (e) { showToast('Failed', '❌'); }
+}
+
+async function deleteAddress(id) {
+  if (!confirm('Delete this address?')) return;
+  try {
+    await db.from('addresses').delete().eq('id', id);
+    await loadAddresses();
+    showToast('Address deleted', '🗑️');
+  } catch (e) { showToast('Failed', '❌'); }
+}
+
+function showAddAddressForm() { showToast('Address form coming soon!', '📍'); }
+
+// ── Section switching ─────────────────────────────────────────────────────────
+const sections = ['overview','orders','wishlist','addresses','settings','notifications'];
+function switchSection(name) {
+  sections.forEach(s => {
+    const el = document.getElementById('sec-' + s);
+    if (el) el.style.display = s === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-item:not(.danger)').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.textContent.trim().toLowerCase().includes(name)) item.classList.add('active');
+  });
+  document.querySelector('.stats-row').style.display = name === 'overview' ? 'grid' : 'none';
+
+  // Lazy load notifications
+  if (name === 'notifications') loadNotifications();
+}
+
+async function loadNotifications() {
+  try {
+    const notifs = await getNotifications();
+    const el = document.getElementById('notifList');
+    if (!notifs.length) { el.innerHTML = '<div class="empty-state">No notifications.</div>'; return; }
+    el.innerHTML = notifs.map(n => `
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-200);${n.read ? 'opacity:.7' : ''}">
+        <span style="font-size:20px;">${n.type === 'order' ? '📦' : n.type === 'promo' ? '🎟️' : '🔔'}</span>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:2px;">${n.title}</div>
+          <div style="font-size:12px;color:var(--gray-500);">${n.body || ''}</div>
+        </div>
+        ${!n.read ? `<button onclick="markNotificationRead('${n.id}')" style="font-size:11px;color:var(--accent);background:none;cursor:pointer;">Mark read</button>` : ''}
+      </div>`).join('');
+  } catch (e) {}
+}
 </script>
 </body>
 </html>

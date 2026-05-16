@@ -17,7 +17,6 @@
   body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
   a { text-decoration: none; color: inherit; }
   button { cursor: pointer; border: none; outline: none; font-family: inherit; }
-
   .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
   .topbar strong { color: var(--gold); margin: 0 6px; }
   header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
@@ -33,70 +32,44 @@
   .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
   .hdr-btn:hover { background: rgba(255,255,255,0.12); }
   .hdr-btn .icon { font-size: 20px; }
-
   .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 48px; }
-
-  /* Steps */
   .checkout-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 28px; }
-  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); position: relative; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
   .step.active { color: var(--navy); }
   .step.done { color: #16a34a; }
   .step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
   .step.active .step-num { background: var(--navy); color: #fff; border-color: var(--navy); }
   .step.done .step-num { background: #16a34a; color: #fff; border-color: #16a34a; }
   .step-line { flex: 1; height: 2px; background: var(--gray-200); max-width: 60px; }
-  .step-line.done { background: #16a34a; }
-
-  /* Layout */
   .cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
-
-  /* Cart items */
   .cart-section { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); }
-  .cart-section-title { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
-  .select-all { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--gray-700); }
-  .select-all input { accent-color: var(--navy); width: 16px; height: 16px; cursor: pointer; }
-
-  .store-group { margin-bottom: 20px; }
-  .store-group-header { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--gray-200); margin-bottom: 12px; }
-  .store-group-header .store-avatar-sm { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
-  .store-group-header .store-name-sm { font-size: 13px; font-weight: 700; color: var(--gray-900); }
-  .store-group-header .store-badge { font-size: 11px; color: #16a34a; background: #f0fdf4; padding: 2px 8px; border-radius: 5px; font-weight: 600; }
-
+  .cart-section-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
   .cart-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
   .cart-item:last-child { border: none; }
-  .cart-item-check { padding-top: 2px; }
-  .cart-item-check input { accent-color: var(--navy); width: 16px; height: 16px; cursor: pointer; }
-  .cart-item-img { width: 86px; height: 86px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0; position: relative; overflow: hidden; }
-  .cart-item-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1,#e3f2fd), var(--c2,#bbdefb)); }
-  .cart-item-img span { position: relative; z-index: 1; }
+  .cart-item-img { width: 86px; height: 86px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0; position: relative; overflow: hidden; background: linear-gradient(135deg,#e3f2fd,#bbdefb); }
+  .cart-item-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
   .cart-item-body { flex: 1; display: flex; flex-direction: column; gap: 5px; }
-  .cart-item-name { font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--gray-900); }
-  .cart-item-variant { font-size: 12px; color: var(--gray-500); }
+  .cart-item-name { font-size: 14px; font-weight: 500; line-height: 1.4; }
   .cart-item-price { font-size: 16px; font-weight: 700; color: var(--navy); }
-  .cart-item-orig { font-size: 11px; color: var(--gray-500); text-decoration: line-through; }
   .cart-item-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
   .qty-ctrl-sm { display: flex; align-items: center; border: 1.5px solid var(--gray-200); border-radius: 8px; overflow: hidden; }
   .qty-btn-sm { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; background: var(--gray-100); font-weight: 700; transition: background .2s; }
   .qty-btn-sm:hover { background: var(--gray-200); }
-  .qty-num-sm { width: 38px; text-align: center; font-weight: 700; font-size: 14px; border: none; outline: none; font-family: inherit; }
+  .qty-num-sm { width: 38px; text-align: center; font-weight: 700; font-size: 14px; border: none; outline: none; font-family: inherit; background: #fff; }
   .item-actions-right { display: flex; gap: 12px; }
   .item-action-btn { font-size: 12px; color: var(--gray-500); cursor: pointer; display: flex; align-items: center; gap: 4px; transition: color .2s; }
   .item-action-btn:hover { color: var(--accent); }
   .item-delete:hover { color: #dc2626; }
-  .shipping-tag { font-size: 11px; color: #16a34a; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-
-  /* Order Summary */
+  .shipping-tag { font-size: 11px; color: #16a34a; font-weight: 600; }
   .summary-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
   .summary-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
   .coupon-box { display: flex; gap: 8px; margin-bottom: 18px; }
   .coupon-input { flex: 1; border: 1.5px solid var(--gray-200); border-radius: 9px; padding: 9px 13px; font-size: 13px; font-family: inherit; outline: none; }
   .coupon-input:focus { border-color: var(--navy); }
-  .coupon-apply { background: var(--navy); color: #fff; border-radius: 9px; padding: 9px 16px; font-size: 13px; font-weight: 600; transition: background .2s; }
-  .coupon-apply:hover { background: var(--navy-light); }
-  .coupon-tag { display: flex; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; font-size: 13px; }
+  .coupon-apply { background: var(--navy); color: #fff; border-radius: 9px; padding: 9px 16px; font-size: 13px; font-weight: 600; }
+  .coupon-tag { display: flex; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; font-size: 13px; display: none; }
   .coupon-tag .ctag { color: #16a34a; font-weight: 700; }
   .coupon-remove { margin-left: auto; color: #dc2626; cursor: pointer; font-size: 16px; }
-
   .summary-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
   .summary-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
   .summary-row .val { font-weight: 600; color: var(--gray-900); }
@@ -105,72 +78,45 @@
   .summary-total { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .summary-total .label { font-size: 15px; font-weight: 700; }
   .summary-total .amount { font-size: 24px; font-weight: 800; color: var(--navy); }
-  .summary-total .savings { font-size: 12px; color: #16a34a; font-weight: 600; }
-
   .checkout-btn { width: 100%; background: var(--navy); color: #fff; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .2s; margin-bottom: 12px; }
   .checkout-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
   .continue-btn { width: 100%; background: none; color: var(--accent); font-size: 13px; font-weight: 600; padding: 10px; border-radius: 10px; border: 1.5px solid var(--accent); transition: all .2s; }
   .continue-btn:hover { background: var(--accent); color: #fff; }
-
-  .payment-methods { margin-top: 16px; text-align: center; }
-  .payment-methods p { font-size: 11px; color: var(--gray-500); margin-bottom: 8px; }
-  .pay-icons-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+  .pay-icons-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
   .pay-chip { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 5px; padding: 4px 10px; font-size: 11px; color: var(--gray-700); font-weight: 600; }
-
-  /* You may also like */
-  .also-like { margin-top: 24px; }
-  .also-like-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
-  .also-like-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
-  .also-like-row::-webkit-scrollbar { display: none; }
-  .also-like-card { min-width: 130px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer; flex-shrink: 0; transition: transform .2s; border: 1.5px solid transparent; }
-  .also-like-card:hover { transform: translateY(-3px); border-color: var(--gray-200); box-shadow: var(--shadow-md); }
-  .alc-img { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 36px; position: relative; overflow: hidden; }
-  .alc-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
-  .alc-img span { position: relative; z-index: 1; }
-  .alc-info { padding: 8px; }
-  .alc-name { font-size: 11px; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--gray-900); }
-  .alc-price { font-size: 13px; font-weight: 700; color: var(--navy); }
-
+  .empty-cart { text-align: center; padding: 60px 20px; }
+  .empty-cart .icon { font-size: 64px; margin-bottom: 16px; }
+  .loading-state { text-align: center; padding: 40px; color: var(--gray-500); font-size: 14px; }
   footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 30px; }
   .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
   .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
   .footer-bottom p { font-size: 12px; color: #4a5f7a; }
   .payment-icons { display: flex; gap: 8px; }
   .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
-
   .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
   .toast.show { transform: translateX(0); }
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
   <strong>|</strong>
   <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
 </div>
-
 <header>
   <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-box">L1</div>
-      <span class="logo-text">L<span>198</span></span>
-    </a>
-    <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
-    </div>
+    <a href="index.html" class="logo"><div class="logo-box">L1</div><span class="logo-text">L<span>198</span></span></a>
+    <div class="search-bar"><input type="text" placeholder="Search products, stores, brands..."><button class="search-btn">🔍</button></div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
       <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
-      <a href="cart.html" class="hdr-btn" style="color:var(--gold);"><span class="icon">🛒</span><span>Cart (3)</span></a>
-      <a href="login.html" class="hdr-btn"><span class="icon">👤</span><span>Account</span></a>
+      <a href="cart.html" class="hdr-btn" style="color:var(--gold);"><span class="icon">🛒</span><span id="cartCount">Cart</span></a>
+      <a href="profile.html" class="hdr-btn"><span class="icon">👤</span><span class="user-name">Account</span></a>
     </div>
   </div>
 </header>
 
 <div class="main-wrap">
-  <!-- Steps -->
   <div class="checkout-steps">
     <div class="step active"><div class="step-num">1</div> Cart</div>
     <div class="step-line"></div>
@@ -182,186 +128,44 @@
   </div>
 
   <div class="cart-layout">
-    <!-- LEFT: Cart Items -->
     <div>
       <div class="cart-section">
         <div class="cart-section-title">
-          <div>🛒 My Cart <span style="color:var(--gray-500);font-size:14px;font-weight:400;">(3 items)</span></div>
-          <label class="select-all"><input type="checkbox" id="selectAll" checked onchange="toggleAll(this)"> Select All</label>
+          <div>🛒 My Cart <span id="itemCountLabel" style="color:var(--gray-500);font-size:14px;font-weight:400;"></span></div>
         </div>
-
-        <!-- Store 1 -->
-        <div class="store-group">
-          <div class="store-group-header">
-            <input type="checkbox" checked style="accent-color:var(--navy);width:15px;height:15px;">
-            <div class="store-avatar-sm" style="background:linear-gradient(135deg,#0a1f44,#1a73e8);">TK</div>
-            <span class="store-name-sm">TechKhmer Store</span>
-            <span class="store-badge">✓ Verified</span>
-          </div>
-
-          <div class="cart-item">
-            <div class="cart-item-check"><input type="checkbox" checked></div>
-            <div class="cart-item-img" style="--c1:#e3f2fd;--c2:#bbdefb;"><span>🎧</span></div>
-            <div class="cart-item-body">
-              <div class="cart-item-name">Wireless Earbuds Pro TWS Bluetooth 5.3 ANC 30H Battery</div>
-              <div class="cart-item-variant">Color: Black · Flash Sale</div>
-              <div style="display:flex;align-items:baseline;gap:8px;">
-                <span class="cart-item-price">$12.50</span>
-                <span class="cart-item-orig">$19.00</span>
-                <span style="font-size:11px;color:var(--navy);font-weight:700;background:#e8f0fe;padding:2px 7px;border-radius:4px;">-34%</span>
-              </div>
-              <div class="shipping-tag">🚀 Free · Same-day Delivery</div>
-              <div class="cart-item-actions">
-                <div class="qty-ctrl-sm">
-                  <div class="qty-btn-sm" onclick="changeQty('q1',-1)">−</div>
-                  <input class="qty-num-sm" id="q1" value="1" type="number" min="1" readonly>
-                  <div class="qty-btn-sm" onclick="changeQty('q1',1)">+</div>
-                </div>
-                <div class="item-actions-right">
-                  <span class="item-action-btn">❤️ Save</span>
-                  <span class="item-action-btn item-delete" onclick="removeItem(this,'Earbuds')">🗑️ Remove</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="cart-item">
-            <div class="cart-item-check"><input type="checkbox" checked></div>
-            <div class="cart-item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
-            <div class="cart-item-body">
-              <div class="cart-item-name">Smart Watch Fitness Tracker Heart Rate GPS Monitor</div>
-              <div class="cart-item-variant">Size: 44mm · Color: Black</div>
-              <div style="display:flex;align-items:baseline;gap:8px;">
-                <span class="cart-item-price">$22.00</span>
-                <span class="cart-item-orig">$29.50</span>
-              </div>
-              <div class="shipping-tag">🚀 Free · Same-day Delivery</div>
-              <div class="cart-item-actions">
-                <div class="qty-ctrl-sm">
-                  <div class="qty-btn-sm" onclick="changeQty('q2',-1)">−</div>
-                  <input class="qty-num-sm" id="q2" value="1" type="number" min="1" readonly>
-                  <div class="qty-btn-sm" onclick="changeQty('q2',1)">+</div>
-                </div>
-                <div class="item-actions-right">
-                  <span class="item-action-btn">❤️ Save</span>
-                  <span class="item-action-btn item-delete" onclick="removeItem(this,'Smart Watch')">🗑️ Remove</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Store 2 -->
-        <div class="store-group">
-          <div class="store-group-header">
-            <input type="checkbox" checked style="accent-color:var(--navy);width:15px;height:15px;">
-            <div class="store-avatar-sm" style="background:linear-gradient(135deg,#4a148c,#7b1fa2);">BG</div>
-            <span class="store-name-sm">Beauty Glow PNH</span>
-            <span class="store-badge">✓ Verified</span>
-          </div>
-
-          <div class="cart-item">
-            <div class="cart-item-check"><input type="checkbox" checked></div>
-            <div class="cart-item-img" style="--c1:#ede7f6;--c2:#ce93d8;"><span>💄</span></div>
-            <div class="cart-item-body">
-              <div class="cart-item-name">Korean Skincare Gift Set 6-piece Glow & Moisture</div>
-              <div class="cart-item-variant">Set: Complete · -40% Flash Sale</div>
-              <div style="display:flex;align-items:baseline;gap:8px;">
-                <span class="cart-item-price">$15.50</span>
-                <span class="cart-item-orig">$25.99</span>
-                <span style="font-size:11px;color:var(--navy);font-weight:700;background:#ede7f6;padding:2px 7px;border-radius:4px;">-40%</span>
-              </div>
-              <div class="shipping-tag">🚀 Free · Same-day Delivery</div>
-              <div class="cart-item-actions">
-                <div class="qty-ctrl-sm">
-                  <div class="qty-btn-sm" onclick="changeQty('q3',-1)">−</div>
-                  <input class="qty-num-sm" id="q3" value="1" type="number" min="1" readonly>
-                  <div class="qty-btn-sm" onclick="changeQty('q3',1)">+</div>
-                </div>
-                <div class="item-actions-right">
-                  <span class="item-action-btn">❤️ Save</span>
-                  <span class="item-action-btn item-delete" onclick="removeItem(this,'Skincare Set')">🗑️ Remove</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- You may also like -->
-      <div class="cart-section" style="margin-top:16px;">
-        <div class="also-like-title">You May Also Like</div>
-        <div class="also-like-row">
-          <div class="also-like-card" onclick="showToast('Power Bank added!','🛒')">
-            <div class="alc-img" style="--c1:#f1f8e9;--c2:#dcedc8;"><span>🔋</span></div>
-            <div class="alc-info"><div class="alc-name">Power Bank 20000mAh Fast Charge</div><div class="alc-price">$19.00</div></div>
-          </div>
-          <div class="also-like-card" onclick="showToast('Speaker added!','🛒')">
-            <div class="alc-img" style="--c1:#e0f7fa;--c2:#b2ebf2;"><span>🔊</span></div>
-            <div class="alc-info"><div class="alc-name">Bluetooth Speaker 360° Sound</div><div class="alc-price">$14.90</div></div>
-          </div>
-          <div class="also-like-card" onclick="showToast('USB-C Cable added!','🛒')">
-            <div class="alc-img" style="--c1:#e8f0fe;--c2:#c2d4fb;"><span>🔌</span></div>
-            <div class="alc-info"><div class="alc-name">USB-C Cable 100W Braided 2m</div><div class="alc-price">$3.50</div></div>
-          </div>
-          <div class="also-like-card" onclick="showToast('Mouse added!','🛒')">
-            <div class="alc-img" style="--c1:#fce4ec;--c2:#f8bbd0;"><span>🖱️</span></div>
-            <div class="alc-info"><div class="alc-name">Wireless Mouse Silent Ergonomic</div><div class="alc-price">$9.80</div></div>
-          </div>
-          <div class="also-like-card" onclick="showToast('Serum added!','🛒')">
-            <div class="alc-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>✨</span></div>
-            <div class="alc-info"><div class="alc-name">Vitamin C Brightening Serum 30ml</div><div class="alc-price">$8.90</div></div>
-          </div>
-        </div>
+        <div id="cartItems"><div class="loading-state">⏳ Loading your cart...</div></div>
       </div>
     </div>
 
-    <!-- RIGHT: Order Summary -->
     <div>
       <div class="summary-card">
         <div class="summary-title">Order Summary</div>
-
         <div class="coupon-box">
           <input class="coupon-input" type="text" placeholder="Enter voucher code" id="couponInput">
           <button class="coupon-apply" onclick="applyCoupon()">Apply</button>
         </div>
-        <div class="coupon-tag" id="couponTag" style="display:none;">
-          <span>🎟️</span> <span class="ctag">SAVE10</span> — 10% discount applied!
+        <div class="coupon-tag" id="couponTag">
+          <span>🎟️</span> <span class="ctag" id="couponCode"></span> — discount applied!
           <span class="coupon-remove" onclick="removeCoupon()">✕</span>
         </div>
-
         <div class="summary-rows">
-          <div class="summary-row"><span>Subtotal (3 items)</span><span class="val">$50.00</span></div>
-          <div class="summary-row"><span>Original price</span><span class="val" style="text-decoration:line-through;color:var(--gray-500);">$74.49</span></div>
-          <div class="summary-row"><span>Item discounts</span><span class="val green">-$24.49</span></div>
-          <div class="summary-row" id="couponRow" style="display:none;"><span>Voucher (SAVE10)</span><span class="val green">-$5.00</span></div>
+          <div class="summary-row"><span id="subtotalLabel">Subtotal</span><span class="val" id="subtotalVal">$0.00</span></div>
+          <div class="summary-row" id="couponRow" style="display:none;"><span>Voucher discount</span><span class="val green" id="couponDiscount">-$0.00</span></div>
           <div class="summary-row"><span>Delivery fee</span><span class="val green">FREE 🎉</span></div>
         </div>
-
         <div class="summary-divider"></div>
-
         <div class="summary-total">
-          <div>
-            <div class="label">Total</div>
-            <div class="savings" id="savingsText">You saved $24.49 total!</div>
-          </div>
-          <div class="amount" id="totalAmount">$50.00</div>
+          <div><div class="label">Total</div></div>
+          <div class="amount" id="totalAmount">$0.00</div>
         </div>
-
-        <button class="checkout-btn" onclick="window.location.href='orders.html'">
-          Proceed to Checkout →
-        </button>
+        <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout →</button>
         <a href="index.html"><button class="continue-btn">← Continue Shopping</button></a>
-
-        <div class="payment-methods">
-          <p>We accept</p>
+        <div class="payment-methods" style="margin-top:16px;text-align:center;">
+          <p style="font-size:11px;color:var(--gray-500);margin-bottom:8px;">We accept</p>
           <div class="pay-icons-row">
-            <span class="pay-chip">ABA Pay</span>
-            <span class="pay-chip">KHQR</span>
-            <span class="pay-chip">Wing</span>
-            <span class="pay-chip">Visa</span>
-            <span class="pay-chip">Mastercard</span>
-            <span class="pay-chip">COD</span>
+            <span class="pay-chip">ABA Pay</span><span class="pay-chip">KHQR</span>
+            <span class="pay-chip">Wing</span><span class="pay-chip">Visa</span>
+            <span class="pay-chip">Mastercard</span><span class="pay-chip">COD</span>
           </div>
         </div>
       </div>
@@ -382,72 +186,178 @@
   </div>
 </footer>
 
-<div class="toast" id="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Done!</span>
-</div>
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script>
-  let toastTimer, couponApplied = false;
+let cartData = [];
+let couponApplied = false;
+let couponDiscountAmt = 0;
+const VALID_COUPONS = { 'SAVE10': 0.10, 'L198': 0.10 };
 
-  function showToast(msg, icon='✅') {
-    clearTimeout(toastTimer);
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    document.getElementById('toastIcon').textContent = icon;
-    t.classList.add('show');
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async () => {
+  await requireAuth('login.html');
+  await loadCart();
+  subscribeToCart(loadCart); // live sync across tabs
+})();
+
+// ── Load cart from Supabase ───────────────────────────────────────────────────
+async function loadCart() {
+  try {
+    cartData = await getCart();
+    renderCart();
+    updateSummary();
+    // Update header badge
+    const countEl = document.getElementById('cartCount');
+    if (countEl) countEl.textContent = `Cart (${cartData.length})`;
+  } catch (e) {
+    document.getElementById('cartItems').innerHTML = `<div class="loading-state">❌ Failed to load cart. Please refresh.</div>`;
+  }
+}
+
+// ── Render cart items ─────────────────────────────────────────────────────────
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const label = document.getElementById('itemCountLabel');
+
+  if (!cartData.length) {
+    label.textContent = '';
+    container.innerHTML = `
+      <div class="empty-cart">
+        <div class="icon">🛒</div>
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">Your cart is empty</h3>
+        <p style="color:var(--gray-500);margin-bottom:20px;">Browse our products and add something you love!</p>
+        <a href="index.html" style="background:var(--navy);color:#fff;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">Shop Now →</a>
+      </div>`;
+    return;
   }
 
-  function changeQty(id, delta) {
-    const input = document.getElementById(id);
-    const newVal = Math.max(1, parseInt(input.value) + delta);
-    input.value = newVal;
-    updateTotal();
-  }
+  label.textContent = `(${cartData.length} item${cartData.length !== 1 ? 's' : ''})`;
 
-  function updateTotal() {
-    const base = 50.00;
-    const discount = couponApplied ? 5.00 : 0;
-    const total = base - discount;
-    document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
-    document.getElementById('savingsText').textContent = 'You saved $' + (24.49 + discount).toFixed(2) + ' total!';
-  }
+  container.innerHTML = cartData.map(item => {
+    const product = item.product;
+    const imgUrl = product.images?.[0]?.url;
+    const imgHtml = imgUrl
+      ? `<img src="${imgUrl}" alt="${product.name}">`
+      : `<span>🛍️</span>`;
+    return `
+      <div class="cart-item" id="item-${item.id}">
+        <div class="cart-item-img">${imgHtml}</div>
+        <div class="cart-item-body">
+          <div class="cart-item-name">${product.name}</div>
+          <div class="cart-item-price">$${Number(product.price).toFixed(2)}</div>
+          <div class="shipping-tag">🚀 Free · Same-day Delivery</div>
+          <div class="cart-item-actions">
+            <div class="qty-ctrl-sm">
+              <div class="qty-btn-sm" onclick="changeQty('${item.id}', ${item.quantity - 1})">−</div>
+              <input class="qty-num-sm" value="${item.quantity}" type="number" min="1" readonly>
+              <div class="qty-btn-sm" onclick="changeQty('${item.id}', ${item.quantity + 1})">+</div>
+            </div>
+            <div class="item-actions-right">
+              <span class="item-action-btn" onclick="saveForLater('${product.id}')">❤️ Save</span>
+              <span class="item-action-btn item-delete" onclick="removeItem('${item.id}', '${product.name.replace(/'/g,"\\'")}')">🗑️ Remove</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
 
-  function removeItem(el, name) {
-    el.closest('.cart-item').style.opacity = '0';
-    el.closest('.cart-item').style.transform = 'translateX(-20px)';
-    el.closest('.cart-item').style.transition = 'all .3s';
-    setTimeout(() => { el.closest('.cart-item').remove(); showToast(name + ' removed from cart', '🗑️'); }, 300);
-  }
+// ── Update order summary ──────────────────────────────────────────────────────
+function updateSummary() {
+  const subtotal = cartData.reduce((sum, item) => sum + (Number(item.product.price) * item.quantity), 0);
+  const discount = couponApplied ? subtotal * couponDiscountAmt : 0;
+  const total = subtotal - discount;
 
-  function toggleAll(cb) {
-    document.querySelectorAll('.cart-item-check input, .store-group-header input').forEach(c => c.checked = cb.checked);
-  }
+  document.getElementById('subtotalLabel').textContent = `Subtotal (${cartData.length} item${cartData.length !== 1 ? 's' : ''})`;
+  document.getElementById('subtotalVal').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
 
-  function applyCoupon() {
-    const code = document.getElementById('couponInput').value.trim().toUpperCase();
-    if (code === 'SAVE10' || code === 'L198') {
+  if (couponApplied) {
+    document.getElementById('couponDiscount').textContent = `-$${discount.toFixed(2)}`;
+    document.getElementById('couponRow').style.display = 'flex';
+  }
+}
+
+// ── Quantity change ───────────────────────────────────────────────────────────
+async function changeQty(cartItemId, newQty) {
+  if (newQty < 1) return removeItem(cartItemId, '');
+  try {
+    await updateCartItem(cartItemId, newQty);
+    await loadCart();
+  } catch (e) { showToast('Failed to update quantity', '❌'); }
+}
+
+// ── Remove item ───────────────────────────────────────────────────────────────
+async function removeItem(cartItemId, name) {
+  const el = document.getElementById(`item-${cartItemId}`);
+  if (el) { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; el.style.transition = 'all .3s'; }
+  try {
+    await removeFromCart(cartItemId);
+    await loadCart();
+    if (name) showToast(`${name} removed`, '🗑️');
+  } catch (e) { showToast('Failed to remove item', '❌'); if (el) { el.style.opacity = '1'; el.style.transform = ''; } }
+}
+
+// ── Save for later (wishlist) ─────────────────────────────────────────────────
+async function saveForLater(productId) {
+  try {
+    const added = await toggleWishlist(productId);
+    showToast(added ? 'Added to wishlist!' : 'Removed from wishlist', '❤️');
+  } catch (e) { showToast('Please sign in first', '⚠️'); }
+}
+
+// ── Coupon ────────────────────────────────────────────────────────────────────
+async function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim().toUpperCase();
+  if (!code) { showToast('Please enter a voucher code', '⚠️'); return; }
+
+  try {
+    // Check DB first
+    const { data } = await db.from('coupons').select('*').eq('code', code).eq('is_active', true).single();
+    if (data) {
+      const pct = data.discount_percent ? data.discount_percent / 100 : 0;
+      couponDiscountAmt = pct;
       couponApplied = true;
       document.getElementById('couponTag').style.display = 'flex';
-      document.getElementById('couponRow').style.display = 'flex';
-      updateTotal();
-      showToast('Voucher applied! -$5.00', '🎟️');
-    } else if (code === '') {
-      showToast('Please enter a voucher code', '⚠️');
-    } else {
-      showToast('Invalid voucher code', '❌');
+      document.getElementById('couponCode').textContent = code;
+      updateSummary();
+      showToast(`Voucher applied! ${Math.round(pct * 100)}% off`, '🎟️');
+      return;
     }
-  }
+  } catch (_) {}
 
-  function removeCoupon() {
-    couponApplied = false;
-    document.getElementById('couponTag').style.display = 'none';
-    document.getElementById('couponRow').style.display = 'none';
-    document.getElementById('couponInput').value = '';
-    updateTotal();
-    showToast('Voucher removed', '➖');
+  // Fallback local codes
+  if (VALID_COUPONS[code]) {
+    couponDiscountAmt = VALID_COUPONS[code];
+    couponApplied = true;
+    document.getElementById('couponTag').style.display = 'flex';
+    document.getElementById('couponCode').textContent = code;
+    updateSummary();
+    showToast(`Voucher applied! ${Math.round(couponDiscountAmt * 100)}% off`, '🎟️');
+  } else {
+    showToast('Invalid voucher code', '❌');
   }
+}
+
+function removeCoupon() {
+  couponApplied = false;
+  couponDiscountAmt = 0;
+  document.getElementById('couponTag').style.display = 'none';
+  document.getElementById('couponRow').style.display = 'none';
+  document.getElementById('couponInput').value = '';
+  updateSummary();
+  showToast('Voucher removed', '➖');
+}
+
+// ── Checkout ──────────────────────────────────────────────────────────────────
+function proceedToCheckout() {
+  if (!cartData.length) { showToast('Your cart is empty', '⚠️'); return; }
+  if (couponApplied) sessionStorage.setItem('l198_coupon', JSON.stringify({ code: document.getElementById('couponCode').textContent, discount: couponDiscountAmt }));
+  window.location.href = 'checkout-address.html';
+}
 </script>
 </body>
 </html>

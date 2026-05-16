@@ -3,455 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Tracking – L198</title>
+<title>My Orders – L198</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0a1f44; --navy-dark: #061530; --navy-mid: #122b5e; --navy-light: #1e3d7a;
-    --accent: #1a73e8; --gold: #f0b429; --gray-100: #f5f7fa; --gray-200: #eaecf0;
-    --gray-300: #d1d5db; --gray-500: #9ca3af; --gray-700: #4b5563; --gray-900: #111827;
-    --shadow-sm: 0 1px 4px rgba(10,31,68,0.08); --shadow-md: 0 4px 16px rgba(10,31,68,0.12);
-    --shadow-lg: 0 8px 32px rgba(10,31,68,0.18); --radius: 12px;
+    --navy:#0a1f44;--navy-dark:#061530;--navy-mid:#122b5e;--navy-light:#1e3d7a;
+    --accent:#1a73e8;--gold:#f0b429;--gray-100:#f5f7fa;--gray-200:#eaecf0;
+    --gray-300:#d1d5db;--gray-500:#9ca3af;--gray-700:#4b5563;--gray-900:#111827;
+    --shadow-sm:0 1px 4px rgba(10,31,68,0.08);--shadow-md:0 4px 16px rgba(10,31,68,0.12);
+    --shadow-lg:0 8px 32px rgba(10,31,68,0.18);--radius:12px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); color: var(--gray-900); font-size: 14px; }
-  a { text-decoration: none; color: inherit; }
-  button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-100);color:var(--gray-900);font-size:14px;}
+  a{text-decoration:none;color:inherit;}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit;}
+  .topbar{background:var(--navy-dark);color:#fff;font-size:12px;padding:7px 0;text-align:center;}
+  .topbar strong{color:var(--gold);margin:0 6px;}
+  header{background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 60%,var(--navy-mid) 100%);position:sticky;top:0;z-index:1000;box-shadow:0 2px 16px rgba(6,21,48,0.4);}
+  .header-inner{max-width:1260px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:18px;height:66px;}
+  .logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .logo-box{width:44px;height:44px;background:var(--gold);border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:var(--navy-dark);}
+  .logo-text{color:#fff;font-weight:800;font-size:22px;}
+  .logo-text span{color:var(--gold);}
+  .search-bar{flex:1;display:flex;align-items:center;background:rgba(255,255,255,0.97);border-radius:10px;overflow:hidden;height:42px;max-width:660px;}
+  .search-bar input{flex:1;border:none;outline:none;padding:0 16px;font-size:13.5px;font-family:inherit;}
+  .search-btn{background:var(--accent);color:#fff;height:100%;width:50px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .header-actions{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .hdr-btn{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,0.9);background:none;padding:6px 11px;border-radius:9px;font-size:11px;min-width:54px;}
+  .hdr-btn:hover{background:rgba(255,255,255,0.12);}
+  .hdr-btn .icon{font-size:20px;}
+  .main-wrap{max-width:900px;margin:0 auto;padding:28px 24px 56px;}
+  .page-title{font-size:22px;font-weight:800;margin-bottom:20px;}
 
-  .topbar { background: var(--navy-dark); color: #fff; font-size: 12px; padding: 7px 0; text-align: center; }
-  .topbar strong { color: var(--gold); margin: 0 6px; }
-  header { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 16px rgba(6,21,48,0.4); }
-  .header-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 18px; height: 66px; }
-  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .logo-box { width: 44px; height: 44px; background: var(--gold); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: var(--navy-dark); }
-  .logo-text { color: #fff; font-weight: 800; font-size: 22px; }
-  .logo-text span { color: var(--gold); }
-  .search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 10px; overflow: hidden; height: 42px; max-width: 660px; }
-  .search-bar input { flex: 1; border: none; outline: none; padding: 0 16px; font-size: 13.5px; font-family: inherit; }
-  .search-btn { background: var(--accent); color: #fff; height: 100%; width: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
-  .hdr-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(255,255,255,0.9); background: none; padding: 6px 11px; border-radius: 9px; font-size: 11px; min-width: 54px; }
-  .hdr-btn:hover { background: rgba(255,255,255,0.12); }
-  .hdr-btn .icon { font-size: 20px; }
+  /* Filter tabs */
+  .order-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .tab-btn{padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-200);background:#fff;color:var(--gray-700);transition:all .2s;}
+  .tab-btn:hover,.tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
-  .main-wrap { max-width: 1260px; margin: 0 auto; padding: 24px 24px 48px; }
-  .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-500); margin-bottom: 20px; }
-  .breadcrumb a { color: var(--accent); }
-  .breadcrumb span { color: var(--gray-300); }
+  /* Order cards */
+  .order-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-bottom:16px;overflow:hidden;border:1.5px solid transparent;transition:border-color .2s;}
+  .order-card:hover{border-color:var(--navy);}
+  .order-header-bar{background:var(--gray-100);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gray-200);}
+  .order-id-text{font-size:13px;font-weight:700;color:var(--gray-700);}
+  .order-date-text{font-size:12px;color:var(--gray-500);}
+  .order-status{font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;}
+  .status-pending,.status-confirmed,.status-processing{background:#eff6ff;color:#1d4ed8;}
+  .status-shipped{background:#fff8e1;color:#d97706;}
+  .status-delivered{background:#f0fdf4;color:#16a34a;}
+  .status-cancelled,.status-refunded{background:#fef2f2;color:#dc2626;}
 
-  /* Tracking Layout */
-  .tracking-layout { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+  .order-body{padding:16px 20px;}
+  .order-item-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--gray-100);}
+  .order-item-row:last-child{border:none;}
+  .item-img{width:52px;height:52px;border-radius:9px;background:linear-gradient(135deg,#e8f0fe,#c2d4fb);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0;}
+  .item-img img{width:100%;height:100%;object-fit:cover;}
+  .item-name{flex:1;font-size:13px;font-weight:500;line-height:1.4;}
+  .item-price{font-size:14px;font-weight:700;color:var(--navy);}
+  .item-qty{font-size:12px;color:var(--gray-500);}
 
-  /* Order Info Card */
-  .card { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
-  .card-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .order-footer-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--gray-200);}
+  .order-total-text{font-size:14px;font-weight:700;}
+  .order-actions{display:flex;gap:8px;}
+  .action-btn{font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .2s;}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:var(--navy-light);}
+  .btn-outline{background:none;border:1.5px solid var(--gray-200);color:var(--gray-700);}
+  .btn-outline:hover{border-color:var(--navy);color:var(--navy);}
+  .btn-danger{background:none;border:1.5px solid #fecaca;color:#dc2626;}
 
-  /* Order header */
-  .order-header-card { background: linear-gradient(135deg, var(--navy-dark), var(--navy)); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; }
-  .oh-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
-  .oh-id { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-  .oh-date { font-size: 12px; color: rgba(255,255,255,0.6); }
-  .oh-status { background: rgba(240,180,41,0.15); border: 1.5px solid var(--gold); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 700; color: var(--gold); }
-  .oh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .oh-item { }
-  .oh-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-  .oh-value { font-size: 14px; font-weight: 600; color: #fff; }
+  /* Tracking detail (expandable) */
+  .tracking-panel{display:none;padding:20px;background:#f9fafb;border-top:1px solid var(--gray-200);}
+  .tracking-panel.open{display:block;}
+  .track-timeline{padding-left:32px;position:relative;}
+  .track-timeline::before{content:'';position:absolute;left:10px;top:4px;bottom:4px;width:2px;background:var(--gray-200);}
+  .track-step{position:relative;margin-bottom:20px;}
+  .track-dot{position:absolute;left:-32px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--gray-300);background:#fff;top:0;}
+  .track-step.done .track-dot{background:#16a34a;border-color:#16a34a;color:#fff;}
+  .track-step.current .track-dot{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .track-title{font-size:13px;font-weight:700;color:var(--gray-900);}
+  .track-step.pending .track-title{color:var(--gray-400);}
+  .track-time{font-size:11px;color:var(--gray-500);margin-top:2px;}
 
-  /* Tracking timeline */
-  .tracking-timeline { position: relative; padding-left: 36px; }
-  .tracking-timeline::before { content: ''; position: absolute; left: 13px; top: 8px; bottom: 8px; width: 2px; background: var(--gray-200); }
+  .empty-state{text-align:center;padding:80px 20px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+  .empty-state .icon{font-size:64px;margin-bottom:16px;}
+  .loading-state{text-align:center;padding:60px;color:var(--gray-500);}
 
-  .track-step { position: relative; margin-bottom: 28px; }
-  .track-step:last-child { margin-bottom: 0; }
-
-  .track-dot { position: absolute; left: -36px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 3px solid var(--gray-200); background: #fff; top: 0; }
-  .track-step.done .track-dot { background: #16a34a; border-color: #16a34a; color: #fff; }
-  .track-step.current .track-dot { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 0 4px rgba(26,115,232,0.15); }
-  .track-step.pending .track-dot { background: #fff; border-color: var(--gray-300); color: var(--gray-300); }
-
-  .track-content { padding-top: 2px; }
-  .track-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
-  .track-step.pending .track-title { color: var(--gray-500); }
-  .track-desc { font-size: 12px; color: var(--gray-500); line-height: 1.5; }
-  .track-time { font-size: 11px; color: var(--gray-400); margin-top: 3px; font-weight: 500; }
-
-  .track-step.current .track-title { color: var(--accent); }
-  .track-step.current .track-desc { color: var(--gray-700); }
-
-  /* Map placeholder */
-  .map-box { background: linear-gradient(135deg, #e3f2fd, #c5cae9); border-radius: 12px; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; position: relative; overflow: hidden; }
-  .map-box::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Ccircle cx='200' cy='100' r='80' fill='none' stroke='rgba(26,115,232,0.15)' stroke-width='2'/%3E%3Ccircle cx='200' cy='100' r='50' fill='none' stroke='rgba(26,115,232,0.2)' stroke-width='2'/%3E%3C/svg%3E") center no-repeat; }
-  .map-pin { font-size: 48px; position: relative; z-index: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); animation: bounce 1s infinite; }
-  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-  .map-label { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; white-space: nowrap; }
-
-  /* Courier card */
-  .courier-card { display: flex; align-items: center; gap: 14px; background: var(--gray-100); border-radius: 11px; padding: 14px; margin-bottom: 16px; }
-  .courier-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #388e3c); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; font-weight: 700; flex-shrink: 0; }
-  .courier-info { flex: 1; }
-  .courier-name { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
-  .courier-sub { font-size: 12px; color: var(--gray-500); }
-  .courier-rating { color: var(--gold); font-size: 12px; }
-  .courier-actions { display: flex; gap: 8px; }
-  .courier-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all .2s; }
-  .btn-call { background: #dcfce7; }
-  .btn-chat { background: #dbeafe; }
-  .courier-btn:hover { transform: scale(1.1); }
-
-  /* Order Items */
-  .order-items-list { display: flex; flex-direction: column; gap: 12px; }
-  .order-item-row { display: flex; align-items: center; gap: 13px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
-  .order-item-row:last-child { border: none; }
-  .item-img { width: 60px; height: 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; flex-shrink: 0; }
-  .item-img::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--c1,#e8f0fe), var(--c2,#c2d4fb)); }
-  .item-img span { position: relative; z-index: 1; }
-  .item-body { flex: 1; }
-  .item-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
-  .item-variant { font-size: 11px; color: var(--gray-500); }
-  .item-qty-price { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; }
-  .item-qty { font-size: 12px; color: var(--gray-500); }
-  .item-price { font-size: 14px; font-weight: 700; color: var(--navy); }
-
-  /* Summary sidebar */
-  .summary-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
-  .summary-card .title { font-size: 15px; font-weight: 700; margin-bottom: 18px; }
-  .summary-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-  .summary-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-700); }
-  .summary-row .val { font-weight: 600; color: var(--gray-900); }
-  .summary-row .val.green { color: #16a34a; }
-  .summary-divider { height: 1px; background: var(--gray-200); margin: 12px 0; }
-  .total-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-  .total-row .label { font-size: 15px; font-weight: 700; }
-  .total-row .amount { font-size: 22px; font-weight: 800; color: var(--navy); }
-
-  .action-btns { display: flex; flex-direction: column; gap: 10px; }
-  .action-btn { width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .btn-primary { background: var(--navy); color: #fff; }
-  .btn-primary:hover { background: var(--navy-light); }
-  .btn-secondary { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
-  .btn-secondary:hover { border-color: var(--navy); color: var(--navy); }
-  .btn-danger { background: none; border: 1.5px solid #fecaca; color: #dc2626; }
-  .btn-danger:hover { background: #fef2f2; }
-
-  /* Delivery address */
-  .delivery-addr { background: var(--gray-100); border-radius: 11px; padding: 14px; }
-  .da-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; margin-bottom: 6px; }
-  .da-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-  .da-phone { font-size: 12px; color: var(--gray-500); margin-bottom: 5px; }
-  .da-addr { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
-
-  .payment-info { display: flex; gap: 10px; align-items: center; background: var(--gray-100); border-radius: 11px; padding: 12px 14px; }
-  .payment-info .p-icon { font-size: 22px; }
-  .payment-info .p-name { font-size: 13px; font-weight: 700; }
-  .payment-info .p-sub { font-size: 11px; color: var(--gray-500); }
-
-  footer { background: var(--navy-dark); color: #aab4c8; padding: 28px 0 18px; margin-top: 20px; }
-  .footer-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; }
-  .footer-bottom { display: flex; align-items: center; justify-content: space-between; }
-  .footer-bottom p { font-size: 12px; color: #4a5f7a; }
-  .payment-icons { display: flex; gap: 8px; }
-  .pay-icon { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 5px; padding: 4px 11px; font-size: 11px; color: #7a8fa8; font-weight: 600; }
-
-  .toast { position: fixed; top: 84px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
-  .toast.show { transform: translateX(0); }
+  footer{background:var(--navy-dark);color:#aab4c8;padding:28px 0 18px;margin-top:20px;}
+  .footer-inner{max-width:1260px;margin:0 auto;padding:0 24px;}
+  .footer-bottom{display:flex;align-items:center;justify-content:space-between;}
+  .footer-bottom p{font-size:12px;color:#4a5f7a;}
+  .toast{position:fixed;top:84px;right:22px;background:var(--navy-dark);color:#fff;padding:13px 20px;border-radius:11px;font-size:13px;box-shadow:var(--shadow-lg);z-index:9999;display:flex;align-items:center;gap:10px;transform:translateX(120%);transition:transform .3s ease;border-left:3px solid var(--gold);}
+  .toast.show{transform:translateX(0);}
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <span>🚀 Free delivery within Phnom Penh 1–2 hours!</span>
-  <strong>|</strong>
-  <span>📞 Customer Service: 016 955 598 (8AM–11PM)</span>
-</div>
-
+<div class="topbar"><span>🚀 Free delivery within Phnom Penh 1–2 hours!</span><strong>|</strong><span>📞 Customer Service: 016 955 598 (8AM–11PM)</span></div>
 <header>
   <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-box">L1</div>
-      <span class="logo-text">L<span>198</span></span>
-    </a>
-    <div class="search-bar">
-      <input type="text" placeholder="Search products, stores, brands...">
-      <button class="search-btn">🔍</button>
-    </div>
+    <a href="index.html" class="logo"><div class="logo-box">L1</div><span class="logo-text">L<span>198</span></span></a>
+    <div class="search-bar"><input type="text" placeholder="Search products, stores, brands..."><button class="search-btn">🔍</button></div>
     <div class="header-actions">
       <button class="hdr-btn"><span class="icon">🔔</span><span>Alerts</span></button>
-      <button class="hdr-btn"><span class="icon">❤️</span><span>Wishlist</span></button>
       <a href="cart.html" class="hdr-btn"><span class="icon">🛒</span><span>Cart</span></a>
-      <a href="profile.html" class="hdr-btn"><span class="icon">👤</span><span>Sophea</span></a>
+      <a href="profile.html" class="hdr-btn"><span class="icon">👤</span><span class="user-name">Account</span></a>
     </div>
   </div>
 </header>
 
 <div class="main-wrap">
-  <div class="breadcrumb">
-    <a href="index.html">Home</a><span>›</span>
-    <a href="profile.html">My Account</a><span>›</span>
-    <a href="profile.html">Orders</a><span>›</span>
-    <span style="color:var(--gray-700);">Order #L198-2025-04756</span>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+    <a href="profile.html" style="color:var(--accent);font-size:13px;font-weight:600;">← My Account</a>
+    <span style="color:var(--gray-300);">›</span>
+    <div class="page-title" style="margin:0;">📦 My Orders</div>
   </div>
 
-  <!-- Order header banner -->
-  <div class="order-header-card">
-    <div class="oh-top">
-      <div>
-        <div class="oh-id">📦 Order #L198-2025-04756</div>
-        <div class="oh-date">Placed on April 28, 2025 · 2 items · TechKhmer Store</div>
-      </div>
-      <div class="oh-status">🚚 Out for Delivery</div>
-    </div>
-    <div class="oh-grid">
-      <div class="oh-item">
-        <div class="oh-label">Estimated Arrival</div>
-        <div class="oh-value">Today, 3:00–5:00 PM</div>
-      </div>
-      <div class="oh-item">
-        <div class="oh-label">Order Total</div>
-        <div class="oh-value">$37.50</div>
-      </div>
-      <div class="oh-item">
-        <div class="oh-label">Payment Method</div>
-        <div class="oh-value">ABA Pay ✓ Paid</div>
-      </div>
-    </div>
+  <div class="order-tabs">
+    <button class="tab-btn active" onclick="filterOrders(this,'all')">All Orders</button>
+    <button class="tab-btn" onclick="filterOrders(this,'processing')">🚀 Active</button>
+    <button class="tab-btn" onclick="filterOrders(this,'shipped')">🚚 Shipped</button>
+    <button class="tab-btn" onclick="filterOrders(this,'delivered')">✅ Delivered</button>
+    <button class="tab-btn" onclick="filterOrders(this,'cancelled')">❌ Cancelled</button>
   </div>
 
-  <div class="tracking-layout">
-    <!-- LEFT -->
-    <div>
-      <!-- Map -->
-      <div class="card">
-        <div class="card-title">📍 Live Tracking</div>
-        <div class="map-box">
-          <div class="map-pin">🛵</div>
-          <div class="map-label">📍 5 min away · Street 63, BKK1</div>
-        </div>
-
-        <!-- Courier -->
-        <div class="courier-card">
-          <div class="courier-avatar">D</div>
-          <div class="courier-info">
-            <div class="courier-name">Dara Khun</div>
-            <div class="courier-sub">L198 Express Rider · <span class="courier-rating">★ 4.9</span> (2,341 deliveries)</div>
-            <div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Honda PCX · PNH 8821 B</div>
-          </div>
-          <div class="courier-actions">
-            <div class="courier-btn btn-call" onclick="showToast('Calling Dara...','📞')" title="Call">📞</div>
-            <div class="courier-btn btn-chat" onclick="showToast('Chat with Dara','💬')" title="Chat">💬</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tracking Timeline -->
-      <div class="card">
-        <div class="card-title">🗓️ Tracking History</div>
-        <div class="tracking-timeline">
-
-          <div class="track-step done">
-            <div class="track-dot">✓</div>
-            <div class="track-content">
-              <div class="track-title">Order Confirmed</div>
-              <div class="track-desc">Your order has been confirmed and payment received via ABA Pay.</div>
-              <div class="track-time">Apr 28, 2025 · 09:14 AM</div>
-            </div>
-          </div>
-
-          <div class="track-step done">
-            <div class="track-dot">✓</div>
-            <div class="track-content">
-              <div class="track-title">Processing at Seller</div>
-              <div class="track-desc">TechKhmer Store is preparing your items for dispatch.</div>
-              <div class="track-time">Apr 28, 2025 · 10:02 AM</div>
-            </div>
-          </div>
-
-          <div class="track-step done">
-            <div class="track-dot">✓</div>
-            <div class="track-content">
-              <div class="track-title">Picked Up by L198 Rider</div>
-              <div class="track-desc">Rider Dara Khun picked up the package from TechKhmer Store at Toul Tom Poung market area.</div>
-              <div class="track-time">Apr 28, 2025 · 12:45 PM</div>
-            </div>
-          </div>
-
-          <div class="track-step done">
-            <div class="track-dot">✓</div>
-            <div class="track-content">
-              <div class="track-title">En Route to You</div>
-              <div class="track-desc">Rider is heading toward BKK1 district. Estimated arrival: 3:00–5:00 PM.</div>
-              <div class="track-time">Apr 28, 2025 · 02:30 PM</div>
-            </div>
-          </div>
-
-          <div class="track-step current">
-            <div class="track-dot">🚚</div>
-            <div class="track-content">
-              <div class="track-title">Arriving Soon — 5 min away!</div>
-              <div class="track-desc">Your rider is very close. Please make sure someone is available to receive the package at your delivery address.</div>
-              <div class="track-time">Now · Apr 28, 2025 · 03:52 PM</div>
-            </div>
-          </div>
-
-          <div class="track-step pending">
-            <div class="track-dot">📦</div>
-            <div class="track-content">
-              <div class="track-title">Delivered</div>
-              <div class="track-desc">Package delivered and confirmed.</div>
-              <div class="track-time">Pending</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Items in this order -->
-      <div class="card">
-        <div class="card-title">🛍️ Items in This Order</div>
-        <div class="order-items-list">
-          <div class="order-item-row">
-            <div class="item-img" style="--c1:#ede7f6;--c2:#d1c4e9;"><span>💄</span></div>
-            <div class="item-body">
-              <div class="item-name">Korean Skincare Gift Set 6-piece Glow & Moisture</div>
-              <div class="item-variant">Set: Complete · Flash Sale -40%</div>
-              <div class="item-qty-price">
-                <span class="item-qty">Qty: 1</span>
-                <span class="item-price">$15.50</span>
-              </div>
-            </div>
-          </div>
-          <div class="order-item-row">
-            <div class="item-img" style="--c1:#fff8e1;--c2:#ffe082;"><span>⌚</span></div>
-            <div class="item-body">
-              <div class="item-name">Smart Watch Fitness Tracker Heart Rate GPS Monitor</div>
-              <div class="item-variant">Size: 44mm · Color: Black</div>
-              <div class="item-qty-price">
-                <span class="item-qty">Qty: 1</span>
-                <span class="item-price">$22.00</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT SIDEBAR -->
-    <div>
-      <div class="summary-card">
-        <div class="title">Order Summary</div>
-
-        <div class="summary-rows">
-          <div class="summary-row"><span>Subtotal (2 items)</span><span class="val">$37.50</span></div>
-          <div class="summary-row"><span>Delivery fee</span><span class="val green">FREE</span></div>
-          <div class="summary-row"><span>Discount applied</span><span class="val green">-$10.99</span></div>
-        </div>
-
-        <div class="summary-divider"></div>
-        <div class="total-row">
-          <span class="label">Total Paid</span>
-          <span class="amount">$37.50</span>
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin-bottom:8px;">Payment</div>
-          <div class="payment-info">
-            <div class="p-icon">💳</div>
-            <div>
-              <div class="p-name">ABA Pay</div>
-              <div class="p-sub">Paid · Ref: ABA2025-042891</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <div style="font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;margin-bottom:8px;">Delivery Address</div>
-          <div class="delivery-addr">
-            <div class="da-name">Sophea Ros</div>
-            <div class="da-phone">+855 10 123 456</div>
-            <div class="da-addr">Street 63, Boeung Keng Kang I, Khan Chamkarmon, Phnom Penh 12302</div>
-          </div>
-        </div>
-
-        <div class="action-btns">
-          <button class="action-btn btn-primary" onclick="showToast('Contacting support...','💬')">💬 Contact Support</button>
-          <button class="action-btn btn-secondary" onclick="showToast('Receipt downloaded','📄')">📄 Download Receipt</button>
-          <a href="profile.html"><button class="action-btn btn-secondary" style="width:100%;">← Back to My Orders</button></a>
-          <button class="action-btn btn-danger" onclick="showToast('Cancel request submitted','❌')">✕ Request Cancellation</button>
-        </div>
-
-        <div style="margin-top:16px;background:var(--gray-100);border-radius:10px;padding:12px 14px;">
-          <div style="font-size:12px;font-weight:700;color:var(--gray-700);margin-bottom:5px;">🎟️ Return Policy</div>
-          <div style="font-size:11px;color:var(--gray-500);line-height:1.6;">If you're not satisfied with your order, you can return it within 7 days of delivery. Items must be unused and in original packaging.</div>
-        </div>
-      </div>
-
-      <!-- Rate your experience -->
-      <div class="card" style="margin-top:16px;">
-        <div class="card-title">⭐ Rate Your Experience</div>
-        <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Once delivered, rate the seller and rider to help other shoppers.</p>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--gray-100);border-radius:9px;">
-            <span style="font-size:13px;font-weight:600;">TechKhmer Store</span>
-            <div id="storeStars" style="display:flex;gap:4px;cursor:pointer;">
-              <span class="star" onclick="setStars('storeStars',1)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span class="star" onclick="setStars('storeStars',2)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span class="star" onclick="setStars('storeStars',3)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span class="star" onclick="setStars('storeStars',4)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span class="star" onclick="setStars('storeStars',5)" style="font-size:22px;color:var(--gray-300);">★</span>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--gray-100);border-radius:9px;">
-            <span style="font-size:13px;font-weight:600;">Rider: Dara Khun</span>
-            <div id="riderStars" style="display:flex;gap:4px;cursor:pointer;">
-              <span onclick="setStars('riderStars',1)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span onclick="setStars('riderStars',2)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span onclick="setStars('riderStars',3)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span onclick="setStars('riderStars',4)" style="font-size:22px;color:var(--gray-300);">★</span>
-              <span onclick="setStars('riderStars',5)" style="font-size:22px;color:var(--gray-300);">★</span>
-            </div>
-          </div>
-        </div>
-        <button style="width:100%;margin-top:12px;background:var(--gold);color:var(--navy-dark);border-radius:10px;padding:11px;font-size:13px;font-weight:700;transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''" onclick="showToast('Thank you for rating!','⭐')">Submit Ratings</button>
-      </div>
-    </div>
-  </div>
+  <div id="ordersList"><div class="loading-state">⏳ Loading your orders...</div></div>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-bottom">
-      <p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p>
-      <div class="payment-icons">
-        <div class="pay-icon">ABA Pay</div><div class="pay-icon">KHQR</div>
-        <div class="pay-icon">Wing</div><div class="pay-icon">Visa</div><div class="pay-icon">COD</div>
-      </div>
-    </div>
-  </div>
-</footer>
+<footer><div class="footer-inner"><div class="footer-bottom"><p>© 2010–2025 L198.COM · Little Digital (Cambodia) Co., Ltd.</p></div></div></footer>
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Done!</span></div>
 
-<div class="toast" id="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Done!</span>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script>
-  let toastTimer;
-  function showToast(msg, icon='✅') {
-    clearTimeout(toastTimer);
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    document.getElementById('toastIcon').textContent = icon;
-    t.classList.add('show');
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+let allOrders = [];
+let currentFilter = 'all';
+let activeSubscriptions = [];
+
+const STATUS_STEPS = ['pending','confirmed','processing','shipped','delivered'];
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(async () => {
+  await requireAuth('login.html');
+  await loadOrders();
+})();
+
+async function loadOrders() {
+  try {
+    allOrders = await getOrders();
+    // Subscribe to real-time updates for active orders
+    allOrders.forEach(order => {
+      if (['pending','confirmed','processing','shipped'].includes(order.status)) {
+        const sub = subscribeToOrder(order.id, (updated) => {
+          const idx = allOrders.findIndex(o => o.id === updated.id);
+          if (idx !== -1) { allOrders[idx] = { ...allOrders[idx], ...updated }; renderOrders(); }
+        });
+        activeSubscriptions.push(sub);
+      }
+    });
+    renderOrders();
+  } catch (e) {
+    document.getElementById('ordersList').innerHTML = '<div class="loading-state">❌ Failed to load orders. Please refresh.</div>';
+  }
+}
+
+function filterOrders(btn, filter) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = filter;
+  renderOrders();
+}
+
+function renderOrders() {
+  const el = document.getElementById('ordersList');
+  let filtered = allOrders;
+  if (currentFilter !== 'all') {
+    const activeStatuses = ['pending','confirmed','processing'];
+    if (currentFilter === 'processing') filtered = allOrders.filter(o => activeStatuses.includes(o.status));
+    else filtered = allOrders.filter(o => o.status === currentFilter);
   }
 
-  function setStars(containerId, rating) {
-    const container = document.getElementById(containerId);
-    const stars = container.querySelectorAll('span');
-    stars.forEach((s, i) => {
-      s.style.color = i < rating ? '#f0b429' : '#d1d5db';
-    });
-    showToast('Rated ' + rating + ' star' + (rating > 1 ? 's' : '') + '!', '⭐');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">📦</div><h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">No orders found</h3><p style="color:var(--gray-500);margin-bottom:20px;">${currentFilter === 'all' ? "You haven't placed any orders yet." : 'No orders in this category.'}</p><a href="index.html" style="background:var(--navy);color:#fff;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">Shop Now →</a></div>`;
+    return;
   }
+
+  el.innerHTML = filtered.map(order => `
+    <div class="order-card">
+      <div class="order-header-bar">
+        <div>
+          <div class="order-id-text">Order #${order.id.slice(0,8).toUpperCase()}</div>
+          <div class="order-date-text">${new Date(order.created_at).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}</div>
+        </div>
+        <span class="order-status status-${order.status}">${formatStatus(order.status)}</span>
+      </div>
+
+      <div class="order-body">
+        ${(order.items || []).map(item => `
+          <div class="order-item-row">
+            <div class="item-img">${item.product_image_url ? `<img src="${item.product_image_url}" alt="">` : '🛍️'}</div>
+            <div class="item-name">${item.product_name}</div>
+            <div class="item-qty">×${item.quantity}</div>
+            <div class="item-price">$${Number(item.unit_price).toFixed(2)}</div>
+          </div>`).join('')}
+
+        ${isActive(order.status) ? `
+        <div class="track-timeline" style="margin-top:16px;">
+          ${STATUS_STEPS.map(s => {
+            const idx = STATUS_STEPS.indexOf(s);
+            const curIdx = STATUS_STEPS.indexOf(order.status);
+            const cls = idx < curIdx ? 'done' : idx === curIdx ? 'current' : 'pending';
+            return `<div class="track-step ${cls}">
+              <div class="track-dot">${idx < curIdx ? '✓' : idx === curIdx ? '▶' : '○'}</div>
+              <div class="track-title">${formatStatus(s)}</div>
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+      </div>
+
+      <div class="order-footer-bar">
+        <div class="order-total-text">Total: $${Number(order.total).toFixed(2)}</div>
+        <div class="order-actions">
+          ${order.status === 'delivered'
+            ? `<button class="action-btn btn-outline" onclick="showToast('Review feature coming soon!','⭐')">⭐ Review</button>
+               <button class="action-btn btn-primary" onclick="showToast('Reorder feature coming soon!','🔄')">🔄 Reorder</button>`
+            : isActive(order.status)
+              ? `<button class="action-btn btn-danger" onclick="requestCancel('${order.id}')">✕ Cancel</button>`
+              : ''}
+          <button class="action-btn btn-outline" onclick="showToast('Receipt download coming soon!','📄')">📄 Receipt</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function formatStatus(s) {
+  const map = { pending:'⏳ Pending', confirmed:'✅ Confirmed', processing:'⚙️ Processing', shipped:'🚚 Shipped', delivered:'✅ Delivered', cancelled:'❌ Cancelled', refunded:'↩️ Refunded' };
+  return map[s] || s;
+}
+
+function isActive(s) { return ['pending','confirmed','processing','shipped'].includes(s); }
+
+async function requestCancel(orderId) {
+  if (!confirm('Request cancellation for this order?')) return;
+  try {
+    await db.from('orders').update({ status: 'cancelled' }).eq('id', orderId);
+    await loadOrders();
+    showToast('Cancellation requested', '❌');
+  } catch (e) { showToast('Failed to cancel', '❌'); }
+}
 </script>
 </body>
 </html>

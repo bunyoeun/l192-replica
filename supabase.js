@@ -1,16 +1,14 @@
 /**
  * supabase.js — L198 Marketplace
  * Supabase integration for vanilla HTML/JS frontend
- *
  * Place this file in the root of your repo alongside your HTML files.
  * Include it in every page BEFORE your page-specific scripts:
- *
  *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  *   <script src="supabase.js"></script>
  */
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const SUPABASE_URL     = 'https://vbhgmxyaeucxwqpwutxm.supabase.co';
+const SUPABASE_URL = 'https://vbhgmxyaeucxwqpwutxm.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_XpnU1F6yJjetKXXyLW37Mg_rgZOoC4F';
 
 // ─── CLIENT ──────────────────────────────────────────────────────────────────
@@ -287,7 +285,7 @@ async function toggleWishlist(productId) {
     return false; // removed
   } else {
     await db.from('wishlists').insert({ user_id: user.id, product_id: productId });
-    return true;  // added
+    return true; // added
   }
 }
 
@@ -319,42 +317,46 @@ async function placeOrder(opts = {}) {
   const cartItems = await getCart();
   if (!cartItems.length) throw new Error('Cart is empty');
 
-  const subtotal     = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
   const shippingCost = 2.50;
-  const tax          = +(subtotal * 0.1).toFixed(2);
-  const total        = +(subtotal + shippingCost + tax).toFixed(2);
+  const tax = +(subtotal * 0.1).toFixed(2);
+  const total = +(subtotal + shippingCost + tax).toFixed(2);
 
+  // Create order
   const { data: order, error: orderError } = await db
     .from('orders')
     .insert({
-      user_id:             user.id,
+      user_id: user.id,
       shipping_address_id: opts.shippingAddressId || null,
       subtotal,
-      shipping_cost:       shippingCost,
+      shipping_cost: shippingCost,
       tax,
       total,
-      notes:               opts.notes || null,
+      notes: opts.notes || null,
     })
     .select()
     .single();
 
   if (orderError) throw orderError;
 
+  // Create order items (snapshot prices)
   const orderItems = cartItems.map(item => ({
-    order_id:          order.id,
-    product_id:        item.product.id,
-    store_id:          item.product.store_id,
-    product_name:      item.product.name,
+    order_id: order.id,
+    product_id: item.product.id,
+    store_id: item.product.store_id,
+    product_name: item.product.name,
     product_image_url: item.product.images?.[0]?.url || null,
-    unit_price:        item.product.price,
-    quantity:          item.quantity,
-    subtotal:          +(item.product.price * item.quantity).toFixed(2),
+    unit_price: item.product.price,
+    quantity: item.quantity,
+    subtotal: +(item.product.price * item.quantity).toFixed(2),
   }));
 
   const { error: itemsError } = await db.from('order_items').insert(orderItems);
   if (itemsError) throw itemsError;
 
+  // Clear cart after order
   await clearCart();
+
   return order;
 }
 
@@ -407,9 +409,9 @@ function subscribeToOrder(orderId, callback) {
   return db
     .channel(`order-${orderId}`)
     .on('postgres_changes', {
-      event:  'UPDATE',
+      event: 'UPDATE',
       schema: 'public',
-      table:  'orders',
+      table: 'orders',
       filter: `id=eq.${orderId}`
     }, payload => callback(payload.new))
     .subscribe();
@@ -424,9 +426,9 @@ async function subscribeToCart(callback) {
   return db
     .channel('cart')
     .on('postgres_changes', {
-      event:  '*',
+      event: '*',
       schema: 'public',
-      table:  'cart_items',
+      table: 'cart_items',
       filter: `user_id=eq.${user.id}`
     }, () => callback())
     .subscribe();
@@ -461,7 +463,7 @@ async function markNotificationRead(notificationId) {
 async function uploadAvatar(file) {
   const user = await getCurrentUser();
   if (!user) throw new Error('Not authenticated');
-  const ext  = file.name.split('.').pop();
+  const ext = file.name.split('.').pop();
   const path = `${user.id}/avatar.${ext}`;
   const { error } = await db.storage.from('avatars').upload(path, file, { upsert: true });
   if (error) throw error;
@@ -476,7 +478,7 @@ async function uploadAvatar(file) {
  * @param {string} productId
  */
 async function uploadProductImage(file, productId) {
-  const ext  = file.name.split('.').pop();
+  const ext = file.name.split('.').pop();
   const path = `${productId}/${Date.now()}.${ext}`;
   const { error } = await db.storage.from('product-images').upload(path, file);
   if (error) throw error;
@@ -507,12 +509,14 @@ function showToast(msg, icon = '✅', duration = 3000) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'sb-toast';
-    toast.style.cssText = `position:fixed;top:24px;right:22px;background:#0a1f44;color:#fff;
+    toast.style.cssText = `
+      position:fixed;top:24px;right:22px;background:#0a1f44;color:#fff;
       padding:13px 20px;border-radius:11px;font-size:13px;font-family:inherit;
       box-shadow:0 8px 32px rgba(10,31,68,0.18);z-index:9999;
       display:flex;align-items:center;gap:10px;
       transform:translateX(120%);transition:transform .3s ease;
-      border-left:3px solid #f0b429;`;
+      border-left:3px solid #f0b429;
+    `;
     document.body.appendChild(toast);
   }
   toast.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
@@ -529,6 +533,7 @@ function showToast(msg, icon = '✅', duration = 3000) {
 db.auth.onAuthStateChange(async (event, session) => {
   const user = session?.user;
 
+  // Show/hide elements based on auth state
   document.querySelectorAll('.auth-show').forEach(el => el.style.display = user ? '' : 'none');
   document.querySelectorAll('.auth-hide').forEach(el => el.style.display = user ? 'none' : '');
 
