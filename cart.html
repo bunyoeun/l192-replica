@@ -331,10 +331,10 @@
         </div>
 
         <div class="summary-rows">
-          <div class="summary-row"><span>Subtotal (3 items)</span><span class="val">$50.00</span></div>
+          <div class="summary-row"><span>Subtotal (3 items)</span><span class="val" id="sum-subtotal">$50.00</span></div>
           <div class="summary-row"><span>Original price</span><span class="val" style="text-decoration:line-through;color:var(--gray-500);">$74.49</span></div>
-          <div class="summary-row"><span>Item discounts</span><span class="val green">-$24.49</span></div>
-          <div class="summary-row" id="couponRow" style="display:none;"><span>Voucher (SAVE10)</span><span class="val green">-$5.00</span></div>
+          <div class="summary-row"><span>Item discounts</span><span class="val green" id="sum-discount">-$24.49</span></div>
+          <div class="summary-row" id="couponRow" style="display:none;"><span>Voucher (SAVE10)</span><span class="val green" id="sum-coupon">-$5.00</span></div>
           <div class="summary-row"><span>Delivery fee</span><span class="val green">FREE 🎉</span></div>
         </div>
 
@@ -348,7 +348,7 @@
           <div class="amount" id="totalAmount">$50.00</div>
         </div>
 
-        <button class="checkout-btn" onclick="window.location.href='orders.html'">
+        <button class="checkout-btn" onclick="window.location.href='checkout-address.html'">
           Proceed to Checkout →
         </button>
         <a href="index.html"><button class="continue-btn">← Continue Shopping</button></a>
@@ -387,6 +387,9 @@
   <span id="toastMsg">Done!</span>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="init.js"></script>
 <script>
   let toastTimer, couponApplied = false;
 
