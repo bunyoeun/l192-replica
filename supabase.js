@@ -130,7 +130,7 @@ async function redirectIfAuthed(redirectTo = 'index.html') {
 
 /**
  * Fetch active products (with optional filters)
- * @param {{ categoryId, storeId, search, limit, offset }} opts
+ * @param {{ categoryId, storeId, search, limit, offset, order }} opts
  */
 async function getProducts(opts = {}) {
   let query = db
@@ -165,6 +165,20 @@ async function getProduct(slug) {
 }
 
 /**
+ * Fetch a single product by UUID
+ */
+async function getProductById(id) {
+  const { data, error } = await db
+    .from('products')
+    .select(`*, store:stores(*), category:categories(*), images:product_images(*)`)
+    .eq('id', id)
+    .eq('status', 'active')
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+/**
  * Fetch all categories
  */
 async function getCategories() {
@@ -183,7 +197,7 @@ async function getCart() {
   if (!user) return [];
   const { data, error } = await db
     .from('cart_items')
-    .select(`*, product:products(id, name, price, slug, images:product_images(url))`)
+    .select(`*, product:products(id, name, price, slug, store_id, images:product_images(url, position))`)
     .eq('user_id', user.id);
   if (error) throw error;
   return data;
@@ -265,7 +279,7 @@ async function getWishlist() {
   if (!user) return [];
   const { data, error } = await db
     .from('wishlists')
-    .select(`*, product:products(id, name, price, slug, images:product_images(url))`)
+    .select(`*, product:products(id, name, price, slug, images:product_images(url, position))`)
     .eq('user_id', user.id);
   if (error) throw error;
   return data;
@@ -309,8 +323,24 @@ async function getOrders() {
 }
 
 /**
+ * Get a single order by ID (with items and shipping address)
+ */
+async function getOrder(orderId) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('Not authenticated');
+  const { data, error } = await db
+    .from('orders')
+    .select(`*, items:order_items(*), shipping_address:addresses(*)`)
+    .eq('id', orderId)
+    .eq('user_id', user.id)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+/**
  * Place an order from current cart
- * @param {{ shippingAddressId, notes, couponCode }} opts
+ * @param {{ shippingAddressId, notes, couponCode, discount }} opts
  */
 async function placeOrder(opts = {}) {
   const user = await getCurrentUser();
@@ -322,7 +352,8 @@ async function placeOrder(opts = {}) {
   const subtotal     = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
   const shippingCost = 2.50;
   const tax          = +(subtotal * 0.1).toFixed(2);
-  const total        = +(subtotal + shippingCost + tax).toFixed(2);
+  const discount     = opts.discount || 0;
+  const total        = +(subtotal + shippingCost + tax - discount).toFixed(2);
 
   const { data: order, error: orderError } = await db
     .from('orders')
@@ -332,6 +363,7 @@ async function placeOrder(opts = {}) {
       subtotal,
       shipping_cost:       shippingCost,
       tax,
+      discount,
       total,
       notes:               opts.notes || null,
     })
@@ -363,7 +395,11 @@ async function placeOrder(opts = {}) {
 async function getAddresses() {
   const user = await getCurrentUser();
   if (!user) return [];
-  const { data, error } = await db.from('addresses').select('*').eq('user_id', user.id);
+  const { data, error } = await db
+    .from('addresses')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('is_default', { ascending: false });
   if (error) throw error;
   return data;
 }
@@ -374,6 +410,75 @@ async function addAddress(address) {
   const { data, error } = await db.from('addresses').insert({ ...address, user_id: user.id }).select().single();
   if (error) throw error;
   return data;
+}
+
+async function updateAddress(addressId, updates) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('Not authenticated');
+  const { data, error } = await db
+    .from('addresses')
+    .update(updates)
+    .eq('id', addressId)
+    .eq('user_id', user.id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+async function deleteAddress(addressId) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('Not authenticated');
+  const { error } = await db
+    .from('addresses')
+    .delete()
+    .eq('id', addressId)
+    .eq('user_id', user.id);
+  if (error) throw error;
+}
+
+async function setDefaultAddress(addressId) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('Not authenticated');
+  // Clear all defaults for user, then set the chosen one
+  await db.from('addresses').update({ is_default: false }).eq('user_id', user.id);
+  const { data, error } = await db
+    .from('addresses')
+    .update({ is_default: true })
+    .eq('id', addressId)
+    .eq('user_id', user.id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// ─── COUPONS ─────────────────────────────────────────────────────────────────
+
+/**
+ * Validate a coupon code against the current subtotal.
+ * Returns the coupon row (with discount_percent / discount_amount) or throws.
+ */
+async function validateCoupon(code, subtotal) {
+  const { data, error } = await db
+    .from('coupons')
+    .select('*')
+    .eq('code', code.toUpperCase())
+    .eq('is_active', true)
+    .single();
+
+  if (error || !data) throw new Error('Invalid or expired coupon code');
+  if (data.expires_at && new Date(data.expires_at) < new Date()) throw new Error('Coupon has expired');
+  if (data.max_uses && data.uses_count >= data.max_uses) throw new Error('Coupon usage limit reached');
+  if (data.min_order_amount && subtotal < data.min_order_amount)
+    throw new Error(`Minimum order amount of $${data.min_order_amount.toFixed(2)} required`);
+
+  // Calculate discount amount
+  let discountAmount = 0;
+  if (data.discount_percent) discountAmount = +(subtotal * data.discount_percent / 100).toFixed(2);
+  else if (data.discount_amount) discountAmount = +data.discount_amount.toFixed(2);
+
+  return { ...data, discountAmount };
 }
 
 // ─── REVIEWS ─────────────────────────────────────────────────────────────────
@@ -392,8 +497,8 @@ async function addReview(productId, rating, title, body) {
 
 // ─── SEARCH ──────────────────────────────────────────────────────────────────
 
-async function searchProducts(query) {
-  return getProducts({ search: query, limit: 30 });
+async function searchProducts(query, opts = {}) {
+  return getProducts({ search: query, limit: opts.limit || 30, ...opts });
 }
 
 // ─── REALTIME ────────────────────────────────────────────────────────────────
@@ -551,11 +656,12 @@ db.auth.onAuthStateChange(async (event, session) => {
 export {
   db, signUp, signIn, signInWithGoogle, signOut, sendPasswordReset,
   getCurrentUser, getProfile, updateProfile, requireAuth, redirectIfAuthed,
-  getProducts, getProduct, getCategories, searchProducts,
+  getProducts, getProduct, getProductById, getCategories, searchProducts,
   getCart, addToCart, updateCartItem, removeFromCart, clearCart, getCartCount,
   getWishlist, toggleWishlist,
-  getOrders, placeOrder,
-  getAddresses, addAddress,
+  getOrders, getOrder, placeOrder,
+  getAddresses, addAddress, updateAddress, deleteAddress, setDefaultAddress,
+  validateCoupon,
   addReview,
   subscribeToOrder, subscribeToCart,
   getNotifications, markNotificationRead,
