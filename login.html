@@ -18,86 +18,49 @@
   a { text-decoration: none; color: inherit; }
   button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 
-  /* Page layout */
-  .page-container {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+  .page-container { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
 
-  /* Left side – decorative panel */
   .left-panel {
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-light) 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px;
-    position: relative;
-    overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 48px; position: relative; overflow: hidden;
   }
-
   .left-panel::before {
-    content: '';
-    position: absolute;
-    top: -100px; right: -100px;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: rgba(240,180,41,0.08);
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 400px; height: 400px; border-radius: 50%; background: rgba(240,180,41,0.08);
   }
   .left-panel::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: -80px;
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    background: rgba(26,115,232,0.15);
+    content: ''; position: absolute; bottom: -80px; left: -80px;
+    width: 300px; height: 300px; border-radius: 50%; background: rgba(26,115,232,0.15);
   }
 
   .left-content { position: relative; z-index: 1; text-align: center; max-width: 380px; }
-
   .left-logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 40px; }
   .logo-box { width: 52px; height: 52px; background: var(--gold); border-radius: 13px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; color: var(--navy-dark); box-shadow: 0 4px 16px rgba(240,180,41,0.4); }
   .logo-name { font-size: 28px; font-weight: 800; color: #fff; }
   .logo-name span { color: var(--gold); }
-
   .left-headline { font-size: 30px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
   .left-headline span { color: var(--gold); }
   .left-sub { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 36px; }
-
   .left-features { display: flex; flex-direction: column; gap: 14px; text-align: left; }
   .left-feat { display: flex; align-items: flex-start; gap: 12px; }
   .left-feat .feat-icon { font-size: 22px; flex-shrink: 0; }
   .left-feat strong { display: block; font-size: 14px; font-weight: 700; color: #fff; }
   .left-feat span { font-size: 12px; color: rgba(255,255,255,0.6); }
-
   .left-stats { display: flex; gap: 24px; margin-top: 40px; justify-content: center; }
   .stat { text-align: center; }
   .stat-num { font-size: 22px; font-weight: 800; color: var(--gold); }
   .stat-label { font-size: 11px; color: rgba(255,255,255,0.55); }
 
-  /* Right side – auth form */
-  .right-panel {
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 56px;
-    overflow-y: auto;
-  }
-
+  .right-panel { background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 56px; overflow-y: auto; }
   .auth-box { width: 100%; max-width: 420px; }
 
-  /* Tabs */
   .auth-tabs { display: flex; border: 1.5px solid var(--gray-200); border-radius: 11px; overflow: hidden; margin-bottom: 28px; }
   .auth-tab { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: 600; color: var(--gray-500); cursor: pointer; transition: all .2s; }
   .auth-tab.active { background: var(--navy); color: #fff; }
-
   .auth-panel { display: none; }
   .auth-panel.active { display: block; }
 
-  /* Social login */
   .social-login { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
   .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; border: 1.5px solid var(--gray-200); border-radius: 11px; padding: 12px; font-size: 14px; font-weight: 600; color: var(--gray-900); cursor: pointer; transition: all .2s; }
   .social-btn:hover { border-color: var(--navy); background: var(--gray-100); }
@@ -106,7 +69,6 @@
   .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; color: var(--gray-300); font-size: 12px; }
   .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
 
-  /* Form */
   .form-group { margin-bottom: 16px; }
   .form-label { font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; display: block; }
   .form-input { width: 100%; border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--gray-900); outline: none; transition: border-color .2s; }
@@ -128,23 +90,18 @@
   .terms-check input { accent-color: var(--navy); margin-top: 2px; flex-shrink: 0; }
   .terms-check a { color: var(--accent); }
 
-  /* Phone option */
   .phone-input-wrap { display: flex; gap: 8px; }
   .phone-code { border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--gray-900); outline: none; width: 90px; font-weight: 600; }
 
   .submit-btn { width: 100%; background: var(--navy); color: #fff; padding: 14px; border-radius: 11px; font-size: 15px; font-weight: 700; transition: all .2s; margin-bottom: 16px; }
   .submit-btn:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
   .auth-switch { text-align: center; font-size: 13px; color: var(--gray-500); }
   .auth-switch a { color: var(--accent); font-weight: 600; cursor: pointer; }
 
-  /* OTP box */
-  .otp-sent { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 11px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: #166534; display: none; align-items: center; gap: 10px; }
-  .otp-boxes { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; }
-  .otp-box { width: 50px; height: 56px; border: 2px solid var(--gray-200); border-radius: 10px; text-align: center; font-size: 22px; font-weight: 700; font-family: inherit; outline: none; transition: border-color .2s; }
-  .otp-box:focus { border-color: var(--navy); }
+  .reset-sent { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 11px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: #166534; display: none; align-items: center; gap: 10px; }
 
-  /* Error/success states */
   .form-error { font-size: 12px; color: #dc2626; margin-top: 5px; display: none; }
   .form-group.has-error .form-input { border-color: #dc2626; }
   .form-group.has-error .form-error { display: block; }
@@ -152,15 +109,11 @@
   .back-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); font-weight: 600; cursor: pointer; margin-bottom: 28px; }
   .back-link:hover { text-decoration: underline; }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .page-container { grid-template-columns: 1fr; }
     .left-panel { display: none; }
     .right-panel { padding: 32px 24px; }
   }
-
-  .toast { position: fixed; top: 24px; right: 22px; background: var(--navy-dark); color: #fff; padding: 13px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow-lg); z-index: 9999; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform .3s ease; border-left: 3px solid var(--gold); }
-  .toast.show { transform: translateX(0); }
 </style>
 </head>
 <body>
@@ -173,29 +126,14 @@
         <div class="logo-box">L1</div>
         <span class="logo-name">L<span>198</span></span>
       </div>
-
       <h1 class="left-headline">Cambodia's #1<br><span>Online Shopping</span><br>Platform</h1>
       <p class="left-sub">Join millions of Cambodian shoppers. Get exclusive deals, fast delivery, and shop from thousands of verified sellers.</p>
-
       <div class="left-features">
-        <div class="left-feat">
-          <span class="feat-icon">🚀</span>
-          <div><strong>Same-Day Delivery in Phnom Penh</strong><span>Order by 3PM, receive by evening</span></div>
-        </div>
-        <div class="left-feat">
-          <span class="feat-icon">🔒</span>
-          <div><strong>100% Secure Payments</strong><span>ABA Pay, KHQR, Wing, Visa & COD</span></div>
-        </div>
-        <div class="left-feat">
-          <span class="feat-icon">↩️</span>
-          <div><strong>Easy 7-Day Returns</strong><span>No questions asked return policy</span></div>
-        </div>
-        <div class="left-feat">
-          <span class="feat-icon">🏅</span>
-          <div><strong>Genuine Products Guaranteed</strong><span>All sellers verified by L198</span></div>
-        </div>
+        <div class="left-feat"><span class="feat-icon">🚀</span><div><strong>Same-Day Delivery in Phnom Penh</strong><span>Order by 3PM, receive by evening</span></div></div>
+        <div class="left-feat"><span class="feat-icon">🔒</span><div><strong>100% Secure Payments</strong><span>ABA Pay, KHQR, Wing, Visa &amp; COD</span></div></div>
+        <div class="left-feat"><span class="feat-icon">↩️</span><div><strong>Easy 7-Day Returns</strong><span>No questions asked return policy</span></div></div>
+        <div class="left-feat"><span class="feat-icon">🏅</span><div><strong>Genuine Products Guaranteed</strong><span>All sellers verified by L198</span></div></div>
       </div>
-
       <div class="left-stats">
         <div class="stat"><div class="stat-num">2M+</div><div class="stat-label">Shoppers</div></div>
         <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Products</div></div>
@@ -214,25 +152,22 @@
         <div class="auth-tab" onclick="switchAuth('register')">Create Account</div>
       </div>
 
-      <!-- LOGIN PANEL -->
+      <!-- LOGIN -->
       <div class="auth-panel active" id="loginPanel">
         <div class="social-login">
-          <button class="social-btn" onclick="showToast('Connecting to Google...','🔵')">
+          <button class="social-btn" onclick="signInWithGoogle()">
             <span class="s-icon">🌐</span> Continue with Google
           </button>
-          <button class="social-btn" onclick="showToast('Connecting to Facebook...','📘')">
+          <button class="social-btn" onclick="showToast('Facebook login not configured','📘')">
             <span class="s-icon">📘</span> Continue with Facebook
           </button>
         </div>
-
         <div class="divider">or sign in with email</div>
-
         <div class="form-group" id="emailGroup">
           <label class="form-label">Email Address</label>
           <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com">
           <div class="form-error">Please enter a valid email address.</div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Password</label>
           <div class="password-wrap">
@@ -240,27 +175,22 @@
             <span class="pw-toggle" onclick="togglePw('loginPassword', this)">👁️</span>
           </div>
         </div>
-
         <div class="form-row-between">
           <label class="remember-me"><input type="checkbox" checked> Remember me</label>
           <span class="forgot-link" onclick="showForgot()">Forgot password?</span>
         </div>
-
         <button class="submit-btn" onclick="doLogin()">Sign In →</button>
-
         <div class="auth-switch">Don't have an account? <a onclick="switchAuth('register')">Create one free</a></div>
       </div>
 
-      <!-- REGISTER PANEL -->
+      <!-- REGISTER -->
       <div class="auth-panel" id="registerPanel">
         <div class="social-login">
-          <button class="social-btn" onclick="showToast('Connecting to Google...','🌐')">
+          <button class="social-btn" onclick="signInWithGoogle()">
             <span class="s-icon">🌐</span> Sign up with Google
           </button>
         </div>
-
         <div class="divider">or sign up with email</div>
-
         <div class="input-row">
           <div class="form-group" style="flex:1;">
             <label class="form-label">First Name</label>
@@ -271,12 +201,10 @@
             <input class="form-input" type="text" id="regLast" placeholder="Ros">
           </div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Email Address</label>
           <input class="form-input" type="email" id="regEmail" placeholder="you@example.com">
         </div>
-
         <div class="form-group">
           <label class="form-label">Phone Number</label>
           <div class="phone-input-wrap">
@@ -290,7 +218,6 @@
             <input class="form-input" type="tel" id="regPhone" placeholder="010 123 456" style="flex:1;">
           </div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Password</label>
           <div class="password-wrap">
@@ -302,7 +229,6 @@
           </div>
           <div id="strengthLabel" style="font-size:11px;margin-top:4px;display:none;"></div>
         </div>
-
         <div class="form-group">
           <label class="form-label">Confirm Password</label>
           <div class="password-wrap">
@@ -310,41 +236,23 @@
             <span class="pw-toggle" onclick="togglePw('regConfirm', this)">👁️</span>
           </div>
         </div>
-
         <div class="terms-check">
           <input type="checkbox" id="termsCheck">
-          I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> of L198.
+          I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a> of L198.
         </div>
-
         <button class="submit-btn" onclick="doRegister()">Create Account →</button>
-
         <div class="auth-switch">Already have an account? <a onclick="switchAuth('login')">Sign in</a></div>
       </div>
 
-      <!-- FORGOT PASSWORD (hidden by default) -->
+      <!-- FORGOT PASSWORD -->
       <div class="auth-panel" id="forgotPanel">
         <h2 style="font-size:20px;font-weight:700;margin-bottom:8px;">Reset Password</h2>
         <p style="font-size:13px;color:var(--gray-500);margin-bottom:24px;">Enter your email and we'll send you a reset link.</p>
-
         <div class="form-group">
           <label class="form-label">Email Address</label>
           <input class="form-input" type="email" id="forgotEmail" placeholder="you@example.com">
         </div>
-
-        <div class="otp-sent" id="otpSent">✅ OTP sent to your email! Check your inbox.</div>
-
-        <div id="otpSection" style="display:none;">
-          <label class="form-label" style="text-align:center;display:block;margin-bottom:12px;">Enter 6-digit OTP</label>
-          <div class="otp-boxes">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-            <input class="otp-box" maxlength="1" oninput="focusNext(this)">
-          </div>
-        </div>
-
+        <div class="reset-sent" id="resetSent">✅ Reset link sent! Check your inbox.</div>
         <button class="submit-btn" id="forgotBtn" onclick="sendReset()">Send Reset Link</button>
         <div class="auth-switch"><a onclick="switchAuth('login')">← Back to Sign In</a></div>
       </div>
@@ -352,21 +260,11 @@
   </div>
 </div>
 
-<div class="toast" id="toast">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Done!</span>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script>
-  let toastTimer;
-  function showToast(msg, icon='✅') {
-    clearTimeout(toastTimer);
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    document.getElementById('toastIcon').textContent = icon;
-    t.classList.add('show');
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-  }
+  // Skip page if already logged in
+  redirectIfAuthed('index.html');
 
   function switchAuth(tab) {
     document.querySelectorAll('.auth-tab').forEach((t, i) => {
@@ -388,9 +286,9 @@
     else { input.type = 'password'; btn.textContent = '👁️'; }
   }
 
-  function doLogin() {
+  async function doLogin() {
     const email = document.getElementById('loginEmail').value.trim();
-    const pw = document.getElementById('loginPassword').value;
+    const pw    = document.getElementById('loginPassword').value;
     if (!email || !email.includes('@')) {
       document.getElementById('emailGroup').classList.add('has-error');
       return;
@@ -398,55 +296,57 @@
     document.getElementById('emailGroup').classList.remove('has-error');
     if (!pw) { showToast('Please enter your password', '⚠️'); return; }
     showToast('Signing in...', '⏳');
-    setTimeout(() => { window.location.href = 'profile.html'; }, 1200);
+    try {
+      await signIn(email, pw);
+      showToast('Welcome back!', '✅');
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    } catch (e) {
+      showToast(e.message, '❌');
+    }
   }
 
-  function doRegister() {
-    const first = document.getElementById('regFirst').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pw = document.getElementById('regPassword').value;
+  async function doRegister() {
+    const first  = document.getElementById('regFirst').value.trim();
+    const last   = document.getElementById('regLast').value.trim();
+    const email  = document.getElementById('regEmail').value.trim();
+    const phone  = document.getElementById('regPhone').value.trim();
+    const pw     = document.getElementById('regPassword').value;
     const confirm = document.getElementById('regConfirm').value;
-    const terms = document.getElementById('termsCheck').checked;
-    if (!first) { showToast('Please enter your name', '⚠️'); return; }
+    const terms  = document.getElementById('termsCheck').checked;
+    if (!first)  { showToast('Please enter your name', '⚠️'); return; }
     if (!email || !email.includes('@')) { showToast('Please enter a valid email', '⚠️'); return; }
     if (pw.length < 8) { showToast('Password must be at least 8 characters', '⚠️'); return; }
     if (pw !== confirm) { showToast('Passwords do not match', '❌'); return; }
     if (!terms) { showToast('Please accept the Terms & Conditions', '⚠️'); return; }
     showToast('Creating your account...', '⏳');
-    setTimeout(() => { window.location.href = 'profile.html'; }, 1400);
+    try {
+      await signUp(email, pw, `${first} ${last}`.trim(), phone);
+      showToast('Account created! Check your email to confirm.', '✅');
+      setTimeout(() => { window.location.href = 'index.html'; }, 1400);
+    } catch (e) {
+      showToast(e.message, '❌');
+    }
   }
 
-  function sendReset() {
+  async function sendReset() {
     const email = document.getElementById('forgotEmail').value.trim();
     if (!email || !email.includes('@')) { showToast('Please enter your email', '⚠️'); return; }
-    document.getElementById('otpSent').style.display = 'flex';
-    document.getElementById('otpSection').style.display = 'block';
-    document.getElementById('forgotBtn').textContent = 'Verify OTP →';
-    document.getElementById('forgotBtn').onclick = verifyOtp;
-    showToast('OTP sent to ' + email, '📧');
-  }
-
-  function verifyOtp() {
-    const boxes = document.querySelectorAll('.otp-box');
-    const otp = Array.from(boxes).map(b => b.value).join('');
-    if (otp.length < 6) { showToast('Please enter the 6-digit OTP', '⚠️'); return; }
-    showToast('OTP verified! Redirecting...', '✅');
-    setTimeout(() => window.location.href = 'profile.html', 1200);
-  }
-
-  function focusNext(input) {
-    if (input.value.length === 1) {
-      const next = input.nextElementSibling;
-      if (next) next.focus();
+    try {
+      await sendPasswordReset(email);
+      document.getElementById('resetSent').style.display = 'flex';
+      document.getElementById('forgotBtn').textContent = 'Link Sent ✓';
+      document.getElementById('forgotBtn').disabled = true;
+      showToast('Reset link sent to ' + email, '📧');
+    } catch (e) {
+      showToast(e.message, '❌');
     }
   }
 
   function checkStrength(pw) {
-    const bar = document.getElementById('strengthBar');
-    const fill = document.getElementById('strengthFill');
+    const bar   = document.getElementById('strengthBar');
+    const fill  = document.getElementById('strengthFill');
     const label = document.getElementById('strengthLabel');
-    bar.style.display = 'block';
-    label.style.display = 'block';
+    bar.style.display = label.style.display = 'block';
     let score = 0;
     if (pw.length >= 8) score++;
     if (/[A-Z]/.test(pw)) score++;
@@ -458,11 +358,11 @@
       { pct:'75%', bg:'#3b82f6', text:'Good' },
       { pct:'100%', bg:'#16a34a', text:'Strong 💪' },
     ];
-    const lvl = levels[Math.max(0, score-1)] || levels[0];
-    fill.style.width = pw.length ? lvl.pct : '0%';
+    const lvl = levels[Math.max(0, score - 1)] || levels[0];
+    fill.style.width      = pw.length ? lvl.pct : '0%';
     fill.style.background = lvl.bg;
-    label.textContent = pw.length ? 'Strength: ' + lvl.text : '';
-    label.style.color = lvl.bg;
+    label.textContent     = pw.length ? 'Strength: ' + lvl.text : '';
+    label.style.color     = lvl.bg;
   }
 </script>
 </body>
