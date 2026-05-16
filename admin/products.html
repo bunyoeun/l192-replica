@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products – L198 Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a1f44;--navy-dark:#061530;--navy-mid:#122b5e;--navy-light:#1e3d7a;--accent:#1a73e8;--gold:#f0b429;--gray-100:#f5f7fa;--gray-200:#eaecf0;--gray-300:#d1d5db;--gray-500:#9ca3af;--gray-700:#4b5563;--gray-900:#111827;--radius:12px;--shadow-sm:0 1px 4px rgba(10,31,68,0.08);--shadow-md:0 4px 16px rgba(10,31,68,0.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-100);color:var(--gray-900);font-size:14px;display:flex;min-height:100vh}
+  a{text-decoration:none;color:inherit}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit}
+  input,select,textarea{font-family:inherit}
+  .sidebar{width:220px;background:var(--navy-dark);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .sidebar-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .logo-box{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--navy-dark);flex-shrink:0}
+  .sidebar-logo span{font-size:17px;font-weight:800;color:#fff}
+  .sidebar-logo span em{color:var(--gold);font-style:normal}
+  .sidebar-admin{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.07);font-size:12px;color:rgba(255,255,255,0.5)}
+  .sidebar-admin strong{display:block;color:#fff;font-size:13px;font-weight:600;margin-top:2px}
+  .sidebar-nav{flex:1;padding:10px 0}
+  .nav-section{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:14px 20px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+  .nav-item.active{background:rgba(255,255,255,0.1);color:#fff;border-left-color:var(--gold)}
+  .nav-item .ni{font-size:16px;width:20px;text-align:center}
+  .sidebar-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.07)}
+  .sign-out-btn{width:100%;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);padding:9px;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s}
+  .sign-out-btn:hover{background:rgba(220,38,38,0.2);color:#fca5a5}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{background:#fff;border-bottom:1px solid var(--gray-200);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
+  .topbar h1{font-size:18px;font-weight:700}
+  .content{padding:24px 28px;flex:1}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .toolbar input,.toolbar select{border:1.5px solid var(--gray-200);border-radius:9px;padding:9px 13px;font-size:13px;outline:none;background:#fff;min-width:160px}
+  .toolbar input:focus,.toolbar select:focus{border-color:var(--navy)}
+  .btn-primary{background:var(--navy);color:#fff;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:700;transition:background .2s}
+  .btn-primary:hover{background:var(--navy-light)}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  .card-header{padding:16px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between}
+  .card-title{font-size:15px;font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;padding:10px 16px;border-bottom:1px solid var(--gray-200);text-align:left;background:var(--gray-100)}
+  td{padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;color:var(--gray-700);vertical-align:middle}
+  tr:last-child td{border:none}
+  tr:hover td{background:#fafbfc}
+  .mono{font-family:monospace;font-size:11px;color:var(--gray-400)}
+  .action-btn{font-size:12px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;border:none;transition:all .2s}
+  .btn-edit{background:#e0f2fe;color:#0369a1}
+  .btn-edit:hover{background:#bae6fd}
+  .btn-deact{background:#fef2f2;color:#dc2626}
+  .btn-deact:hover{background:#fecaca}
+  /* Form panel */
+  .form-panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:22px;margin-bottom:18px;display:none}
+  .form-panel.open{display:block}
+  .form-panel h3{font-size:15px;font-weight:700;margin-bottom:18px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .form-group{display:flex;flex-direction:column;gap:5px}
+  .form-group.full{grid-column:1/-1}
+  .form-label{font-size:12px;font-weight:600;color:var(--gray-700)}
+  .form-input,.form-select,.form-textarea{border:1.5px solid var(--gray-200);border-radius:9px;padding:9px 13px;font-size:13px;font-family:inherit;outline:none;color:var(--gray-900);transition:border-color .2s}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--navy)}
+  .form-textarea{resize:vertical;min-height:80px}
+  .form-actions{display:flex;gap:10px;margin-top:6px}
+  .btn-save{background:var(--navy);color:#fff;padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700}
+  .btn-cancel{background:none;border:1.5px solid var(--gray-200);color:var(--gray-700);padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-box">L1</div><span>L<em>198</em> Admin</span></div>
+  <div class="sidebar-admin">Signed in as<strong class="admin-name">Admin</strong></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <a href="index.html" class="nav-item"><span class="ni">📊</span> Dashboard</a>
+    <div class="nav-section">Manage</div>
+    <a href="products.html" class="nav-item active"><span class="ni">📦</span> Products</a>
+    <a href="orders.html" class="nav-item"><span class="ni">🛒</span> Orders</a>
+    <a href="users.html" class="nav-item"><span class="ni">👥</span> Users &amp; Stores</a>
+    <div class="nav-section">Site</div>
+    <a href="../index.html" class="nav-item"><span class="ni">🌐</span> View Storefront</a>
+  </nav>
+  <div class="sidebar-foot"><button class="sign-out-btn" onclick="signOut()">↩ Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <h1>Products</h1>
+    <button class="btn-primary" onclick="openForm()">+ Add Product</button>
+  </div>
+  <div class="content">
+    <!-- Add/Edit form -->
+    <div class="form-panel" id="formPanel">
+      <h3 id="formTitle">Add Product</h3>
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Product Name *</label><input class="form-input" id="fName" placeholder="e.g. Wireless Earbuds Pro"></div>
+        <div class="form-group"><label class="form-label">Slug *</label><input class="form-input" id="fSlug" placeholder="wireless-earbuds-pro"></div>
+        <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="fStatus"><option value="active">Active</option><option value="inactive">Inactive</option><option value="draft">Draft</option></select></div>
+        <div class="form-group"><label class="form-label">Price (USD) *</label><input class="form-input" id="fPrice" type="number" step="0.01" placeholder="12.50"></div>
+        <div class="form-group"><label class="form-label">Compare-at Price</label><input class="form-input" id="fCompare" type="number" step="0.01" placeholder="19.00"></div>
+        <div class="form-group"><label class="form-label">Stock Qty</label><input class="form-input" id="fStock" type="number" placeholder="100"></div>
+        <div class="form-group"><label class="form-label">Weight (g)</label><input class="form-input" id="fWeight" type="number" placeholder="200"></div>
+        <div class="form-group"><label class="form-label">Category</label><select class="form-select" id="fCategory"><option value="">— Select —</option></select></div>
+        <div class="form-group"><label class="form-label">Store</label><select class="form-select" id="fStore"><option value="">— Select —</option></select></div>
+        <div class="form-group full"><label class="form-label">Description</label><textarea class="form-textarea" id="fDesc" placeholder="Product description..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-save" onclick="saveProduct()">Save Product</button>
+        <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="🔍 Search products..." oninput="debounceLoad()">
+      <select id="statusFilter" onchange="loadProducts(0)">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+        <option value="draft">Draft</option>
+      </select>
+      <select id="catFilter" onchange="loadProducts(0)"><option value="">All Categories</option></select>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title" id="tableTitle">Products</div></div>
+      <table>
+        <thead><tr><th>Name</th><th>Store</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="productBody"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr></tbody>
+      </table>
+      <div id="paginator" style="padding:0 16px 12px"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase.js"></script>
+<script src="admin.js"></script>
+<script>
+  let _cats = [], _stores = [], _debounce;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const admin = await requireAdmin();
+    if (!admin) return;
+    const { categories, stores } = await adminGetCategoriesAndStores();
+    _cats = categories; _stores = stores;
+    const catSel = document.getElementById('catFilter');
+    categories.forEach(c => catSel.innerHTML += '<option value="' + c.id + '">' + c.name + '</option>');
+    const fCat = document.getElementById('fCategory');
+    categories.forEach(c => fCat.innerHTML += '<option value="' + c.id + '">' + c.name + '</option>');
+    const fSt = document.getElementById('fStore');
+    stores.forEach(s => fSt.innerHTML += '<option value="' + s.id + '">' + s.name + '</option>');
+    loadProducts(0);
+  });
+
+  async function loadProducts(offset) {
+    offset = offset || 0;
+    document.getElementById('productBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr>';
+    try {
+      const { data, count } = await adminGetAllProducts({
+        search: document.getElementById('searchInput').value,
+        status: document.getElementById('statusFilter').value,
+        categoryId: document.getElementById('catFilter').value || undefined,
+        limit: 20, offset
+      });
+      document.getElementById('tableTitle').textContent = 'Products (' + count + ')';
+      if (!data.length) {
+        document.getElementById('productBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">No products found</td></tr>';
+        document.getElementById('paginator').innerHTML = '';
+        return;
+      }
+      document.getElementById('productBody').innerHTML = data.map(p => `
+        <tr>
+          <td><strong>${p.name}</strong><br><span class="mono">${p.slug}</span></td>
+          <td>${p.store?.name || '—'}</td>
+          <td>${p.category?.name || '—'}</td>
+          <td style="font-weight:700;color:var(--navy);">${fmt(p.price)}${p.compare_at_price ? '<br><span style="font-size:11px;color:var(--gray-500);text-decoration:line-through;">' + fmt(p.compare_at_price) + '</span>' : ''}</td>
+          <td>${p.stock_quantity}</td>
+          <td>${statusBadge(p.status)}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="action-btn btn-edit" onclick="editProduct(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="flex-shrink:0">Edit</button>
+            <button class="action-btn btn-deact" onclick="deactivate('${p.id}')">Deactivate</button>
+          </td>
+        </tr>`).join('');
+      document.getElementById('paginator').innerHTML = paginator(count, 20, offset, loadProducts);
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  function debounceLoad() {
+    clearTimeout(_debounce);
+    _debounce = setTimeout(() => loadProducts(0), 350);
+  }
+
+  function openForm(product) {
+    const fp = document.getElementById('formPanel');
+    fp.classList.add('open');
+    document.getElementById('formTitle').textContent = product ? 'Edit Product' : 'Add Product';
+    document.getElementById('editId').value = product ? product.id : '';
+    document.getElementById('fName').value = product ? product.name : '';
+    document.getElementById('fSlug').value = product ? product.slug : '';
+    document.getElementById('fPrice').value = product ? product.price : '';
+    document.getElementById('fCompare').value = product ? (product.compare_at_price || '') : '';
+    document.getElementById('fStock').value = product ? product.stock_quantity : '';
+    document.getElementById('fStatus').value = product ? product.status : 'active';
+    document.getElementById('fDesc').value = product ? (product.description || '') : '';
+    fp.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function editProduct(p) { openForm(p); }
+  function closeForm() { document.getElementById('formPanel').classList.remove('open'); }
+
+  async function saveProduct() {
+    const id = document.getElementById('editId').value;
+    const data = {
+      name: document.getElementById('fName').value.trim(),
+      slug: document.getElementById('fSlug').value.trim(),
+      price: parseFloat(document.getElementById('fPrice').value),
+      compare_at_price: parseFloat(document.getElementById('fCompare').value) || null,
+      stock_quantity: parseInt(document.getElementById('fStock').value) || 0,
+      status: document.getElementById('fStatus').value,
+      description: document.getElementById('fDesc').value.trim() || null,
+      category_id: document.getElementById('fCategory').value || null,
+      store_id: document.getElementById('fStore').value || null
+    };
+    if (!data.name || !data.slug || !data.price) { showAdminToast('Name, slug and price are required', '⚠️'); return; }
+    try {
+      if (id) { await adminUpdateProduct(id, data); showAdminToast('Product updated!', '✅'); }
+      else { await adminCreateProduct(data); showAdminToast('Product created!', '✅'); }
+      closeForm();
+      loadProducts(0);
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  async function deactivate(id) {
+    if (!confirm('Deactivate this product?')) return;
+    try { await adminDeactivateProduct(id); showAdminToast('Product deactivated', '✅'); loadProducts(0); }
+    catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  document.getElementById('fName').addEventListener('input', function() {
+    const slug = document.getElementById('fSlug');
+    if (!slug.dataset.manual) slug.value = this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  });
+  document.getElementById('fSlug').addEventListener('input', function() { this.dataset.manual = '1'; });
+</script>
+</body>
+</html>

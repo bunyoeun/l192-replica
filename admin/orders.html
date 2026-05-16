@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders – L198 Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a1f44;--navy-dark:#061530;--navy-mid:#122b5e;--navy-light:#1e3d7a;--accent:#1a73e8;--gold:#f0b429;--gray-100:#f5f7fa;--gray-200:#eaecf0;--gray-300:#d1d5db;--gray-500:#9ca3af;--gray-700:#4b5563;--gray-900:#111827;--radius:12px;--shadow-sm:0 1px 4px rgba(10,31,68,0.08)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-100);color:var(--gray-900);font-size:14px;display:flex;min-height:100vh}
+  a{text-decoration:none;color:inherit}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit}
+  .sidebar{width:220px;background:var(--navy-dark);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .sidebar-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .logo-box{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--navy-dark);flex-shrink:0}
+  .sidebar-logo span{font-size:17px;font-weight:800;color:#fff}
+  .sidebar-logo span em{color:var(--gold);font-style:normal}
+  .sidebar-admin{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.07);font-size:12px;color:rgba(255,255,255,0.5)}
+  .sidebar-admin strong{display:block;color:#fff;font-size:13px;font-weight:600;margin-top:2px}
+  .sidebar-nav{flex:1;padding:10px 0}
+  .nav-section{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:14px 20px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+  .nav-item.active{background:rgba(255,255,255,0.1);color:#fff;border-left-color:var(--gold)}
+  .nav-item .ni{font-size:16px;width:20px;text-align:center}
+  .sidebar-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.07)}
+  .sign-out-btn{width:100%;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);padding:9px;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s}
+  .sign-out-btn:hover{background:rgba(220,38,38,0.2);color:#fca5a5}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{background:#fff;border-bottom:1px solid var(--gray-200);padding:0 28px;height:60px;display:flex;align-items:center;box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
+  .topbar h1{font-size:18px;font-weight:700}
+  .content{padding:24px 28px;flex:1}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .toolbar select{border:1.5px solid var(--gray-200);border-radius:9px;padding:9px 13px;font-size:13px;outline:none;background:#fff;min-width:160px}
+  .toolbar select:focus{border-color:var(--navy)}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  .card-header{padding:16px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between}
+  .card-title{font-size:15px;font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;padding:10px 16px;border-bottom:1px solid var(--gray-200);text-align:left;background:var(--gray-100)}
+  td{padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;color:var(--gray-700);vertical-align:middle}
+  tr:last-child td{border:none}
+  tr:hover td{background:#fafbfc}
+  .mono{font-family:monospace;font-size:11px;color:var(--gray-500)}
+  .status-select{border:1.5px solid var(--gray-200);border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;background:#fff;cursor:pointer}
+  .status-select:focus{border-color:var(--navy)}
+  .expand-btn{background:none;color:var(--accent);font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px}
+  .expand-btn:hover{background:#e8f0fe}
+  .items-row td{background:#f9fafc;padding:8px 16px 12px 32px;font-size:12px;color:var(--gray-600)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-box">L1</div><span>L<em>198</em> Admin</span></div>
+  <div class="sidebar-admin">Signed in as<strong class="admin-name">Admin</strong></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <a href="index.html" class="nav-item"><span class="ni">📊</span> Dashboard</a>
+    <div class="nav-section">Manage</div>
+    <a href="products.html" class="nav-item"><span class="ni">📦</span> Products</a>
+    <a href="orders.html" class="nav-item active"><span class="ni">🛒</span> Orders</a>
+    <a href="users.html" class="nav-item"><span class="ni">👥</span> Users &amp; Stores</a>
+    <div class="nav-section">Site</div>
+    <a href="../index.html" class="nav-item"><span class="ni">🌐</span> View Storefront</a>
+  </nav>
+  <div class="sidebar-foot"><button class="sign-out-btn" onclick="signOut()">↩ Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar"><h1>Orders</h1></div>
+  <div class="content">
+    <div class="toolbar">
+      <select id="statusFilter" onchange="loadOrders(0)">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title" id="tableTitle">Orders</div></div>
+      <table>
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="orderBody"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr></tbody>
+      </table>
+      <div id="paginator" style="padding:0 16px 12px"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase.js"></script>
+<script src="admin.js"></script>
+<script>
+  const ORDER_STATUSES = ['pending','confirmed','shipped','delivered','cancelled'];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const admin = await requireAdmin();
+    if (!admin) return;
+    loadOrders(0);
+  });
+
+  async function loadOrders(offset) {
+    offset = offset || 0;
+    document.getElementById('orderBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr>';
+    try {
+      const { data, count } = await adminGetAllOrders({
+        status: document.getElementById('statusFilter').value || undefined,
+        limit: 25, offset
+      });
+      document.getElementById('tableTitle').textContent = 'Orders (' + count + ')';
+      if (!data.length) {
+        document.getElementById('orderBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-500);">No orders found</td></tr>';
+        document.getElementById('paginator').innerHTML = '';
+        return;
+      }
+      document.getElementById('orderBody').innerHTML = data.map(o => `
+        <tr id="row-${o.id}">
+          <td><span class="mono">#${o.id.substring(0,8).toUpperCase()}</span></td>
+          <td>${o.user?.full_name || '—'}</td>
+          <td style="text-align:center;">${(o.items || []).length}</td>
+          <td style="font-weight:700;color:var(--navy);">${fmt(o.total_amount)}</td>
+          <td>
+            <select class="status-select" onchange="updateStatus('${o.id}',this.value)">
+              ${ORDER_STATUSES.map(s => '<option value="' + s + '"' + (s===o.status?' selected':'') + '>' + s.charAt(0).toUpperCase()+s.slice(1) + '</option>').join('')}
+            </select>
+          </td>
+          <td>${new Date(o.created_at).toLocaleDateString()}</td>
+          <td><button class="expand-btn" onclick="toggleItems('${o.id}')">Details</button></td>
+        </tr>
+        <tr id="items-${o.id}" style="display:none;" class="items-row"><td colspan="7">Loading items…</td></tr>`).join('');
+      document.getElementById('paginator').innerHTML = paginator(count, 25, offset, loadOrders);
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  async function updateStatus(orderId, status) {
+    try {
+      await adminUpdateOrderStatus(orderId, status);
+      showAdminToast('Order status updated to ' + status, '✅');
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  async function toggleItems(orderId) {
+    const row = document.getElementById('items-' + orderId);
+    if (row.style.display === 'none') {
+      row.style.display = '';
+      if (row.querySelector('td').textContent === 'Loading items…') {
+        try {
+          const items = await adminGetOrderItems(orderId);
+          row.querySelector('td').innerHTML = items.length
+            ? '<strong>Items:</strong> ' + items.map(i => i.product_name + ' × ' + i.quantity + ' @ ' + fmt(i.unit_price)).join(' &nbsp;|&nbsp; ')
+            : 'No items';
+        } catch(e) { row.querySelector('td').textContent = 'Error loading items'; }
+      }
+    } else {
+      row.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>

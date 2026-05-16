@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users &amp; Stores – L198 Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0a1f44;--navy-dark:#061530;--navy-mid:#122b5e;--navy-light:#1e3d7a;--accent:#1a73e8;--gold:#f0b429;--gray-100:#f5f7fa;--gray-200:#eaecf0;--gray-300:#d1d5db;--gray-500:#9ca3af;--gray-700:#4b5563;--gray-900:#111827;--radius:12px;--shadow-sm:0 1px 4px rgba(10,31,68,0.08)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-100);color:var(--gray-900);font-size:14px;display:flex;min-height:100vh}
+  a{text-decoration:none;color:inherit}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit}
+  .sidebar{width:220px;background:var(--navy-dark);color:#fff;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .sidebar-logo{padding:22px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .logo-box{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--navy-dark);flex-shrink:0}
+  .sidebar-logo span{font-size:17px;font-weight:800;color:#fff}
+  .sidebar-logo span em{color:var(--gold);font-style:normal}
+  .sidebar-admin{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.07);font-size:12px;color:rgba(255,255,255,0.5)}
+  .sidebar-admin strong{display:block;color:#fff;font-size:13px;font-weight:600;margin-top:2px}
+  .sidebar-nav{flex:1;padding:10px 0}
+  .nav-section{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:14px 20px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;transition:all .2s;border-left:3px solid transparent}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+  .nav-item.active{background:rgba(255,255,255,0.1);color:#fff;border-left-color:var(--gold)}
+  .nav-item .ni{font-size:16px;width:20px;text-align:center}
+  .sidebar-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.07)}
+  .sign-out-btn{width:100%;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);padding:9px;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s}
+  .sign-out-btn:hover{background:rgba(220,38,38,0.2);color:#fca5a5}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{background:#fff;border-bottom:1px solid var(--gray-200);padding:0 28px;height:60px;display:flex;align-items:center;box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
+  .topbar h1{font-size:18px;font-weight:700}
+  .content{padding:24px 28px;flex:1}
+  .tabs{display:flex;gap:0;margin-bottom:18px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;width:fit-content}
+  .tab-btn{padding:12px 24px;font-size:13px;font-weight:600;color:var(--gray-500);background:none;border-bottom:3px solid transparent;transition:all .2s;cursor:pointer}
+  .tab-btn.active{color:var(--navy);border-bottom-color:var(--navy);background:var(--gray-100)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .toolbar input{border:1.5px solid var(--gray-200);border-radius:9px;padding:9px 13px;font-size:13px;outline:none;background:#fff;min-width:220px}
+  .toolbar input:focus{border-color:var(--navy)}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  .card-header{padding:16px 20px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between}
+  .card-title{font-size:15px;font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;padding:10px 16px;border-bottom:1px solid var(--gray-200);text-align:left;background:var(--gray-100)}
+  td{padding:11px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;color:var(--gray-700);vertical-align:middle}
+  tr:last-child td{border:none}
+  tr:hover td{background:#fafbfc}
+  .mono{font-family:monospace;font-size:11px;color:var(--gray-500)}
+  .action-btn{font-size:12px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;border:none;transition:all .2s}
+  .btn-promote{background:#fff8e1;color:#d97706}
+  .btn-promote:hover{background:#fde68a}
+  .btn-demote{background:#fef2f2;color:#dc2626}
+  .btn-demote:hover{background:#fecaca}
+  .btn-toggle{background:#e0f2fe;color:#0369a1}
+  .btn-toggle:hover{background:#bae6fd}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-box">L1</div><span>L<em>198</em> Admin</span></div>
+  <div class="sidebar-admin">Signed in as<strong class="admin-name">Admin</strong></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <a href="index.html" class="nav-item"><span class="ni">📊</span> Dashboard</a>
+    <div class="nav-section">Manage</div>
+    <a href="products.html" class="nav-item"><span class="ni">📦</span> Products</a>
+    <a href="orders.html" class="nav-item"><span class="ni">🛒</span> Orders</a>
+    <a href="users.html" class="nav-item active"><span class="ni">👥</span> Users &amp; Stores</a>
+    <div class="nav-section">Site</div>
+    <a href="../index.html" class="nav-item"><span class="ni">🌐</span> View Storefront</a>
+  </nav>
+  <div class="sidebar-foot"><button class="sign-out-btn" onclick="signOut()">↩ Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar"><h1>Users &amp; Stores</h1></div>
+  <div class="content">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('users',this)">👤 Users</button>
+      <button class="tab-btn" onclick="switchTab('stores',this)">🏪 Stores</button>
+    </div>
+
+    <!-- USERS -->
+    <div class="tab-panel active" id="tab-users">
+      <div class="toolbar">
+        <input type="text" id="userSearch" placeholder="🔍 Search by name..." oninput="debounceUsers()">
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="usersTitle">Users</div></div>
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="userBody"><tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr></tbody>
+        </table>
+        <div id="userPaginator" style="padding:0 16px 12px"></div>
+      </div>
+    </div>
+
+    <!-- STORES -->
+    <div class="tab-panel" id="tab-stores">
+      <div class="toolbar">
+        <input type="text" id="storeSearch" placeholder="🔍 Search by store name..." oninput="debounceStores()">
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title" id="storesTitle">Stores</div></div>
+        <table>
+          <thead><tr><th>Store Name</th><th>Owner</th><th>Slug</th><th>Active</th><th>Created</th><th>Actions</th></tr></thead>
+          <tbody id="storeBody"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr></tbody>
+        </table>
+        <div id="storePaginator" style="padding:0 16px 12px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase.js"></script>
+<script src="admin.js"></script>
+<script>
+  let _userDebounce, _storeDebounce, _currentAdmin;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const admin = await requireAdmin();
+    if (!admin) return;
+    _currentAdmin = admin.user.id;
+    loadUsers(0);
+  });
+
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'stores') loadStores(0);
+  }
+
+  // ── Users ──
+  async function loadUsers(offset) {
+    offset = offset || 0;
+    document.getElementById('userBody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr>';
+    try {
+      const { data, count } = await adminGetAllUsers({ search: document.getElementById('userSearch').value, limit:25, offset });
+      document.getElementById('usersTitle').textContent = 'Users (' + count + ')';
+      if (!data.length) { document.getElementById('userBody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-500);">No users found</td></tr>'; return; }
+      document.getElementById('userBody').innerHTML = data.map(u => `
+        <tr>
+          <td><strong>${u.full_name || '—'}</strong><br><span class="mono">${u.id.substring(0,8)}</span></td>
+          <td>${u.phone || '—'}</td>
+          <td>${statusBadge(u.role)}</td>
+          <td>${new Date(u.created_at).toLocaleDateString()}</td>
+          <td style="display:flex;gap:6px;">
+            ${u.role !== 'admin'
+              ? '<button class="action-btn btn-promote" onclick="setRole(\'' + u.id + '\',\'admin\')">Make Admin</button>'
+              : (u.id !== _currentAdmin ? '<button class="action-btn btn-demote" onclick="setRole(\'' + u.id + '\',\'buyer\')">Revoke Admin</button>' : '<span style="font-size:11px;color:var(--gray-500);">You</span>') }
+          </td>
+        </tr>`).join('');
+      document.getElementById('userPaginator').innerHTML = paginator(count, 25, offset, loadUsers);
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  function debounceUsers() { clearTimeout(_userDebounce); _userDebounce = setTimeout(() => loadUsers(0), 350); }
+
+  async function setRole(userId, role) {
+    if (!confirm('Set role to ' + role + ' for this user?')) return;
+    try { await adminUpdateUserRole(userId, role); showAdminToast('Role updated to ' + role, '✅'); loadUsers(0); }
+    catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  // ── Stores ──
+  async function loadStores(offset) {
+    offset = offset || 0;
+    document.getElementById('storeBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-500);">Loading…</td></tr>';
+    try {
+      const { data, count } = await adminGetAllStores({ search: document.getElementById('storeSearch').value, limit:25, offset });
+      document.getElementById('storesTitle').textContent = 'Stores (' + count + ')';
+      if (!data.length) { document.getElementById('storeBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--gray-500);">No stores found</td></tr>'; return; }
+      document.getElementById('storeBody').innerHTML = data.map(s => `
+        <tr>
+          <td><strong>${s.name}</strong></td>
+          <td>${s.owner?.full_name || '—'}</td>
+          <td><span class="mono">${s.slug}</span></td>
+          <td>${statusBadge(s.is_active ? 'active' : 'inactive')}</td>
+          <td>${new Date(s.created_at).toLocaleDateString()}</td>
+          <td><button class="action-btn btn-toggle" onclick="toggleStore('${s.id}',${!s.is_active})">${s.is_active ? 'Deactivate' : 'Activate'}</button></td>
+        </tr>`).join('');
+      document.getElementById('storePaginator').innerHTML = paginator(count, 25, offset, loadStores);
+    } catch(e) { showAdminToast(e.message, '❌'); }
+  }
+
+  function debounceStores() { clearTimeout(_storeDebounce); _storeDebounce = setTimeout(() => loadStores(0), 350); }
+
+  async function toggleStore(storeId, isActive) {
+    try { await adminToggleStore(storeId, isActive); showAdminToast('Store ' + (isActive ? 'activated' : 'deactivated'), '✅'); loadStores(0); }
+    catch(e) { showAdminToast(e.message, '❌'); }
+  }
+</script>
+</body>
+</html>
